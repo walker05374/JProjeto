@@ -14,124 +14,86 @@
     <div class="area">
       <div class="card-body">
         <h1 class="botao">Cadastre-se</h1>
+            <form method="post">
 
-        <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-
-        <form action="{% url'register'% }" method="post">
-          <div class="form-group">
-            <label for="username">Nome e sobrenome:</label>
-            <input type="text" class="form-control" id="username" name="username" required>
-          </div>
+            {{ form.as_p }}
 
 
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="text" class="form-control" id="email" name="email" required>
-          </div>
+          <div class="botao">
+            <div class="centrobotao">
+              <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ModalLongoExemplo">
+                Cadastrar
+              </button>
 
-          <div class="form-group">
-            <label for="password">Senha:</label>
-            <input type="password" class="form-control" id="password" name="senha" required>
-          </div>
+              <div class="modal fade" id="ModalLongoExemplo" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="TituloModalLongoExemplo" >Aceitação dos Termos de Uso</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p>
+                        <span class="modal-text">
+                          Ao utilizar a plataforma Jornada Maternal, você concorda com os seguintes termos e condições:
+                        </span>
+                      </p>
+                      <p>
+                        <span class="modal-text">
+                          Concordância Obrigatória: Ao acessar e usar nossos serviços, você está concordando com estes Termos de Uso.
+                          Se você não concorda, por favor, não continue utilizando.
+                        </span>
+                      </p>
+                      <p>
+                        <span class="modal-text">
+                          Mudanças nos Termos: Podemos modificar esses termos a qualquer momento. Recomendamos verificar periodicamente.
+                          O uso contínuo implica na aceitação das alterações.
+                        </span>
+                      </p>
+                      <p>
+                        <span class="modal-text">
+                          Uso Adequado: Use a plataforma de maneira responsável e de acordo com as leis. Não toleramos comportamentos inadequados.
+                        </span>
+                      </p>
+                      <p>
+                        <span class="modal-text">
+                          Encerramento de Conta: Podemos encerrar ou suspender sua conta se você violar estes termos ou se envolver em condutas inapropriadas.
+                          Clicando em "Aceitar" ou continuando a usar a plataforma, você confirma que entendeu e concordou com estes termos.
+                        </span>
+                      </p>
+                      <p>
+                        <span class="modal-text">
+                          Última atualização: 04/10/2023.
+                        </span>
+                      </p>
+                    </div>
 
-          <div class="form-group">
-            <label for="confirmarSenha">Confirmar Senha:</label>
-            <input type="password" class="form-control" id="confirmarSenha" name="confirmarSenha" required>
-          </div>
-
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="termos" name="termos" required>
-            <label class="form-check-label" for="termos">Aceitar os Termos de Uso</label>
-          </div>
 
 
-        <div class="botao">
-        <div class="centrobotao">
 
+                    <div class="modal-footer">
 
-<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ModalLongoExemplo">
-  Cadastrar
-</button>
+                        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Voltar</button>
 
-
-<div class="modal fade" id="ModalLongoExemplo" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="TituloModalLongoExemplo" >Aceitação dos Termos de Uso</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">&times;
-          </span>
-        </button>
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-dark" href="{% url 'login' %}"  >Aceitar e cadastrar-se</button>
+                      </form>
+                    </div>
                   </div>
-                  <div class="modal-body">
-                    <p>
-                      <span class="modal-text">
-
-
-
-
-                        Ao utilizar a plataforma Jornada Maternal, você concorda com os seguintes termos e condições:
-                      </span>
-                    </p>
-                    <p>
-                      <span class="modal-text">
-                        Concordância Obrigatória: Ao acessar e usar nossos serviços, você está concordando com estes Termos de Uso.
-                        Se você não concorda, por favor, não continue utilizando.
-                      </span>
-                    </p>
-                    <p>
-                      <span class="modal-text">
-                        Mudanças nos Termos: Podemos modificar esses termos a qualquer momento. Recomendamos verificar periodicamente.
-                        O uso contínuo implica na aceitação das alterações.
-                      </span>
-                    </p>
-                    <p>
-                      <span class="modal-text">
-                        Uso Adequado: Use a plataforma de maneira responsável e de acordo com as leis. Não toleramos comportamentos inadequados.
-                      </span>
-                    </p>
-                    <p>
-                      <span class="modal-text">
-                        Encerramento de Conta: Podemos encerrar ou suspender sua conta se você violar estes termos ou se envolver em condutas inapropriadas.
-                        Clicando em "Aceitar" ou continuando a usar a plataforma, você confirma que entendeu e concordou com estes termos.
-                      </span>
-                    </p>
-                    <p>
-                      <span class="modal-text">
-                        Última atualização: 29/08/2023.
-                      </span>
-                    </p>
-                  </div>
-                  <div class="modal-footer">
-
-</font>
-
-                 <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Voltar</button>
-        <button type="button" class="btn btn-outline-dark">Aceitar e cadastrar-se</button>
                 </div>
-
-
-
-
-      </div>
-
-    </div>
-  </div>
-</div>
- </div>
+              </div>
+            </div>
           </div>
         </form>
       </div>
     </div>
   </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

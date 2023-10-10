@@ -5,19 +5,34 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-p#-s*niuw&rarqw863#8aaw1vs*ru56cfir9nxdvpo(2w)ci3y'
 DEBUG = True
 
-ALLOWED_HOSTS = ['18.208.165.72']
+
+
+
+
+
+ALLOWED_HOSTS = ['*']
+
+
+SITE_ID = 1
 INSTALLED_APPS = [
 
+
+     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app',
     'rest_framework',
-    'app'
-
-
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+    
+     'widget_tweaks',
 
 ]
 
@@ -29,9 +44,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+
 ]
 
-ROOT_URLCONF = 'jornada_maternal.urls'
+ROOT_URLCONF = 'jornada_maternal.urls' 
 
 TEMPLATES = [
     {
@@ -44,6 +61,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
         },
     },
@@ -52,18 +70,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'jornada_maternal.wsgi.application'
 
 
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -81,8 +93,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'pt-br'
 
@@ -93,8 +103,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -108,14 +117,63 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# --- Login Logout User --- #
+
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
-EMAIL_BACKEnD = 'django.core.mail.backends.console.EmailBackend'
+LOGIN_REDIRECT_URL = 'site'
+LOGOUT_URL = 'logout'
+LOGOUT_REDIRECT_URL = 'login'
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'Jornada Maternal <noreply@mydomain.com>'
+EMAIL_HOST_USER = 'jornadamaternal@gmail.com'
+EMAIL_HOST_PASSWORD = 'zoieonynxuehwwhc'
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+
+
+
+
+SOCIALACCOUNT_LOGIN_ON_GET=True
+
+UTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '143390340743-1r857685usse5leinas3on0f02jr79o1.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        },
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+
+
+    },
+    'facebook': {
+        'APP': {  
+        
+            'client_id': '1482552329230726',
+            'secret': '145bf48b8476e719ef08af7bbab9c514',
+            'SCOPE': ['profile', 'email'],
+            'AUTH_PARAMS': {'access_type': 'online'},
+        },
+    },
+}

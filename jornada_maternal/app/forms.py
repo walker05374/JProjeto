@@ -1,7 +1,10 @@
-
 from django import forms
 from .models import Cliente
-from django.contrib.auth.models import User
+from .models import ContactMe
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from jornada_maternal.models import User
+
 
 
 class ClienteForm(forms.ModelForm):
@@ -24,5 +27,37 @@ class ClienteForm(forms.ModelForm):
             'generocrianca': forms.Select(attrs={'class': 'form-control'}),
         }
 
+
+class ContactMeForm(forms.ModelForm):
+    class Meta:
+        model = ContactMe
+        fields = ['name', 'email', 'subject', 'message']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
+
+
+class CustomUserForm(forms.ModelForm):
+    first_name = forms.CharField(
+        label='Nome',
+        max_length=150,
+    )
+    last_name = forms.CharField(
+        label='Sobrenome',
+        max_length=150,
+    )
+    email = forms.EmailField(
+        label='E-mail',
+    )
+
+    class Meta:
+        model = User
+        fields = (
+            'first_name',
+            'last_name',
+            'email',
+        )
 
 

@@ -1,31 +1,26 @@
 {% load static %}
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>FeedBack</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/chat.css">
-</head>
-<body>
-  <div class="container">
-    <div class="area">
-      <div class="chat-bubble">
-        <span class="chat-bot">Desenvolvedor:</span>
-        <span>Valorizamos o feedback dos nossos usuários e estamos comprometidos em aprimorar continuamente a experiência em nosso site. Compartilhe suas opiniões conosco para que possamos oferecer um serviço ainda melhor.</span>
-      </div>
-      <div class="user-input">
-        <span class="chat-bot">Mensagem:</span>
-        <textarea id="user-input" placeholder="Digite sua mensagem:" rows="4"></textarea>
-      </div>
-     <div class="button-row">
-    <button type="button" class="btn btn-outline-dark" onclick="enviarMensagem()">Enviar mensagem</button>
-   <a class="btn btn-outline-dark"  href="{% url 'site' %}">Voltar</a>
-</div>
-    </div>
-  </div>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/chat1.css' %}">
+    <form method="POST" autocomplete="off" class="container">
+        <div class="area">
+                <div class="user-input textarea">
+            <div class="chat-bubble">
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+                <h4>Valorizamos o feedback dos nossos usuários e estamos comprometidos em aprimorar continuamente a experiência em nosso site. Compartilhe suas opiniões conosco para que possamos oferecer um serviço ainda melhor.</h4>
+            </div>
+            <BR>
+    <div class="user-input textarea">
+<form method="POST" autocomplete="off">
+    {% csrf_token %}
+    {{form}}
+    <br>
+    <div class="button-row">
+    <button type="submit" class="btn btn-outline-dark">Enviar mensagem</button>
+</form>
+    <a class="btn btn-outline-dark" href="{% url 'site' %}">Voltar</a>
+    </div>
+     </div>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

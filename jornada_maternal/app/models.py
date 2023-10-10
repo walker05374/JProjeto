@@ -2,6 +2,10 @@ from django import forms
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+
+
+
+
 class ClienteForm(forms.ModelForm):
     datanascimento = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
 
@@ -27,4 +31,12 @@ class Cliente(models.Model):
 
     def __str__(self):
         return f"{self.nome} - CPF: {self.cpf}"
+
+
+class ContactMe(models.Model):
+    name = models.CharField(max_length=50, verbose_name='Nome')
+    email = models.EmailField(max_length=100, verbose_name='Email')
+    subject = models.CharField(max_length=100, verbose_name='Assunto')
+    message = models.TextField(verbose_name='Mensagem')
+
 
