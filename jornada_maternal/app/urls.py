@@ -6,12 +6,6 @@ from . import views
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView
 from .views import verify_email  # Verifique o caminho correto para a função
-from .models import User
-
-from django.contrib.auth.views import LoginView, LogoutView
-
-from jornada_maternal.models import views as v
-
 
 router = routers.DefaultRouter()
 router.register(r'cliente', ClienteViewSet, basename="Cliente")
@@ -51,11 +45,8 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
-    path('login/', LoginView.as_view(), name='login'),  # noqa E501
-    path('logout/', LogoutView.as_view(), name='logout'),  # noqa E501
-    path('register/', v.signup, name='signup'),  # noqa E501
-    path('reset/<uidb64>/<token>/', v.MyPasswordResetConfirm.as_view(), name='password_reset_confirm'),  # noqa E501
-    path('reset/done/', v.MyPasswordResetComplete.as_view(), name='password_reset_complete'),  # noqa E501
+
+
 
 
 ]

@@ -3,9 +3,6 @@ from .models import Cliente
 from .models import ContactMe
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from jornada_maternal.models import User
-
-
 
 class ClienteForm(forms.ModelForm):
     class Meta:
@@ -39,25 +36,14 @@ class ContactMeForm(forms.ModelForm):
 
 
 
-class CustomUserForm(forms.ModelForm):
-    first_name = forms.CharField(
-        label='Nome',
-        max_length=150,
-    )
-    last_name = forms.CharField(
-        label='Sobrenome',
-        max_length=150,
-    )
-    email = forms.EmailField(
-        label='E-mail',
-    )
+class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True)
+    otp = models.CharField(max_length=6, null=True, blank=True)  # Add the otp
+    email_verified = models.BooleanField(default=False)
+    
 
-    class Meta:
-        model = User
-        fields = (
-            'first_name',
-            'last_name',
-            'email',
-        )
+    def __str__(self):
+        return self.username
+
 
 

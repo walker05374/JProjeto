@@ -13,6 +13,36 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView
 from django.shortcuts import redirect
 
 
+def register(request):
+    form = CustomUserCreationForm()
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_valid = False
+            user.save()
+            messages.success(request, 'Registrado. Agora faça o login para começar!')
+            return redirect('login')
+
+        else:
+            print('invalid registration details')
+
+    return render(request, "registration/register.html", {"form": form})
+
+
+
+class MyPasswordReset(PasswordResetView):
+    # Defina o template de formulário personalizado
+    template_name = 'registration/password_reset_form.html'
+    # Defina o template de e-mail personalizado
+    email_template_name = 'registration/password_reset_email.html'
+
+class MyPasswordResetDone(PasswordResetDoneView):
+    # Defina o template de conclusão personalizado
+    template_name = 'registration/password_reset_done.html'
+
+
 
 def site(request):
     return render(request, 'site.html')
@@ -136,47 +166,10 @@ def sendmail_contact(data):
 
 
 
-# accounts/views.py
-from django.contrib.auth.views import (
-    PasswordResetCompleteView,
-    PasswordResetConfirmView
-)
-from django.shortcuts import redirect, render
 
-from jornada_maternal.app.services import send_mail_to_user
-
-from .forms import CustomUserForm
-
-
-def signup(request):
-    '''
-    Cadastra Usuário.
-    '''
-    template_name = 'registration/registration_form.html'
-    form = CustomUserForm(request.POST or None)
-
-    if request.method == 'POST':
-        if form.is_valid():
-            user = form.save()
-            send_mail_to_user(request=request, user=user)
-            return redirect('login')
-
-    return render(request, template_name)
-
-
-class MyPasswordResetConfirm(PasswordResetConfirmView):
-    '''
-    Requer password_reset_confirm.html
-    '''
-
-    def form_valid(self, form):
-        self.user.is_active = True
-        self.user.save()
-        return super(MyPasswordResetConfirm, self).form_valid(form)
-
-
-class MyPasswordResetComplete(PasswordResetCompleteView):
-    '''
-    Requer password_reset_complete.html
-    '''
-    ...
+def verify_email(request, pk):
+    user = CustomUser.objects.get(pk=pk)
+    if not user.email_verified:
+        user.email_verified = True
+        user.save()
+    return redirect('http://localhost:8000/')  # Replace with your desired redirect URL

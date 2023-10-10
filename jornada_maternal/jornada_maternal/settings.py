@@ -9,6 +9,9 @@ DEBUG = True
 
 
 
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -32,7 +35,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     
-     'widget_tweaks',
+
 
 ]
 
