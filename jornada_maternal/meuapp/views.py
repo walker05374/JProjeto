@@ -11,8 +11,11 @@ from .admin import CustomUserCreationForm
 from django.contrib import messages
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView
 from django.shortcuts import redirect
+from django_ratelimit.decorators import ratelimit
 
 
+
+@ratelimit(key='user_or_ip', rate='10/m')
 def register(request):
     form = CustomUserCreationForm()
     if request.method == "POST":
