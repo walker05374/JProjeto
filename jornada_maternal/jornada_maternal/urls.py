@@ -13,7 +13,7 @@ from allauth.account.views import LoginView, LogoutView, SignupView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("django.contrib.auth.urls")),
-    path('', include('app.urls')),
+    path('', include('meuapp.urls')),
     path('accounts/', include('allauth.urls')),
     
    

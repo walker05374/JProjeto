@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app import models
+from meuapp import models
 from .models import Cliente
 from django.contrib.auth.models import User
 from django.contrib.auth import forms
