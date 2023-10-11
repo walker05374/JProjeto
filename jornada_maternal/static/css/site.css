@@ -1,32 +1,40 @@
+/* Define importação de fontes do Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&display=swap');
 
+/* Estilos do body */
 body {
-  background-image: url(/static/images/Login.jpeg);
-     background-repeat: no-repeat;
+    background-image: url(/static/images/Login.jpeg);
+    background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
     background-attachment: fixed;
 }
 
+/* Estilos da barra de navegação */
 .navbar {
     background-color: #f8f9fa;
     padding: 10px 0;
 }
 
+/* Estilos do logotipo da barra de navegação */
 .navbar-brand img {
     width: 250px;
     height: auto;
 }
 
+/* Estilos do container com classe .pag */
 .container.pag {
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
+/* Estilos do contêiner de vídeo */
 .video-container {
     margin-bottom: 20px;
 }
 
+/* Estilos do contêiner de imagens */
 .imagem-container {
     width: 100%;
     height: 300px;
@@ -34,6 +42,7 @@ body {
     white-space: nowrap;
 }
 
+/* Estilos das imagens dentro do contêiner de imagens */
 .imagem-container img {
     width: auto;
     height: 100%;
@@ -42,6 +51,7 @@ body {
     animation: scroll 10s linear infinite;
 }
 
+/* Define animação "scroll" */
 @keyframes scroll {
     0% {
         transform: translateX(0%);
@@ -51,25 +61,199 @@ body {
     }
 }
 
+/* Estilos do elemento com classe .fixed-bottom */
 .fixed-bottom {
     background-color: #f8f9fa;
     padding: 20px 0;
     text-align: center;
 }
 
+/* Estilos do pop-up */
 .popup {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
-  text-align: center;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
 }
 
+/* Estilos dos parágrafos dentro do pop-up */
 .popup p {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+/* Define estilos gerais para todos os elementos HTML */
+* {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    letter-spacing: 1px;
+}
+
+/* Define estilos para o elemento HTML */
+html {
+    height: 100%;
+}
+
+/* Define estilos para o elemento main */
+main {
+    min-height: 100vh;
+}
+
+/* Define estilos para o elemento footer */
+footer {
+    width: 100%;
+    min-height: 100%;
+    color: var(--color-neutral-40);
+}
+
+/* Estilos dos links no rodapé */
+.footer-link {
+    text-decoration: none;
+}
+
+/* Estilos do contêiner de conteúdo do rodapé */
+#footer_content {
+    background-color: #f8f9fa; /* Altere para a cor desejada */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 3rem 3.5rem;
+    text-align: center;
+}
+
+/* Estilos para o título dentro do rodapé */
+#footer_contacts h1 {
+    margin-bottom: 0.75rem;
+}
+
+/* Estilos para os ícones de mídia social no rodapé */
+#footer_social_media {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+/* Estilos para os ícones de mídia social com animação de opacidade */
+#footer_social_media .footer-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.5rem;
+    width: 2.5rem;
+    color: var(--color-neutral-40);
+    border-radius: 50%;
+    transition: all 0.4s;
+}
+
+/* Estilos para os ícones de mídia social no hover */
+#footer_social_media .footer-link:hover {
+    opacity: 0.8;
+}
+
+/* Estilos para o link do Instagram */
+#instagram {
+    background: linear-gradient(#7f37c9, #ff2992, #ff9807);
+}
+
+/* Estilos para o link do Facebook */
+#facebook {
+    background-color: #4267b3;
+}
+
+/* Estilos para o link do WhatsApp */
+#whatsapp {
+    background-color: #25d366;
+}
+#twitter {
+    background-color: #1590dd;
+}
+#youtube {
+    background-color: #e50000;
+}
+/* Estilos para a lista no rodapé */
+.footer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    list-style: none;
+}
+
+/* Estilos dos links no rodapé */
+.footer-list .footer-link {
+    color: var(--color-neutral-30);
+    transition: all 0.4s;
+}
+
+/* Estilos dos links no rodapé no hover */
+.footer-list .footer-link:hover {
+    color: #7f37c9;
+}
+
+/* Estilos para o contêiner de inscrição no rodapé */
+#footer_subscribe {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Estilos para o parágrafo no contêiner de inscrição no rodapé */
+#footer_subscribe p {
+    color: var(--color-neutral-30);
+}
+
+/* Estilos para o grupo de entrada no contêiner de inscrição no rodapé */
+#input_group {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-neutral-0);
+    border-radius: 4px;
+}
+
+/* Estilos para a entrada de texto no grupo de entrada */
+#input_group input {
+    all: unset;
+    padding: 0.75rem;
+    width: 100%;
+}
+
+/* Estilos para o botão no grupo de entrada */
+#input_group button {
+    background-color: #07b2e6;
+    border: none;
+    color: var(--color-neutral-40);
+    padding: 0px 1.25rem;
+    font-size: 1.125rem;
+    height: 100%;
+    border-radius: 0px 4px 4px 0px;
+    cursor: pointer;
+    transition: all 0.4s;
+}
+
+/* Estilos para o botão no hover */
+#input_group button:hover {
+    opacity: 0.8;
+}
+
+
+/* Estilos para o aviso de direitos autorais no rodapé */
+
+
+@media screen and (max-width: 768px) {
+    #footer_content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+}
+
+@media screen and (max-width: 426px) {
+    #footer_content {
+        grid-template-columns: repeat(1, 1fr);
+        padding: 3rem 2rem;
+    }
 }

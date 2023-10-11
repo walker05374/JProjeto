@@ -1,9 +1,9 @@
 {% load static %}
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Página Inicial</title>
 
     <link rel="stylesheet" href="{% static 'css/site.css' %}">
@@ -11,8 +11,8 @@
 </head>
 <body>
     <div id="popup" class="alert alert" role="alert">
-      <p class="fs-4">Bem-vindo(a) {{ request.user.username }},aqui você encontrará dicas sobre como manter uma gestação saudável!</p>
-      <button id="closeButton" class="btn btn-outline-dark">Fechar</button>
+        <p class="fs-4">Bem-vindo(a) {{ request.user.username }}, aqui você encontrará dicas sobre como manter uma gestação saudável!</p>
+        <button id="closeButton" class="btn btn-outline-dark">Fechar</button>
     </div>
 
     <div class="container">
@@ -30,14 +30,11 @@
                             <a class="nav-link active" href="#">Início</a>
                         </li>
 
-
-
-                                         <li class="nav-item dropdown">
+                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="login" id="maisDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Area do Usuario
+                                Área do Usuário
                             </a>
                             <div class="dropdown-menu" aria-labelledby="maisDropdown">
-
                                 {% if not request.user.is_authenticated %}
                                 <a class="dropdown-item" href="{% url 'login' %}">Login</a>
                                 <a class="dropdown-item" href="{% url 'register' %}">Cadastre-se</a>
@@ -73,7 +70,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="maisDropdown">
                                 <a class="dropdown-item" href="{% url 'amamentacao' %}">Amamentação</a>
-                                <a class="dropdown-item" href="{% url 'noticias' %}">Noticias</a>
+                                <a class="dropdown-item" href="{% url 'noticias' %}">Notícias</a>
                                 <div class="dropdown-divider"></div>
                                 {% if request.user.is_authenticated %}
                                 <a class="dropdown-item" href="{% url 'contact' %}">Envie sua Sugestão</a>
@@ -107,7 +104,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="imagem-container">
                     <div class="row">
                         <div class="col-md-4">
@@ -125,8 +121,88 @@
         </div>
     </div>
     
+    <footer>
+        <div id="footer_content">
+            <div id="footer_contacts">
+                <img src="{% static 'images/back.png' %}" alt="Logo" width="230" height="80">
+     <h6>SIGA NOS:</h6>
+    
+                <div id="footer_social_media">
+                    <a href="https://www.instagram.com" class="footer-link" id="instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/" class="footer-link" id="facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.whatsapp.com/?lang=pt_BR" class="footer-link" id="whatsapp">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                    <a href="https://twitter.com" class="footer-link" id="twitter">
+                        <i class="fa-brands fa-twitter"></i>
+                    </a>
+                    <a href="https://www.youtube.com" class="footer-link" id="youtube">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <ul class="footer-list">
+                <li>
+                    <h3>Produtos</h3>
+                </li>
+                <li>
+                    <a href="#" class="footer-link">App</a>
+                </li>
+                <li>
+                    <a href="#" class="footer-link">ChatBot</a>
+                </li>
+                <li>
+                    <a href="#" class="footer-link">Mapa</a>
+                </li>
+            </ul>
+    
+            <ul class="footer-list">
+                <li>
+                    <h3>Sobre nos</h3>
+                </li>
+                <li>
+                    <a href="#" class="footer-link">Endereço</a>
+                </li>
+                <li>
+                    <a href="#" class="footer-link">Quem Somos</a>
+                </li>
+                <li>
+                    <a href="#" class="footer-link">Fale Conosco</a>
+                </li>
 
+            </ul>
+    
+            <div id="footer_subscribe">
+                <h3>Escreva-se</h3>
+    
+                <p>
+                    Para receber novidades.
+                </p>
+    
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control text-center" placeholder="Escreva-se" aria-label="Escrever">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="email">
+                            <i class="far fa-envelope"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                
+                
+    
+                </div>
+                </div>
+            </div>
+    </footer>
+    
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://kit.fontawesome.com/3d88e1abe7.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="application/javascript" src="{% static 'js/alert.js' %}"></script>
