@@ -40,9 +40,18 @@
                                 <a class="dropdown-item" href="{% url 'register' %}">Cadastre-se</a>
                                 {% endif %}
                                 <div class="dropdown-divider"></div>
+
+
+
+
                                 {% if request.user.is_authenticated %}
-                                <a class="dropdown-item" href="{% url 'logout' %}">Sair</a>
-                                {% endif %}
+
+                                <form action="{% url 'logout' %}" method="post" class="dropdown-item">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item" >Sair</button>
+                                </form>
+                            {% endif %}
+                
                             </div>
                         </li>
 

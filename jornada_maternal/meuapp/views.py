@@ -10,8 +10,10 @@ from django.core.mail import EmailMessage
 from .admin import CustomUserCreationForm
 from django.contrib import messages
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView
-from django.shortcuts import redirect
 from django_ratelimit.decorators import ratelimit
+from .forms import CustomUserCreationForm
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
 
 
 
@@ -176,3 +178,17 @@ def verify_email(request, pk):
         user.email_verified = True
         user.save()
     return redirect('http://localhost:8000/')  # Replace with your desired redirect URL
+
+
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Loga o usuário após o registro
+            login(request, user)
+            return redirect('site')  # 'home' deve ser o nome da URL que você deseja redirecionar
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})

@@ -3,10 +3,16 @@ from meuapp import models
 from .models import Cliente
 from django.contrib.auth.models import User
 from django.contrib.auth import forms
+from django.contrib import admin
+from .models import CustomUser, Cliente, ContactMe
 
-
+admin.site.register(CustomUser)
 admin.site.register(Cliente)
+
 admin.site.register(models.ContactMe)
+
+
+
 
 
 

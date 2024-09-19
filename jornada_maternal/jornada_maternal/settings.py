@@ -5,6 +5,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-p#-s*niuw&rarqw863#8aaw1vs*ru56cfir9nxdvpo(2w)ci3y'
 DEBUG = True
 
+# settings.py
+AUTH_USER_MODEL = 'meuapp.CustomUser'
 
 
 
@@ -49,6 +51,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
 
+    
+
+
 ]
 
 ROOT_URLCONF = 'jornada_maternal.urls' 
@@ -65,6 +70,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
+        
             ],
         },
     },
