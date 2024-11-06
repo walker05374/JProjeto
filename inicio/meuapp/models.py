@@ -1,0 +1,44 @@
+from django.db import models
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
+
+class CustomUser(AbstractUser):
+    username = models.CharField(max_length=150, unique=True)  # Tornando o campo obrigatório e único
+    email = models.EmailField(unique=True)  # Mantendo o email obrigatório e único
+
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
+
+
+class Cliente(models.Model):
+    GENERO_CHOICES = [
+        ('M', 'Masculino'),
+        ('F', 'Feminino'),
+    ]
+
+    nome = models.CharField(max_length=40, verbose_name='Nome')
+    datanascimento = models.DateField(verbose_name='Data de Nascimento')
+    cpf = models.CharField(max_length=14, unique=True, verbose_name='CPF')
+    idadecrianca = models.IntegerField(verbose_name='Idade da Criança')
+    sus = models.CharField(max_length=16, verbose_name='Número SUS')
+    endereco = models.CharField(max_length=50, verbose_name='Endereço')
+    bairro = models.CharField(max_length=70, verbose_name='Bairro')
+    cep = models.CharField(max_length=15, verbose_name='CEP')
+    cidade = models.CharField(max_length=30, verbose_name='Cidade')
+    uf = models.CharField(max_length=30, verbose_name='UF')
+    nomecrianca = models.CharField(max_length=40, verbose_name='Nome da Criança')
+    generocrianca = models.CharField(max_length=1, choices=GENERO_CHOICES, verbose_name='Gênero da Criança')
+
+    def __str__(self):
+        return f"{self.nome} - CPF: {self.cpf}"
+
+
+class ContactMe(models.Model):
+    name = models.CharField(max_length=150)
+    email = models.EmailField()
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+

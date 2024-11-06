@@ -1,0 +1,62 @@
+{% load static %}
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alterar Perfil</title>
+    <link rel="stylesheet" href="{% static 'css/2redefenir.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="area">
+            <h1>Alterar Perfil</h1>
+
+            <!-- Exibe mensagens de sucesso ou erro -->
+            {% if messages %}
+                <div class="alert alert-success">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="username">Usuário</label>
+                    {{ form.username }}
+                </div>
+
+                <div class="form-group">
+                    <label for="first_name">Nome</label>
+                    {{ form.first_name }}
+                </div>
+
+                <div class="form-group">
+                    <label for="last_name">Sobrenome</label>
+                    {{ form.last_name }}
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="form-group">
+                    <label for="current_password">Senha Atual</label>
+                    {{ form.current_password }}
+                </div>
+
+                <div class="centrobotao">
+                    <button type="submit" class="btn btn-outline-dark">Atualizar</button>
+                    <a class="btn btn-outline-dark" href="{% url 'site' %}">Voltar</a>
+                </div>
+
+     
+            </form>
+        </div>
+    </div>
+</body>
+</html>

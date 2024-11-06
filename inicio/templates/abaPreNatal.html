@@ -1,0 +1,102 @@
+{% load static %}
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Pré-Natal: Cuidando da sua saúde e do seu bebê</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/prenatal.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="area">
+            <h1>Pré-Natal: Cuidando da sua saúde e do seu bebê</h1>
+
+            <h2>A importância do Pré-Natal</h2>
+            <p>O pré-natal é fundamental para garantir uma gestação saudável e o bem-estar tanto da mãe quanto do bebê.</p>
+            <p>Durante o pré-natal, exames regulares são realizados para monitorar o desenvolvimento do feto e detectar possíveis problemas de saúde.</p>
+
+            <h2>Riscos de não fazer os exames adequados</h2>
+            <p>A falta de acompanhamento pré-natal e a não realização dos exames indicados podem trazer riscos significativos:</p>
+            <ul>
+                <li>Complicações no parto</li>
+                <li>Deficiências no desenvolvimento do bebê</li>
+                <li>Problemas de saúde da mãe, como hipertensão e diabetes gestacional</li>
+                <li>Dificuldades de amamentação</li>
+                <li>Complicações que poderiam ter sido evitadas com diagnóstico precoce</li>
+            </ul>
+
+            <h2>Cuide-se! Faça o pré-natal completo</h2>
+            <p>Não negligencie sua saúde e a saúde do seu bebê. Procure regularmente um médico especialista em obstetrícia e siga suas orientações.</p>
+            <p>Lembre-se de realizar todos os exames indicados e de comparecer às consultas de acompanhamento. Assim, você estará proporcionando as melhores condições para uma gestação segura e saudável.</p>
+
+            <h2>Campanha da Gestante</h2>
+            <p>Participe de nossa campanha da gestante! Clique no link abaixo para mais informações:</p>
+            <a href="#">Clique aqui para saber mais sobre a campanha da gestante</a>
+
+            <h2>Nomes dos Exames</h2>
+            <form id="examesForm">
+                <ul>
+                    <li>
+                        <input type="radio" id="exame1" name="exame" value="Ultrassom do primeiro trimestre">
+                        <label for="exame1">Ultrassom do primeiro trimestre</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="exame2" name="exame" value="Exame de sangue">
+                        <label for="exame2">Exame de sangue</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="exame3" name="exame" value="Ultrassom morfológico">
+                        <label for="exame3">Ultrassom morfológico</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="exame4" name="exame" value="Teste de glicose">
+                        <label for="exame4">Teste de glicose</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="exame5" name="exame" value="Consulta de acompanhamento">
+                        <label for="exame5">Consulta de acompanhamento</label>
+                    </li>
+                </ul>
+            </form>
+
+
+            <div class="text-center">
+            <button id="confirmarBtn" onclick="confirmarExames()" class="btn btn-outline-dark" data-toggle="modal" data-target="#ExemploModalCentralizado">
+             Salvar
+            </button>
+
+
+            <div class="modal fade" id="ExemploModalCentralizado" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+                 <div class="modal-dialog modal-dialog-centered" role="document">
+                     <div class="modal-content">
+                         <div class="modal-header">
+                          <h5 class="modal-title" id="TituloModalCentralizado">Deseja Salvar?</h5>
+                             <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                               <span aria-hidden="true">&times;</span>
+                             </button>
+                    </div>
+                    <div class="modal-body">
+                        Antes de salvar verifique se está correto essa informação.
+                     </div>
+                    <div class="modal-footer">
+                 <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
+                 <button type="button" class="btn btn-outline-dark">Salvar mudanças</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="aviso"
+            <p>Importante: É essencial comparecer ao posto de saúde mais próximo para a realização dos exames e acompanhamento adequado durante o pré-natal.</p>
+        </div>
+        </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

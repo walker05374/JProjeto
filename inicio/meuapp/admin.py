@@ -1,0 +1,16 @@
+from django.contrib import admin
+from inicio.meuapp import models
+from .models import Cliente,ContactMe,CustomUser
+
+
+
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
+
+
+admin.site.register(Cliente)
+admin.site.register(models.ContactMe)
+admin.site.register(CustomUser)
+

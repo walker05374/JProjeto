@@ -1,0 +1,157 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Criação de conta no Jornada Maternal" />
+    <meta name="author" content="Jornada Maternal" />
+    <title>Registro</title>
+    
+    <!-- CSS externo -->
+    <link rel="stylesheet" href="{% static 'css/styles1.css' %}">
+    <!-- Ícones FontAwesome -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Arquivo JS para controle do formulário -->
+    <script src="{% static 'js/registro.js' %}" defer></script>
+</head>
+<body class="bg-primary">
+    <main>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7">
+                    <div class="card shadow-lg border-0 rounded-lg mt-5">
+                        <div class="card-header">
+                            <h3 class="text-center font-weight-light my-4">Crie Sua Conta</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="registroForm" action="{% url 'registro' %}" method="POST">
+                                {% csrf_token %}
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input id="id_username" type="text" name="username" class="form-control {% if form.username.errors %}is-invalid{% endif %}" placeholder="Usuário" required>
+                                            <label for="id_username">Usuário</label>
+                                            {% if form.username.errors %}
+                                                <div class="invalid-feedback">{{ form.username.errors|first }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input id="id_first_name" type="text" name="first_name" class="form-control {% if form.first_name.errors %}is-invalid{% endif %}" placeholder="Nome" required>
+                                            <label for="id_first_name">Nome</label>
+                                            {% if form.first_name.errors %}
+                                                <div class="invalid-feedback">{{ form.first_name.errors|first }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input id="id_last_name" type="text" name="last_name" class="form-control {% if form.last_name.errors %}is-invalid{% endif %}" placeholder="Sobrenome" required>
+                                            <label for="id_last_name">Sobrenome</label>
+                                            {% if form.last_name.errors %}
+                                                <div class="invalid-feedback">{{ form.last_name.errors|first }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input id="id_email" type="email" name="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}" placeholder="Email" required>
+                                            <label for="id_email">Email</label>
+                                            {% if form.email.errors %}
+                                                <div class="invalid-feedback">{{ form.email.errors|first }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input id="id_password1" type="password" name="password1" class="form-control {% if form.password1.errors %}is-invalid{% endif %}" placeholder="Senha" required>
+                                            <label for="id_password1">Senha</label>
+                                            {% if form.password1.errors %}
+                                                <div class="invalid-feedback">{{ form.password1.errors|first }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input id="id_password2" type="password" name="password2" class="form-control {% if form.password2.errors %}is-invalid{% endif %}" placeholder="Confirme sua Senha" required>
+                                            <label for="id_password2">Confirme sua Senha</label>
+                                            {% if form.password2.errors %}
+                                                <div class="invalid-feedback">{{ form.password2.errors|first }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-footer text-center py-3">
+                                    <button type="button" id="registerButton" class="btn btn-outline-dark disabled" disabled data-bs-toggle="modal" data-bs-target="#ModalLongoExemplo">
+                                        Ler os Termos de Uso e Cadastre-se
+                                    </button>
+                                </div>
+                            </form>
+
+                            <p class="text-center mt-2">
+                                Já possui uma Conta? <a href="{% url 'login' %}">Entre.</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+                <div class="text-muted">Copyright &copy; Jornada Maternal 2024</div>
+                <div>
+                    <a href="#">Política de Privacidade</a>
+                    &middot;
+                    <a href="#">Termos de Uso &amp; Condições</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal para aceitar termos de uso -->
+    <div class="modal fade" id="ModalLongoExemplo" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TituloModalLongoExemplo">Aceitação dos Termos de Uso</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Ao utilizar a plataforma Jornada Maternal, você concorda com os seguintes termos e condições:</p>
+                    <p>Concordância Obrigatória: Ao acessar e usar nossos serviços, você está concordando com estes Termos de Uso. Se você não concorda, por favor, não continue utilizando.</p>
+                    <p>Mudanças nos Termos: Podemos modificar esses termos a qualquer momento. Recomendamos verificar periodicamente. O uso contínuo implica na aceitação das alterações.</p>
+                    <p>Uso Adequado: Use a plataforma de maneira responsável e de acordo com as leis. Não toleramos comportamentos inadequados.</p>
+                    <p>Encerramento de Conta: Podemos encerrar ou suspender sua conta se você violar estes termos ou se envolver em condutas inapropriadas.</p>
+                    <p>Clicando em "Aceitar" ou continuando a usar a plataforma, você confirma que entendeu e concordou com estes termos.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Voltar</button>
+                    <button type="button" class="btn btn-outline-dark" onclick="document.getElementById('registroForm').submit();">
+                        Aceitar e cadastrar-se
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts do Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

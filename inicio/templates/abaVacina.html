@@ -1,0 +1,59 @@
+{% load static %}
+
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informações Adicionais da Vacina</title>
+    <link rel="stylesheet" href="{% static 'css/clientecreate1.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container pag">
+    <ul class="nav nav-tabs justify-content-between">
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="{% url 'site' %}">Início</a>
+        </li>
+        <li class="nav-item ml-auto">
+            <a class="nav-link text-dark" href="#">Perfil do Usuário</a>
+        </li>
+    </ul>
+
+    <h1 class="text-center">Informações da Vacina</h1>
+
+    <p>Olá, {{ request.user.username }},Ensira as informações da vacina</p>
+
+    <form id="form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="text-center">
+            <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ExemploModalCentralizado">
+                Salvar
+            </button>
+            <div class="modal fade" id="ExemploModalCentralizado" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="TituloModalCentralizado">Deseja Salvar?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Antes de salvar, verifique se todas as informações estão corretas.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn btn-outline-dark">Salvar mudanças</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
