@@ -18,8 +18,6 @@ from django.conf.urls.static import static
 
 
 
-
-
 router = routers.DefaultRouter()
 
 router.register(r'cliente', ClienteViewSet, basename="Cliente")
@@ -77,9 +75,9 @@ urlpatterns = [
 
      path('perfil/', views.site, name='perfil'),
 
-
-
 ]
 
-if settings.DEBUG:
- urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
