@@ -11,7 +11,8 @@ from .views import verify_email
 from inicio.meuapp import views as v
 
 
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 
@@ -27,6 +28,7 @@ router.register(r'cliente', ClienteViewSet, basename="Cliente")
 
 
 urlpatterns = [
+    path('', include('django.contrib.auth.urls')),
     path('', views.site, name='site'),
     path('prenatal/', views.prenatal, name='prenatal'),
     path('informacoes/', views.informacoes, name='informacoes'),
@@ -39,6 +41,9 @@ urlpatterns = [
     path('cep', views.cep, name='cep'),
     path("api/", include(router.urls)),
 
+
+
+
     path('create_cliente', views.create_cliente, name='create_cliente'),
     path('read_cliente', views.read_cliente, name='read_cliente'),
     path("update_cliente/<int:id>", views.update_cliente, name='update_cliente'),
@@ -48,7 +53,7 @@ urlpatterns = [
     path('verify_email/<int:pk>/', verify_email, name='verify_email'),
     path('contact', views.contact_me, name='contact'),
 
-    path('', include('django.contrib.auth.urls')),
+
 
 
 
@@ -75,3 +80,6 @@ urlpatterns = [
 
 
 ]
+
+if settings.DEBUG:
+ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

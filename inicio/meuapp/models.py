@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-from django.db import models
 
 
 class CustomUser(AbstractUser):
@@ -11,6 +10,7 @@ class CustomUser(AbstractUser):
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
+
 
 
 class Cliente(models.Model):
@@ -31,6 +31,14 @@ class Cliente(models.Model):
     uf = models.CharField(max_length=30, verbose_name='UF')
     nomecrianca = models.CharField(max_length=40, verbose_name='Nome da Criança')
     generocrianca = models.CharField(max_length=1, choices=GENERO_CHOICES, verbose_name='Gênero da Criança')
+
+    foto = models.ImageField(upload_to='fotos_clientes/', blank=True, null=True, verbose_name='Foto do Cliente')  # Novo campo
+    atualizado_em = models.DateTimeField(auto_now=True)  # Atualiza a cada alteração
+
+    print # Deve exibir o caminho do arquivo
+
+
+
 
     def __str__(self):
         return f"{self.nome} - CPF: {self.cpf}"

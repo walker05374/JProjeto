@@ -2,10 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import get_template
 from django_ratelimit.decorators import ratelimit
 from django.conf import settings
-
 from django.contrib.auth.decorators import login_required
-
-
 from django.utils.translation import gettext_lazy as _
 from django.core.mail import EmailMessage
 from .utils import google_custom_search
@@ -13,8 +10,10 @@ from .models import Cliente,CustomUser
 from django.shortcuts import redirect, render
 from django.db.models.signals import post_save
 from django.core.mail import send_mail  
-
-
+from inicio.meuapp.services import send_mail_to_user
+from django.contrib.auth import login
+from django.contrib import messages
+from .forms import CustomUserLoginForm
 
 from .forms import (
  
@@ -27,8 +26,7 @@ from .forms import (
         CustomUserLoginForm,
 
 
- 
-     
+
 )
 from django.contrib.auth.views import (
     PasswordResetCompleteView,
@@ -39,21 +37,7 @@ from django.contrib.auth.views import (
 )
 
 
-from inicio.meuapp.services import send_mail_to_user
-
-
-
-
-
-
-from django.contrib.auth import login
-from django.contrib import messages
-from .forms import CustomUserLoginForm
-
-
 @ratelimit(key='user_or_ip', rate='10/m')
-
-
 
 
 def login_view(request):
@@ -63,7 +47,7 @@ def login_view(request):
         user = form.get_user()
         login(request, user)
         messages.success(request, 'Login realizado com sucesso!')
-        return redirect('site')  # Redirecione para a página inicial ou outra página
+        return redirect('site')  
 
     return render(request, 'login.html', {'form': form})
 
@@ -81,7 +65,7 @@ def registro(request):
             user = form.save()
             send_mail_to_user(request=request, user=user)
             messages.success(request, 'Usuário cadastrado com sucesso!')
-            return redirect('login')  # Redireciona após a mensagem ser adicionada
+            return redirect('login') 
         else:
             messages.error(request, 'Ocorreu um erro ao cadastrar o usuário. Verifique os campos.')
 
@@ -154,7 +138,8 @@ def verify_email(request, pk):
 def register(request):
     return render(request, 'registration_form.html')
 def site(request):
-    return render(request, 'site.html')
+    clientes_cadastrados = Cliente.objects.exists()  
+    return render(request, 'site.html', {'clientes_cadastrados': clientes_cadastrados})
 def vacina(request):
     return render(request, 'abaVacina.html')
 @login_required
@@ -187,7 +172,7 @@ def create_cliente(request):
         cliente_form = ClienteForm(request.POST, request.FILES)
         if cliente_form.is_valid():
             cliente_form.save()
-            return redirect("read_cliente")
+            return redirect("read_cliente.html")
     else:
         cliente_form = ClienteForm()
     return render(request, 'cliente_create.html', {'cliente_form': cliente_form})
@@ -196,22 +181,29 @@ def create_cliente(request):
 def read_cliente(request):
     clientes = Cliente.objects.all()
     return render(request, 'cliente_read.html', {'clientes': clientes})
-
 @login_required
 def update_cliente(request, id):
     cliente = get_object_or_404(Cliente, pk=id)
-    cliente_form = ClienteForm(request.POST or None, request.FILES or None, instance=cliente)
-    if cliente_form.is_valid():
-        cliente_form.save()
-        return redirect("read_cliente")
+    if request.method == 'POST':
+        cliente_form = ClienteForm(request.POST, request.FILES, instance=cliente)
+        if cliente_form.is_valid():
+            cliente_form.save()
+            return redirect("read_cliente")  # Retorna para a página de listagem
+    else:
+        cliente_form = ClienteForm(instance=cliente)
+
     return render(request, 'cliente_create.html', {'cliente_form': cliente_form})
+
 
 @login_required
 def delete_cliente(request, id):
     cliente = get_object_or_404(Cliente, pk=id)
     cliente.delete()
-    return redirect("read_cliente")
 
+    if not Cliente.objects.exists():
+        return redirect("site")  # ✅ Corrigido!
+
+    return redirect("read_cliente")  # ✅ Corrigido!
 
 @login_required
 def update_profile(request):

@@ -14,8 +14,18 @@
         <li class="nav-item">
             <a class="nav-link text-dark" href="{% url 'site' %}">Início</a>
         </li>
+
+
+
+
         <li class="nav-item ml-auto">
-            <a class="nav-link text-dark" href="{% url 'site' %}">Perfil do Usuário</a>
+            <a class="nav-link text-dark" href="">
+                {% if clientes and clientes.0.foto %}
+                <img src="{{ cliente.foto.url }}?{{ cliente.atualizado_em.timestamp }}" alt="Foto do Cliente"class="profile-picture">
+                {% else %}
+                    <span class="profile-text">Perfil do Usuário</span>
+                {% endif %}
+            </a>
         </li>
     </ul>
 
@@ -36,6 +46,7 @@
                 <input class="form-control" type="text" value="{{ cliente.datanascimento|date:'d/m/Y' }}" readonly>
             </div>
         </div>
+
         <div class="row mb-3">
             <div class="col-md-4">
                 <h5>Número do SUS:</h5>
@@ -50,6 +61,7 @@
                 <input class="form-control" type="text" value="{{ cliente.generocrianca }}" readonly>
             </div>
         </div>
+
         <div class="row mb-3">
             <div class="col-md-4">
                 <h5>Idade da Criança:</h5>
@@ -64,6 +76,7 @@
                 <input class="form-control" type="text" value="{{ cliente.endereco }}" readonly>
             </div>
         </div>
+
         <div class="row mb-3">
             <div class="col-md-4">
                 <h5>Bairro:</h5>
@@ -78,6 +91,7 @@
                 <input class="form-control" type="text" value="{{ cliente.uf }}" readonly>
             </div>
         </div>
+
         <hr>
         <div class="row mb-4">
             <div class="col text-center">
@@ -93,9 +107,9 @@
                 <hr>
             </div>
         </div>
-
     {% endfor %}
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="{% static 'js/apicep.js' %}"></script>

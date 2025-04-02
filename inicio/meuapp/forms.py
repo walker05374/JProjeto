@@ -1,22 +1,15 @@
 from django import forms
-from .models import Cliente, ContactMe
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from .models import Cliente, ContactMe,CustomUser
 from django.contrib.auth.forms import UserCreationForm
-
-
-
-
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import password_validation
 
 
 
-from django import forms
-from django.contrib.auth.forms import AuthenticationForm
 
 
 
@@ -107,14 +100,19 @@ class CustomUserChangeForm(forms.ModelForm):
 class ClienteForm(forms.ModelForm):
     datanascimento = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
 
+
+
+class ClienteForm(forms.ModelForm):
     class Meta:
         model = Cliente
-        fields = ['nome', 'datanascimento', 'cpf', 'idadecrianca', 'sus', 'endereco', 'bairro', 'cep', 'cidade', 'uf', 'nomecrianca', 'generocrianca']
+        fields = ['nome', 'datanascimento', 'cpf', 'idadecrianca', 'sus', 'endereco', 
+                  'bairro', 'cep', 'cidade', 'uf', 'nomecrianca', 'generocrianca', 'foto']  # Adicionando 'foto'
+        
         widgets = {
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
-            'datanascimento': forms.DateInput(attrs={'class': 'form-control'}),
+            'datanascimento': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),  # Melhorando para input de data
             'cpf': forms.TextInput(attrs={'class': 'form-control'}),
-            'idadecrianca': forms.TextInput(attrs={'class': 'form-control'}),
+            'idadecrianca': forms.NumberInput(attrs={'class': 'form-control'}),  # Melhor para números
             'sus': forms.TextInput(attrs={'class': 'form-control'}),
             'endereco': forms.TextInput(attrs={'class': 'form-control'}),
             'bairro': forms.TextInput(attrs={'class': 'form-control'}),
@@ -123,7 +121,11 @@ class ClienteForm(forms.ModelForm):
             'uf': forms.TextInput(attrs={'class': 'form-control'}),
             'nomecrianca': forms.TextInput(attrs={'class': 'form-control'}),
             'generocrianca': forms.Select(attrs={'class': 'form-control'}),
+            'foto': forms.ClearableFileInput(attrs={'class': 'form-control'}),  # Widget para upload de imagem
         }
+
+
+
 
 
 

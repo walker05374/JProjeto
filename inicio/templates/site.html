@@ -69,23 +69,27 @@
                                 <a class="dropdown-item" href="{% url 'historico_vacina' %}">Vacinas</a>
                                 <a class="dropdown-item" href="{% url 'noticias' %}">Notícias</a>
                                 <a class="dropdown-item" href="{% url 'amamentacao' %}">Amamentação</a>
-
                             </div>
                         </li>
-
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Cadastro
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'create_cliente' %}">Cadastrar</a>
-                                <a class="dropdown-item" href="{% url 'read_cliente' %}">Visualizar</a>
-                            </div>
-                        </li>
-                                {% endif %}
-
+                    {% endif %}
                     
+
+
+
+                    {% if request.user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% if not clientes_cadastrados %} Gestante {% else %} Gestante {% endif %}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% if not clientes_cadastrados %}
+                                <a class="dropdown-item" href="{% url 'create_cliente' %}">Cadastrar</a>
+                            {% else %}
+                                <a class="dropdown-item" href="{% url 'read_cliente' %}">Visualizar</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endif %}
 
                     <form class="form-inline" id="search-form">
                         <div class="input-group mb-3">

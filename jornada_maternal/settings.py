@@ -18,7 +18,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Altere isso para 'mandatory' para forçar verificação
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
-SOCIALACCOUNT_LOGIN_ON_GET=True
+SOCIALACCOUNT_LOGIN_ON_GET = True
 
 DEBUG = True
 
@@ -80,6 +80,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
+                'inicio.meuapp.context_processors.clientes_context',
 
             ],
         },
@@ -134,6 +135,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'inicio/static'),
 ]
+
+
 
 
 MEDIA_URL = '/media/'
