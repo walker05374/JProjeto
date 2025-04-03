@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informações Adicionais da Gestante</title>
-    <link rel="stylesheet" href="{% static 'css/clientecreate.css' %}">
+    <link rel="stylesheet" href="{% static 'css/clientecreate1.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
 </head>
@@ -25,18 +25,20 @@
 
 
 
-
-            
-
             <label for="foto-upload" style="cursor: pointer;">
                 {% if cliente and cliente.foto %}
-                    <img id="preview-img" src="{{ cliente.foto.url }}" alt="Foto do Perfil" class="profile-picture">
+                    <img id="preview-img" 
+                         src="{{ cliente.foto.url }}" 
+                         alt="Foto do Cliente" 
+                         class="profile-picture">
                 {% else %}
-                <img id="preview-img" src="{{ cliente.foto.url }}" alt="Foto do Cliente"class="profile-picture">
+                    <img id="preview-img"  alt="altere"class="profile-picture">
                 {% endif %}
             </label>
             <!-- Input invisível para upload -->
-            <input type="file" id="foto-upload" name="foto" class="d-none" type="submite" value="enviar" onchange="previewImage(event) ">
+            <input type="file" id="foto-upload" name="foto" class="d-none" accept="image/*" onchange="previewImage(event)">
+
+
         </li>
     </ul>
     

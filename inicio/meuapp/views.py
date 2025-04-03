@@ -26,7 +26,8 @@ from .forms import (
         CustomUserLoginForm,
 
 
-
+ 
+     
 )
 from django.contrib.auth.views import (
     PasswordResetCompleteView,
@@ -37,7 +38,11 @@ from django.contrib.auth.views import (
 )
 
 
+
+
 @ratelimit(key='user_or_ip', rate='10/m')
+
+
 
 
 def login_view(request):
@@ -47,7 +52,7 @@ def login_view(request):
         user = form.get_user()
         login(request, user)
         messages.success(request, 'Login realizado com sucesso!')
-        return redirect('site')  
+        return redirect('site')  # Redirecione para a página inicial ou outra página
 
     return render(request, 'login.html', {'form': form})
 
@@ -65,7 +70,7 @@ def registro(request):
             user = form.save()
             send_mail_to_user(request=request, user=user)
             messages.success(request, 'Usuário cadastrado com sucesso!')
-            return redirect('login') 
+            return redirect('login')  # Redireciona após a mensagem ser adicionada
         else:
             messages.error(request, 'Ocorreu um erro ao cadastrar o usuário. Verifique os campos.')
 
@@ -138,7 +143,7 @@ def verify_email(request, pk):
 def register(request):
     return render(request, 'registration_form.html')
 def site(request):
-    clientes_cadastrados = Cliente.objects.exists()  
+    clientes_cadastrados = Cliente.objects.exists()  # Verifica se há clientes cadastrados
     return render(request, 'site.html', {'clientes_cadastrados': clientes_cadastrados})
 def vacina(request):
     return render(request, 'abaVacina.html')
@@ -165,49 +170,45 @@ def search_results(request):
     results = google_custom_search(query) if query else []
     context = {'results': results, 'query': query}
     return render(request, 'search_results.html', context)
+
 @login_required
 def create_cliente(request):
     if request.method == 'POST':
         cliente_form = ClienteForm(request.POST, request.FILES)
         if cliente_form.is_valid():
             cliente_form.save()
-            return redirect("read_cliente")  # ✅ Certifique-se de que essa URL está correta!
-        else:
-            print(cliente_form.errors)  # ✅ Exibe os erros no terminal
+            return redirect("read_cliente")
     else:
         cliente_form = ClienteForm()
-    
     return render(request, 'cliente_create.html', {'cliente_form': cliente_form})
-
 
 @login_required
 def read_cliente(request):
     clientes = Cliente.objects.all()
     return render(request, 'cliente_read.html', {'clientes': clientes})
 
+
 @login_required
 def update_cliente(request, id):
     cliente = get_object_or_404(Cliente, pk=id)
-    if request.method == 'POST':
-        cliente_form = ClienteForm(request.POST, request.FILES, instance=cliente)
-        if cliente_form.is_valid():
-            cliente_form.save()
-            return redirect("read_cliente")  # Retorna para a página de listagem
-    else:
-        cliente_form = ClienteForm(instance=cliente)
+    cliente_form = ClienteForm(request.POST or None, request.FILES or None, instance=cliente)
+    
+    if cliente_form.is_valid():
+        cliente_form.save()
+        return redirect("read_cliente")  # Certifique-se de que esse nome corresponde ao seu urls.py
 
     return render(request, 'cliente_create.html', {'cliente_form': cliente_form})
-
 
 @login_required
 def delete_cliente(request, id):
     cliente = get_object_or_404(Cliente, pk=id)
     cliente.delete()
 
+    # Se não houver mais clientes cadastrados, redireciona para 'site'
     if not Cliente.objects.exists():
-        return redirect("site")  # ✅ Corrigido!
+        return redirect("site")  # Certifique-se de que existe essa rota no seu urls.py
 
-    return redirect("read_cliente")  # ✅ Corrigido!
+    return redirect("read_cliente")  # Se ainda houver clientes, volta para a listagem
 
 @login_required
 def update_profile(request):

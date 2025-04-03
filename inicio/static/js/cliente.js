@@ -2,9 +2,8 @@ function previewImage(event) {
     var input = event.target;
     var reader = new FileReader();
 
-    reader.onload = function() {
-        var imgElement = document.getElementById('preview-img');
-        imgElement.src = reader.result;
+    reader.onload = function(e) {
+        document.getElementById('preview-img').src = e.target.result;
     };
 
     if (input.files && input.files[0]) {

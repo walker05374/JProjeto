@@ -1,5 +1,5 @@
 body {
-    background-image: url('/static/images/Login4.jpg');
+    background-image: url('/static/images/Login3.jpg');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -20,7 +20,7 @@ body {
 .container {
     margin-top: 20px;
     margin-bottom: 20px;
-    background-image: url('/static/images/Login4.jpg');
+    background-image: url('/static/images/Login3.jpg');
     background-repeat: repeat;
     background-attachment: fixed;
     background-position: center center;
@@ -34,7 +34,7 @@ body {
 h2.text-center {
     font-weight: bolder;
     font-size: 36px;
-    color: #8f3805;
+    color: #000000;
     margin-bottom: 20px;
 }
 
