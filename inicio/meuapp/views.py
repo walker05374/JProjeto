@@ -65,6 +65,14 @@ def login_view(request):
 
 
 
+
+def site(request):
+    notify.send(request.CustomUserLoginForm, recipient=request.CustomUserLoginForm, ver=f"olá {request.CustomUserLoginForm.email} voce esta logado")
+    return HttpResponse("okokk")
+
+
+
+
 def registro(request):
 
     template_name = 'register.html'

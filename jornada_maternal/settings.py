@@ -20,7 +20,6 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Altere isso para 'mandatory' para fo
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
-DEBUG = True
 
 # Aplicativos instalados
 INSTALLED_APPS = [
@@ -203,4 +202,14 @@ SOCIALACCOUNT_PROVIDERS = {
             'AUTH_PARAMS': {'access_type': 'online'},
         },
     },
+
+
+
+
+
+    
 }
+
+DEBUG = False
+
+
