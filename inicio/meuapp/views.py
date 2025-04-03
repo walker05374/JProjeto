@@ -53,28 +53,15 @@ from django.contrib.auth.views import (
 
 
 
-
 def login_view(request):
-
-
-
     form = CustomUserLoginForm(request, data=request.POST or None)
+
     if form.is_valid():
         user = form.get_user()
-        user = user.objects.get(id=1)
         login(request, user)
-        
-    
-        notify.send(user, recipient=request.user, verb=f"Olá {user.email}, Você está logado!")
-
-
-        # Envia a notificação
-
-
-        # Retorna uma resposta HTTP com a notificação
-        return HttpResponse("Você está logado")
-        return render(request, 'login.html', {'form': form})
-
+        return redirect('site')  # Redirecione para a página inicial ou outra página
+        messages.success(request, 'Login realizado com sucesso!')
+    return render(request, 'login.html', {'form': form})
 
 
 
