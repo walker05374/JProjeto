@@ -1,12 +1,13 @@
+function previewImage(event) {
+    var input = event.target;
+    var reader = new FileReader();
 
-    function previewImage(event) {
-        var input = event.target;
-        var reader = new FileReader();
+    reader.onload = function() {
+        var imgElement = document.getElementById('preview-img');
+        imgElement.src = reader.result;
+    };
 
-        reader.onload = function () {
-            var img = document.getElementById("preview-img");
-            img.src = reader.result;  // Atualiza a imagem na tela
-        };
-
-        reader.readAsDataURL(input.files[0]);  // Converte a imagem para visualização
+    if (input.files && input.files[0]) {
+        reader.readAsDataURL(input.files[0]);
     }
+}

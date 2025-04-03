@@ -15,7 +15,7 @@
             <a class="nav-link text-dark" href="{% url 'site' %}">Início</a>
         </li>
 
-
+        {% for cliente in clientes %}
 
 
         <li class="nav-item ml-auto">
@@ -31,7 +31,7 @@
 
     <h2 class="text-center">Informações das Gestantes</h2>
 
-    {% for cliente in clientes %}
+
         <div class="row mb-3">
             <div class="col-md-4">
                 <h5>Nome:</h5>

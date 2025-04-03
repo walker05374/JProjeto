@@ -16,16 +16,27 @@
         <li class="nav-item">
             <a class="nav-link text-dark" href="{% url 'site' %}">Início</a>
         </li>
+
+        <form id="form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+
         <li class="nav-item ml-auto">
+
+
+
+
+            
+
             <label for="foto-upload" style="cursor: pointer;">
                 {% if cliente and cliente.foto %}
                     <img id="preview-img" src="{{ cliente.foto.url }}" alt="Foto do Perfil" class="profile-picture">
                 {% else %}
-                    <img id="preview-img" src="{% static 'images/default-profile.png' %}" alt="Foto Padrão" class="profile-picture">
+                <img id="preview-img" src="{{ cliente.foto.url }}" alt="Foto do Cliente"class="profile-picture">
                 {% endif %}
             </label>
             <!-- Input invisível para upload -->
-            <input type="file" id="foto-upload" name="foto" class="d-none" onchange="previewImage(event)">
+            <input type="file" id="foto-upload" name="foto" class="d-none" type="submite" value="enviar" onchange="previewImage(event) ">
         </li>
     </ul>
     
@@ -36,8 +47,7 @@
     <P>Olá, {{ request.user.username }},vamos cadastrar?</P>
 
 
-    <form id="form" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+
         <div class="form-row">
             <div class="form-group col-md-4">
                 {{ cliente_form.nome.label_tag }}

@@ -130,18 +130,21 @@ MESSAGE_TAGS = {
 }
 
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'inicio/static'),
 ]
 
 
+
 STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'site'

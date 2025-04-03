@@ -165,22 +165,26 @@ def search_results(request):
     results = google_custom_search(query) if query else []
     context = {'results': results, 'query': query}
     return render(request, 'search_results.html', context)
-
 @login_required
 def create_cliente(request):
     if request.method == 'POST':
         cliente_form = ClienteForm(request.POST, request.FILES)
         if cliente_form.is_valid():
             cliente_form.save()
-            return redirect("read_cliente.html")
+            return redirect("read_cliente")  # ✅ Certifique-se de que essa URL está correta!
+        else:
+            print(cliente_form.errors)  # ✅ Exibe os erros no terminal
     else:
         cliente_form = ClienteForm()
+    
     return render(request, 'cliente_create.html', {'cliente_form': cliente_form})
+
 
 @login_required
 def read_cliente(request):
     clientes = Cliente.objects.all()
     return render(request, 'cliente_read.html', {'clientes': clientes})
+
 @login_required
 def update_cliente(request, id):
     cliente = get_object_or_404(Cliente, pk=id)

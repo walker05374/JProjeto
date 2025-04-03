@@ -32,9 +32,8 @@ class Cliente(models.Model):
     nomecrianca = models.CharField(max_length=40, verbose_name='Nome da Criança')
     generocrianca = models.CharField(max_length=1, choices=GENERO_CHOICES, verbose_name='Gênero da Criança')
 
-    foto = models.ImageField("pload_to='', blank=True, null=True")
     atualizado_em = models.DateTimeField(auto_now=True)  # Atualiza a cada alteração
-
+    foto = models.ImageField(upload_to='', null=True, blank=True)
     print # Deve exibir o caminho do arquivo
 
 
