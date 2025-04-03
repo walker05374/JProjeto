@@ -14,6 +14,12 @@ from inicio.meuapp.services import send_mail_to_user
 from django.contrib.auth import login
 from django.contrib import messages
 from .forms import CustomUserLoginForm
+from django.http import HttpResponse
+from notifications.signals import notify
+
+
+
+
 
 from .forms import (
  
@@ -22,6 +28,7 @@ from .forms import (
     CustomUser,
     CustomUserCreationForm,
     CustomUserChangeForm,
+
         #GestanteForm,
         CustomUserLoginForm,
 
@@ -45,23 +52,34 @@ from django.contrib.auth.views import (
 
 
 
-def login_view(request):
-    form = CustomUserLoginForm(request, data=request.POST or None)
 
+
+def login_view(request):
+
+
+
+    form = CustomUserLoginForm(request, data=request.POST or None)
     if form.is_valid():
         user = form.get_user()
+        user = user.objects.get(id=1)
         login(request, user)
-        messages.success(request, 'Login realizado com sucesso!')
-        return redirect('site')  # Redirecione para a página inicial ou outra página
+        
+    
+        notify.send(user, recipient=request.user, verb=f"Olá {user.email}, Você está logado!")
 
-    return render(request, 'login.html', {'form': form})
 
-from django.contrib import messages
+        # Envia a notificação
+
+
+        # Retorna uma resposta HTTP com a notificação
+        return HttpResponse("Você está logado")
+        return render(request, 'login.html', {'form': form})
+
+
+
 
 def registro(request):
-    '''
-    Cadastra Usuário.
-    '''
+
     template_name = 'register.html'
     form = CustomUserCreationForm(request.POST or None)
 
@@ -143,7 +161,7 @@ def verify_email(request, pk):
 def register(request):
     return render(request, 'registration_form.html')
 def site(request):
-    clientes_cadastrados = Cliente.objects.exists()  # Verifica se há clientes cadastrados
+    clientes_cadastrados = Cliente.objects.exists() 
     return render(request, 'site.html', {'clientes_cadastrados': clientes_cadastrados})
 def vacina(request):
     return render(request, 'abaVacina.html')
@@ -223,6 +241,12 @@ def update_profile(request):
         form = CustomUserChangeForm(instance=request.user)
     
     return render(request, 'update_profile.html', {'form': form})
+
+
+
+
+
+
 
 
 
