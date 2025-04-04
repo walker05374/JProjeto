@@ -66,8 +66,11 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),  # noqa E501
     path('logout/', LogoutView.as_view(), name='logout'),  # noqa E501
     path('update_profile/', views.update_profile, name='update_profile'),
-    path('historico_vacina/', views.historico_vacina, name='historico_vacina'),  
-    path('historico_vacina_ler/', views.historico_vacina_ler, name='historico_vacina'), 
+     path('registrar_vacina/', views.registrar_vacina, name='registrar_vacina'),
+    path('registrar_vacina/<str:nome>/', views.registrar_vacina_nome, name='registrar_vacina_nome'),
+    path('mapa_vacinas/', views.mapa_vacinas, name='mapa_vacinas'),
+    path('enviar_comprovante/<int:vacina_id>/', views.enviar_comprovante, name='enviar_comprovante'),
+
 
 
     path('registro/', views.registro, name='registro'),

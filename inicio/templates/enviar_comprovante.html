@@ -1,0 +1,6 @@
+<h2>Enviar Comprovante - {{ vacina.nome }}</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <input type="file" name="comprovante" required>
+  <button type="submit">Enviar</button>
+</form>

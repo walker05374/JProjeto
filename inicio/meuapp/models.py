@@ -1,18 +1,18 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import User
+
+
+
+
+
 
 class CustomUser(AbstractUser):
-    
-    username = models.CharField(max_length=150, unique=True)  # Tornando o campo obrigatório e único
-    email = models.EmailField(unique=True)  # Mantendo o email obrigatório e único
-
+    username = models.CharField(max_length=150, unique=True)
+    email = models.EmailField(unique=True)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
-
-
 
 class Cliente(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 
@@ -51,3 +51,18 @@ class ContactMe(models.Model):
     subject = models.CharField(max_length=200)
     message = models.TextField()
 
+
+
+class Vacina(models.Model):
+    nome = models.CharField(max_length=100, unique=True)  # <- Adiciona o unique=True
+    data = models.DateField(null=True, blank=True)
+    foto = models.ImageField(upload_to='vacinas/', null=True, blank=True)
+    completada = models.BooleanField(default=False)
+
+class Comprovante(models.Model):
+    vacina = models.ForeignKey(Vacina, on_delete=models.CASCADE)
+    data_aplicacao = models.DateField()
+    imagem = models.ImageField(upload_to='comprovantes/')
+
+    def __str__(self):
+        return f"Comprovante de {self.vacina.nome} em {self.data_aplicacao}"

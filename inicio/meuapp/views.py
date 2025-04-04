@@ -7,8 +7,9 @@ from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.core.mail import EmailMessage, send_mail
 from django.contrib.auth.tokens import default_token_generator
+from .forms import ComprovanteForm
 
-
+from .models import Vacina
 
 from django.contrib.auth.views import (
     PasswordResetView, 
@@ -171,15 +172,6 @@ def register(request):
     return render(request, 'registration_form.html')
 
 
-def vacina(request):
-    return render(request, 'abaVacina.html')
-
-
-@login_required
-def historico_vacina(request):
-    return render(request, 'historico_vacina.html')
-
-
 @login_required
 def prenatal(request):
     return render(request, 'abaPreNatal.html')
@@ -293,26 +285,58 @@ def excluir_conta(request):
     return redirect('site')
 
 
-# Gestante Views
+
 @login_required
-def Gestante(request):
+def registrar_vacina(request):
     if request.method == 'POST':
-        form = GestanteForm(request.POST)
+        form = ComprovanteForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('historico_vacina')
+            vacina = form.save(commit=False)
+            vacina.gestante = request.user
+            vacina.concluida = True
+            vacina.save()
+            return redirect('mapa_vacinas')
     else:
-        form = GestanteForm()
-    return render(request, 'historico_vacina.html', {'form': form})
+        form = ComprovanteForm()
 
-
-@login_required
-def gestantes_view(request):
-    gestantes = Gestante.objects.all()
-    return render(request, 'historico_vacina.html', {'Gestantes': gestantes})
-
+    return render(request, 'registrar_vacina.html', {'form': form})
 
 @login_required
-def historico_vacina_ler(request):
-    gestante = Gestante.objects.all()
-    return render(request, 'historico_vacina_ler.html', {'Gestante': gestante})
+def mapa_vacinas(request):
+    vacinas = Vacina.objects.all()
+    return render(request, 'mapa_vacinas.html', {'vacinas': vacinas})
+
+def registrar_vacina_nome(request, nome):
+    vacina = Vacina.objects.get(nome=nome)
+    
+    if request.method == 'POST':
+        form = ComprovanteForm(request.POST, request.FILES, instance=vacina)
+        if form.is_valid():
+            vacina.completada = True
+            form.save()
+            return redirect('mapa_vacinas')
+    else:
+        form = ComprovanteForm(instance=vacina)
+
+    return render(request, 'registrar_vacina.html', {'form': form, 'vacina': vacina})
+
+@login_required
+def enviar_comprovante(request, vacina_id):
+    """
+    View para anexar o comprovante de vacinação.
+    """
+    vacina = get_object_or_404(Vacina, id=vacina_id, gestante=request.user)
+
+    if request.method == 'POST':
+        if 'comprovante' in request.FILES:
+            vacina.comprovante = request.FILES['comprovante']
+            vacina.concluida = True
+            vacina.save()
+            return redirect('mapa_vacinas')
+        else:
+            return render(request, 'enviar_comprovante.html', {
+                'vacina': vacina,
+                'error': 'Por favor, selecione uma imagem para o comprovante.'
+            })
+
+    return render(request, 'enviar_comprovante.html', {'vacina': vacina})
