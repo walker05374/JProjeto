@@ -5,6 +5,7 @@ from django.contrib.messages import constants as messages
 AUTH_USER_MODEL = 'meuapp.CustomUser'
 
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Chaves e configurações gerais

@@ -3,10 +3,6 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 
 
-
-
-
-
 class CustomUser(AbstractUser):
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
@@ -51,18 +47,19 @@ class ContactMe(models.Model):
     subject = models.CharField(max_length=200)
     message = models.TextField()
 
-
-
+# models.py
 class Vacina(models.Model):
-    nome = models.CharField(max_length=100, unique=True)  # <- Adiciona o unique=True
-    data = models.DateField(null=True, blank=True)
-    foto = models.ImageField(upload_to='vacinas/', null=True, blank=True)
-    completada = models.BooleanField(default=False)
-
-class Comprovante(models.Model):
-    vacina = models.ForeignKey(Vacina, on_delete=models.CASCADE)
-    data_aplicacao = models.DateField()
-    imagem = models.ImageField(upload_to='comprovantes/')
+    NOME_VACINAS = [
+        ('BCG', 'BCG'),
+        ('Hepatite B', 'Hepatite B'),
+        ('DTPa', 'DTPa'),
+        ('Influenza', 'Influenza'),
+        # adicione outras vacinas
+    ]
+    
+    nome = models.CharField(max_length=100, choices=NOME_VACINAS)
+    data = models.DateField()
+    comprovante = models.ImageField(upload_to='comprovantes/')
 
     def __str__(self):
-        return f"Comprovante de {self.vacina.nome} em {self.data_aplicacao}"
+        return self.nome

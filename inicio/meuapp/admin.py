@@ -1,6 +1,6 @@
 from django.contrib import admin
 from inicio.meuapp import models
-from .models import Cliente,ContactMe,CustomUser
+from .models import Cliente,ContactMe,CustomUser,Vacina
 
 
 
@@ -13,4 +13,4 @@ User = get_user_model()
 admin.site.register(Cliente)
 admin.site.register(models.ContactMe)
 admin.site.register(CustomUser)
-
+admin.site.register(Vacina)

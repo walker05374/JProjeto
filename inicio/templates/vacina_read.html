@@ -1,0 +1,28 @@
+
+
+{% block content %}
+<div class="container">
+    <h2>Minhas Vacinas</h2>
+    <div class="row">
+        {% for vacina in vacinas %}
+        <div class="col-md-4">
+            <div class="card shadow-lg rounded p-3">
+                <h5>{{ vacina.nome }}</h5>
+                <p>Data: {{ vacina.data_aplicacao }}</p>
+                {% if vacina.foto_comprovante %}
+                    <img src="{{ vacina.foto_comprovante.url }}" class="img-fluid rounded" alt="Comprovante">
+                {% else %}
+                    <p>Sem comprovante</p>
+                {% endif %}
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'update_vacina' vacina.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'delete_vacina' vacina.id %}" class="btn btn-danger btn-sm">Excluir</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>Nenhuma vacina cadastrada.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

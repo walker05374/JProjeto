@@ -7,8 +7,7 @@ from .models import Cliente, ContactMe,CustomUser
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import password_validation
-from .models import Vacina
-from .models import Comprovante
+
 
 
 class CustomUserLoginForm(AuthenticationForm):
@@ -137,8 +136,14 @@ class ContactMeForm(forms.ModelForm):
             'message': forms.Textarea(attrs={'class': 'form-control'}),
         }
 
+from django import forms
+from .models import Vacina
 
-class ComprovanteForm(forms.ModelForm):
+class VacinaForm(forms.ModelForm):
     class Meta:
-        model = Comprovante
-        fields = ['data_aplicacao', 'imagem']
+        model = Vacina
+        fields = ['nome', 'data', 'comprovante']
+        widgets = {
+            'data': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'nome': forms.Select(attrs={'class': 'form-control'}),
+        }

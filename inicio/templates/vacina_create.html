@@ -1,0 +1,18 @@
+<form method="POST" enctype="multipart/form-data" id="form">
+    {% csrf_token %}
+
+    <!-- Campos -->
+    {{ form.nome.label_tag }}
+    {{ form.nome }}
+
+    {{ form.data.label_tag }}
+    {{ form.data }}
+
+    {{ form.comprovante.label_tag }}
+    {{ form.comprovante }}
+
+    <!-- Botão de salvar -->
+    <div class="text-center mt-3">
+        <button type="submit" class="btn btn-outline-dark">Salvar Vacina</button>
+    </div>
+</form>

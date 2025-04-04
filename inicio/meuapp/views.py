@@ -7,9 +7,10 @@ from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.core.mail import EmailMessage, send_mail
 from django.contrib.auth.tokens import default_token_generator
-from .forms import ComprovanteForm
 
-from .models import Vacina
+
+
+
 
 from django.contrib.auth.views import (
     PasswordResetView, 
@@ -30,7 +31,9 @@ from .forms import (
     CustomUser, 
     CustomUserCreationForm, 
     CustomUserChangeForm, 
-    CustomUserLoginForm
+    CustomUserLoginForm,
+    Vacina,
+    VacinaForm
 )
 from .utils import google_custom_search
 from inicio.meuapp.services import send_mail_to_user
@@ -232,6 +235,7 @@ def create_cliente(request):
         cliente_form = ClienteForm()
         
     return render(request, 'cliente_create.html', {'cliente_form': cliente_form})
+
 @login_required
 def read_cliente(request):
     clientes = Cliente.objects.filter(user=request.user)  # Filtra pelos clientes do usuário logado
@@ -286,57 +290,39 @@ def excluir_conta(request):
 
 
 
-@login_required
-def registrar_vacina(request):
+def create_vacina(request):
     if request.method == 'POST':
-        form = ComprovanteForm(request.POST, request.FILES)
+        form = VacinaForm(request.POST, request.FILES)
         if form.is_valid():
             vacina = form.save(commit=False)
-            vacina.gestante = request.user
-            vacina.concluida = True
+            vacina.gestante = request.user  # Aqui é o CustomUser
             vacina.save()
-            return redirect('mapa_vacinas')
-    else:
-        form = ComprovanteForm()
-
-    return render(request, 'registrar_vacina.html', {'form': form})
-
-@login_required
-def mapa_vacinas(request):
-    vacinas = Vacina.objects.all()
-    return render(request, 'mapa_vacinas.html', {'vacinas': vacinas})
-
-def registrar_vacina_nome(request, nome):
-    vacina = Vacina.objects.get(nome=nome)
-    
-    if request.method == 'POST':
-        form = ComprovanteForm(request.POST, request.FILES, instance=vacina)
-        if form.is_valid():
-            vacina.completada = True
-            form.save()
-            return redirect('mapa_vacinas')
-    else:
-        form = ComprovanteForm(instance=vacina)
-
-    return render(request, 'registrar_vacina.html', {'form': form, 'vacina': vacina})
-
-@login_required
-def enviar_comprovante(request, vacina_id):
-    """
-    View para anexar o comprovante de vacinação.
-    """
-    vacina = get_object_or_404(Vacina, id=vacina_id, gestante=request.user)
-
-    if request.method == 'POST':
-        if 'comprovante' in request.FILES:
-            vacina.comprovante = request.FILES['comprovante']
-            vacina.concluida = True
-            vacina.save()
-            return redirect('mapa_vacinas')
+            return redirect('site')
         else:
-            return render(request, 'enviar_comprovante.html', {
-                'vacina': vacina,
-                'error': 'Por favor, selecione uma imagem para o comprovante.'
-            })
+            print(form.errors)  # Ajuda a debugar
+    else:
+        form = VacinaForm()
+    return render(request, 'vacina_create.html', {'form': form})
 
-    return render(request, 'enviar_comprovante.html', {'vacina': vacina})
+
+@login_required
+def read_vacina(request):
+    vacinas = Vacina.objects.filter(usuario=request.user)
+    return render(request, "vacina_read.html", {"vacinas": vacinas})
+
+@login_required
+def update_vacina(request, id):
+    vacina = get_object_or_404(Vacina, id=id)
+    vacina_form = VacinaForm(request.POST or None, request.FILES or None, instance=vacina)
+
+    if vacina_form.is_valid():
+        vacina_form.save()
+        return redirect("read_vacina")
+
+    return render(request, "vacina_create.html", {"vacina_form": vacina_form})
+
+@login_required
+def delete_vacina(request, id):
+    vacina = get_object_or_404(Vacina, id=id)
+    vacina.delete()
+    return redirect("read_vacina")

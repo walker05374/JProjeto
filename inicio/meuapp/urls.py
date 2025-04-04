@@ -66,10 +66,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),  # noqa E501
     path('logout/', LogoutView.as_view(), name='logout'),  # noqa E501
     path('update_profile/', views.update_profile, name='update_profile'),
-     path('registrar_vacina/', views.registrar_vacina, name='registrar_vacina'),
-    path('registrar_vacina/<str:nome>/', views.registrar_vacina_nome, name='registrar_vacina_nome'),
-    path('mapa_vacinas/', views.mapa_vacinas, name='mapa_vacinas'),
-    path('enviar_comprovante/<int:vacina_id>/', views.enviar_comprovante, name='enviar_comprovante'),
 
 
 
@@ -78,6 +74,15 @@ urlpatterns = [
     path('reset/done/', v.MyPasswordResetComplete.as_view(), name='password_reset_complete'),  # noqa E501
     path('excluir-conta/', excluir_conta, name='excluir-conta'),
     
+
+    path("create_vacina", views.create_vacina, name="create_vacina"),
+    path("read_vacina", views.read_vacina, name="read_vacina"),
+    path("update_vacina/<int:id>", views.update_vacina, name="update_vacina"),
+    path("delete_vacina/<int:id>", views.delete_vacina, name="delete_vacina"),
+
+
+
+
 ]
 
     
