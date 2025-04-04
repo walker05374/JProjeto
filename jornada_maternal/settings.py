@@ -210,6 +210,4 @@ SOCIALACCOUNT_PROVIDERS = {
     
 }
 
-DEBUG = False
-
-
+DEBUG = True

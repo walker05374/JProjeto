@@ -16,9 +16,10 @@ from django.contrib import messages
 from .forms import CustomUserLoginForm
 from django.http import HttpResponse
 from notifications.signals import notify
-
-
-
+import logging
+logger = logging.getLogger(__name__)
+from django.http import JsonResponse
+from django.contrib.auth import logout
 
 
 from .forms import (
@@ -240,7 +241,14 @@ def update_profile(request):
 
 
 
-
+@login_required
+def excluir_conta(request):
+    if request.method == "POST":
+        user = request.user
+        logout(request)  # Desloga o usuário antes de excluir
+        user.delete()  # Exclui o usuário do banco de dados
+        return redirect('login')  # Redireciona para a página inicial (ajuste conforme necessário)
+    return redirect('site')  # Se não for POST, volta para o perfil
 
 
 

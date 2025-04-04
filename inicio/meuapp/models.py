@@ -34,7 +34,7 @@ class Cliente(models.Model):
 
     atualizado_em = models.DateTimeField(auto_now=True)  # Atualiza a cada alteração
     foto = models.ImageField(upload_to='', null=True, blank=True)
-    print # Deve exibir o caminho do arquivo
+    print 
 
 
 
