@@ -196,8 +196,8 @@ SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
         'APP': {  
         
-            'client_id': '897035592479067',
-            'secret': '4a0ca8dcb8e694469a4597f6a00b5c2e',
+            'client_id': '1818080662324015',
+            'secret': 'd5b2ac89e42f52884fc36639197a18bb',
             'SCOPE': ['profile', 'email'],
             'AUTH_PARAMS': {'access_type': 'online'},
         },
