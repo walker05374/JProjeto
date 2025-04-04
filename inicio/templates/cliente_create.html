@@ -1,4 +1,3 @@
-
 {% load static %}
 
 <html lang="pt-br">
@@ -20,11 +19,7 @@
         <form id="form" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
-
         <li class="nav-item ml-auto">
-
-
-
             <label for="foto-upload" style="cursor: pointer;">
                 {% if cliente and cliente.foto %}
                     <img id="preview-img" 
@@ -32,116 +27,120 @@
                          alt="Foto do Cliente" 
                          class="profile-picture">
                 {% else %}
-                    <img id="preview-img"  alt="altere"class="profile-picture">
+                    <img id="preview-img"  alt="altere" class="profile-picture">
                 {% endif %}
             </label>
             <!-- Input invisível para upload -->
             <input type="file" id="foto-upload" name="foto" class="d-none" accept="image/*" onchange="previewImage(event)">
-
-
         </li>
     </ul>
-    
-    
+
     <h2 class="text-center">Informações das Gestantes</h2>
 
+    <p>Olá, {{ request.user.username }}, vamos cadastrar?</p>
 
-    <P>Olá, {{ request.user.username }},vamos cadastrar?</P>
+    <!-- Exibe erros gerais do formulário -->
+    {% if cliente_form.errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for field in cliente_form %}
+                    {% if field.errors %}
+                        <li>{{ field.label }}: {{ field.errors }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 
-
-
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                {{ cliente_form.nome.label_tag }}
-                {{ cliente_form.nome }}
-            </div>
-            <div class="form-group col-md-4">
-                {{ cliente_form.cpf.label_tag }}
-                {{ cliente_form.cpf }}
-            </div>
-            <div class="form-group col-md-4">
-                {{ cliente_form.datanascimento.label_tag }}
-                {{ cliente_form.datanascimento }}
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            {{ cliente_form.nome.label_tag }}
+            {{ cliente_form.nome }}
+        </div>
+        <div class="form-group col-md-4">
+            {{ cliente_form.cpf.label_tag }}
+            {{ cliente_form.cpf }}
+        </div>
+        <div class="form-group col-md-4">
+            {{ cliente_form.datanascimento.label_tag }}
+            {{ cliente_form.datanascimento }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            {{ cliente_form.sus.label_tag }}
+            {{ cliente_form.sus }}
+        </div>
+        <div class="form-group col-md-4">
+            {{ cliente_form.nomecrianca.label_tag }}
+            {{ cliente_form.nomecrianca }}
+        </div>
+        <div class="form-group col-md-4">
+            {{ cliente_form.generocrianca.label_tag }}
+            {{ cliente_form.generocrianca }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            {{ cliente_form.idadecrianca.label_tag }}
+            {{ cliente_form.idadecrianca }}
+        </div>
+        <div class="form-group col-md-4">
+            {{ cliente_form.cep.label_tag }}
+            <div class="input-group">
+                {{ cliente_form.cep }}
+                <span class="input-group-btn">
+                    <button class="btn btn-outline-dark" type="button" onclick="findCEP2();">Buscar Cep</button>
+                </span>
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                {{ cliente_form.sus.label_tag }}
-                {{ cliente_form.sus }}
-            </div>
-            <div class="form-group col-md-4">
-                {{ cliente_form.nomecrianca.label_tag }}
-                {{ cliente_form.nomecrianca }}
-            </div>
-            <div class="form-group col-md-4">
-                {{ cliente_form.generocrianca.label_tag }}
-                {{ cliente_form.generocrianca }}
-            </div>
+        <div class="form-group col-md-4">
+            {{ cliente_form.endereco.label_tag }}
+            {{ cliente_form.endereco }}
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                {{ cliente_form.idadecrianca.label_tag }}
-                {{ cliente_form.idadecrianca }}
-            </div>
-            <div class="form-group col-md-4">
-                {{ cliente_form.cep.label_tag }}
-                <div class="input-group">
-                    {{ cliente_form.cep }}
-                    <span class="input-group-btn">
-                        <button class="btn btn-outline-dark" type="button" onclick="findCEP2();">Buscar Cep</button>
-                    </span>
-                </div>
-            </div>
-            <div class="form-group col-md-4">
-                {{ cliente_form.endereco.label_tag }}
-                {{ cliente_form.endereco }}
-            </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            {{ cliente_form.bairro.label_tag }}
+            {{ cliente_form.bairro }}
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                {{ cliente_form.bairro.label_tag }}
-                {{ cliente_form.bairro }}
-            </div>
-            <div class="form-group col-md-4">
-                {{ cliente_form.cidade.label_tag }}
-                {{ cliente_form.cidade }}
-            </div>
-            <div class="form-group col-md-4">
-                {{ cliente_form.uf.label_tag }}
-                {{ cliente_form.uf }}
-            </div>
-
-
-
-
-
-
+        <div class="form-group col-md-4">
+            {{ cliente_form.cidade.label_tag }}
+            {{ cliente_form.cidade }}
         </div>
-        <div class="text-center">
-            <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ExemploModalCentralizado">
-                Salvar
-            </button>
-            <div class="modal fade" id="ExemploModalCentralizado" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="TituloModalCentralizado">Deseja Salvar?</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            Antes de salvar, verifique se todas as informações estão corretas.
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
-                            <button type="submit" class="btn btn-outline-dark">Salvar mudanças</button>
-                        </div>
+        <div class="form-group col-md-4">
+            {{ cliente_form.uf.label_tag }}
+            {{ cliente_form.uf }}
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ExemploModalCentralizado">
+            Salvar
+        </button>
+        
+        <!-- Modal de confirmação -->
+        <div class="modal fade" id="ExemploModalCentralizado" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="TituloModalCentralizado">Deseja Salvar?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Antes de salvar, verifique se todas as informações estão corretas.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-outline-dark">Salvar mudanças</button>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+</form>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

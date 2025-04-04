@@ -12,7 +12,7 @@ from django.conf.urls.static import static
 
 from .views import excluir_conta
 
-
+from .views import MyPasswordReset
 
 router = routers.DefaultRouter()
 
@@ -48,6 +48,11 @@ urlpatterns = [
     path('contact', views.contact_me, name='contact'),
 
 
+
+
+
+
+    path('reset-password/', MyPasswordReset.as_view(), name='password_reset'),
 
 
 
