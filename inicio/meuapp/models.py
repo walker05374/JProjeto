@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-
+from django.contrib.auth.models import User
 
 class CustomUser(AbstractUser):
     username = models.CharField(max_length=150, unique=True)  # Tornando o campo obrigatório e único
@@ -14,6 +14,7 @@ class CustomUser(AbstractUser):
 
 
 class Cliente(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 
     GENERO_CHOICES = [
         ('M', 'Masculino'),
         ('F', 'Feminino'),
