@@ -80,28 +80,44 @@
                         </li>
                         
                         
-                        
-                        {% if request.user.is_authenticated %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-heartbeat"></i> Acompanhamento
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'prenatal' %}">
-                                    <i class="fas fa-calendar-check"></i> Pré Natal
-                                </a>
-                                <a class="dropdown-item" href="{% url 'create_vacina' %}">
-                                    <i class="fas fa-syringe"></i> Vacinas
-                                </a>
-                                <a class="dropdown-item" href="{% url 'noticias' %}">
-                                    <i class="fas fa-newspaper"></i> Notícias
-                                </a>
-                                <a class="dropdown-item" href="{% url 'amamentacao' %}">
-                                    <i class="fas fa-baby"></i> Amamentação
-                                </a>
-                            </div>
-                        </li>
-                    {% endif %}
+{% if request.user.is_authenticated %}
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-heartbeat"></i> Acompanhamento
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="{% url 'prenatal' %}">
+            <i class="fas fa-calendar-check"></i> Pré Natal
+        </a>
+
+        {% if tem_vacina %}
+            <a class="dropdown-item" href="{% url 'read_vacina' %}">
+                <i class="fas fa-eye"></i> Visualizar Vacinas
+            </a>
+        {% endif %}
+        
+        <!-- Sempre mostrar o botão de cadastro -->
+        {% if not tem_vacina %}
+            <a class="dropdown-item" href="{% url 'create_vacina' %}">
+                <i class="fas fa-syringe"></i> Cadastrar Vacina
+            </a>
+        {% elif tem_vacina %}
+            <a class="dropdown-item" href="{% url 'create_vacina' %}">
+                <i class="fas fa-plus-circle"></i> Adicionar Nova Vacina
+            </a>
+        {% endif %}
+
+        <a class="dropdown-item" href="{% url 'noticias' %}">
+            <i class="fas fa-newspaper"></i> Notícias
+        </a>
+        <a class="dropdown-item" href="{% url 'amamentacao' %}">
+            <i class="fas fa-baby"></i> Amamentação
+        </a>
+    </div>
+</li>
+{% endif %}
+
                     
 
                     {% if request.user.is_authenticated %}

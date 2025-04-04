@@ -290,16 +290,15 @@ def excluir_conta(request):
 
 
 
+@login_required
 def create_vacina(request):
     if request.method == 'POST':
         form = VacinaForm(request.POST, request.FILES)
         if form.is_valid():
             vacina = form.save(commit=False)
-            vacina.gestante = request.user  # Aqui é o CustomUser
+            vacina.usuario = request.user  # <- AQUI é onde a mágica acontece
             vacina.save()
-            return redirect('site')
-        else:
-            print(form.errors)  # Ajuda a debugar
+            return redirect('vacina_read')
     else:
         form = VacinaForm()
     return render(request, 'vacina_create.html', {'form': form})
@@ -308,7 +307,17 @@ def create_vacina(request):
 @login_required
 def read_vacina(request):
     vacinas = Vacina.objects.filter(usuario=request.user)
-    return render(request, "vacina_read.html", {"vacinas": vacinas})
+    tem_vacina = vacinas.exists()  # <- verifica se tem vacina
+    return render(request, "vacina_read.html", {
+        "vacinas": vacinas,
+        "tem_vacina": tem_vacina,
+    })
+
+
+
+
+
+
 
 @login_required
 def update_vacina(request, id):

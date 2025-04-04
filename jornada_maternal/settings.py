@@ -84,6 +84,7 @@ TEMPLATES = [
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
                 'inicio.meuapp.context_processors.clientes_context',
+                'inicio.meuapp.context_processors.vacina_context',
 
             ],
         },

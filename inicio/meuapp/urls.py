@@ -79,6 +79,8 @@ urlpatterns = [
     path("read_vacina", views.read_vacina, name="read_vacina"),
     path("update_vacina/<int:id>", views.update_vacina, name="update_vacina"),
     path("delete_vacina/<int:id>", views.delete_vacina, name="delete_vacina"),
+path('vacinas/', views.read_vacina, name='read_vacina'),  # <- nome aqui
+
 
 
 

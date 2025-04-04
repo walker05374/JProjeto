@@ -47,19 +47,18 @@ class ContactMe(models.Model):
     subject = models.CharField(max_length=200)
     message = models.TextField()
 
-# models.py
 class Vacina(models.Model):
     NOME_VACINAS = [
         ('BCG', 'BCG'),
         ('Hepatite B', 'Hepatite B'),
         ('DTPa', 'DTPa'),
         ('Influenza', 'Influenza'),
-        # adicione outras vacinas
     ]
-    
+
     nome = models.CharField(max_length=100, choices=NOME_VACINAS)
     data = models.DateField()
     comprovante = models.ImageField(upload_to='comprovantes/')
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome
