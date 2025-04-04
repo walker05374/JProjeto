@@ -130,29 +130,6 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',  # Você pode ajustar o nível de log conforme necessário
-            'class': 'logging.FileHandler',
-            'filename': 'login_logs.log',  # Nome do arquivo onde os logs de login serão gravados
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'django.request': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-    },
-}
 
 
 STATICFILES_DIRS = [

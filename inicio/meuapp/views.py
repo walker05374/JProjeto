@@ -53,9 +53,9 @@ def login_view(request):
 
         try:
             if '@' in username:
-                user = User.objects.get(email=username)
+                user = CustomUser.objects.get(email=username)
             else:
-                user = User.objects.get(username=username)
+                user = CustomUser.objects.get(username=username)
             
             if user.check_password(password):
                 login(request, user)
@@ -66,7 +66,7 @@ def login_view(request):
                 messages.error(request, 'Senha incorreta!')
                 logger.warning(f"Falha ao fazer login - Senha incorreta para o usuário: {username}")
         
-        except User.DoesNotExist:
+        except CustomUser.DoesNotExist:
             messages.error(request, 'Usuário não encontrado!')
             logger.warning(f"Falha ao fazer login - Usuário não encontrado: {username}")
     
