@@ -8,6 +8,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import password_validation
 
+from django import forms
+from .models import Vacina
 
 
 class CustomUserLoginForm(AuthenticationForm):
@@ -93,22 +95,27 @@ class CustomUserChangeForm(forms.ModelForm):
 
 
 
-class ClienteForm(forms.ModelForm):
-    datanascimento = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-
-
 
 class ClienteForm(forms.ModelForm):
+    datanascimento = forms.DateField(
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',
+            'type': 'date'
+        })
+    )
+
     class Meta:
         model = Cliente
-        fields = ['nome', 'datanascimento', 'cpf', 'idadecrianca', 'sus', 'endereco', 
-                  'bairro', 'cep', 'cidade', 'uf', 'nomecrianca', 'generocrianca', 'foto']  # Adicionando 'foto'
-        
+        fields = [
+            'nome', 'datanascimento', 'cpf', 'idadecrianca', 'sus',
+            'endereco', 'bairro', 'cep', 'cidade', 'uf',
+            'nomecrianca', 'generocrianca', 'foto'
+        ]
+
         widgets = {
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
-            'datanascimento': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),  # Melhorando para input de data
             'cpf': forms.TextInput(attrs={'class': 'form-control'}),
-            'idadecrianca': forms.NumberInput(attrs={'class': 'form-control'}),  # Melhor para números
+            'idadecrianca': forms.NumberInput(attrs={'class': 'form-control'}),
             'sus': forms.TextInput(attrs={'class': 'form-control'}),
             'endereco': forms.TextInput(attrs={'class': 'form-control'}),
             'bairro': forms.TextInput(attrs={'class': 'form-control'}),
@@ -117,12 +124,8 @@ class ClienteForm(forms.ModelForm):
             'uf': forms.TextInput(attrs={'class': 'form-control'}),
             'nomecrianca': forms.TextInput(attrs={'class': 'form-control'}),
             'generocrianca': forms.Select(attrs={'class': 'form-control'}),
-            'foto': forms.ClearableFileInput(attrs={'class': 'form-control'}),  # Widget para upload de imagem
+            'foto': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
-
-
-
-
 
 
 class ContactMeForm(forms.ModelForm):
@@ -136,8 +139,6 @@ class ContactMeForm(forms.ModelForm):
             'message': forms.Textarea(attrs={'class': 'form-control'}),
         }
 
-from django import forms
-from .models import Vacina
 
 class VacinaForm(forms.ModelForm):
     class Meta:

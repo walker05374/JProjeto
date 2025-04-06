@@ -210,58 +210,80 @@ def search_results(request):
     return render(request, 'search_results.html', {'results': results, 'query': query})
 
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .models import Cliente
+from .forms import ClienteForm
 
+@login_required
 def create_cliente(request):
+    try:
+        cliente = Cliente.objects.get(user=request.user)
+        return redirect('update_cliente', id=cliente.id)  # Redireciona para edição se já existir
+    except Cliente.DoesNotExist:
+        cliente = None
+
     if request.method == 'POST':
         cliente_form = ClienteForm(request.POST, request.FILES)
-        
         if cliente_form.is_valid():
             cliente = cliente_form.save(commit=False)
-            cliente.user = request.user  # Associar o cliente ao usuário logado
+            cliente.user = request.user
             cliente.save()
-            
-            # Imprimir a resposta para depuração
             print(f"Cliente criado com sucesso: {cliente}")
-            
-            # Redireciona para a página de visualizar clientes
             return redirect('read_cliente')
         else:
-            # Se o formulário não for válido, mostrar erro
             print("Formulário inválido")
             for field, errors in cliente_form.errors.items():
                 print(f"{field}: {errors}")
-                
     else:
         cliente_form = ClienteForm()
-        
-    return render(request, 'cliente_create.html', {'cliente_form': cliente_form})
+
+    return render(request, 'cliente_create.html', {
+        'cliente_form': cliente_form,
+        'cliente': cliente
+    })
+
 
 @login_required
 def read_cliente(request):
-    clientes = Cliente.objects.filter(user=request.user)  # Filtra pelos clientes do usuário logado
-    return render(request, 'cliente_read.html', {'clientes': clientes})
+    clientes = Cliente.objects.filter(user=request.user)
+    return render(request, 'cliente_read.html', {
+        'clientes': clientes
+    })
+
 
 @login_required
 def update_cliente(request, id):
-    cliente = get_object_or_404(Cliente, pk=id)
-    cliente_form = ClienteForm(request.POST or None, request.FILES or None, instance=cliente)
+    cliente = get_object_or_404(Cliente, pk=id, user=request.user)
 
-    if cliente_form.is_valid():
-        cliente_form.save()
-        return redirect("read_cliente")  # Redireciona para a página de visualizar após atualização
+    if request.method == 'POST':
+        cliente_form = ClienteForm(request.POST, request.FILES, instance=cliente)
+        if cliente_form.is_valid():
+            cliente_form.save()
+            messages.success(request, "Informações atualizadas com sucesso!")
+            return redirect("read_cliente")
+    else:
+        cliente_form = ClienteForm(instance=cliente)
 
-    return render(request, 'cliente_create.html', {'cliente_form': cliente_form})
+    return render(request, 'cliente_create.html', {
+        'cliente_form': cliente_form,
+        'cliente': cliente
+    })
 
+
+@login_required
 def delete_cliente(request, id):
-    cliente = get_object_or_404(Cliente, pk=id)
+    cliente = get_object_or_404(Cliente, pk=id, user=request.user)
     cliente.delete()
 
-    if not Cliente.objects.exists():
+    if not Cliente.objects.filter(user=request.user).exists():
         messages.success(request, "Cadastro da gestante excluído com sucesso. Por favor, atualize suas informações.")
-        return redirect("site")  # Se não houver mais clientes cadastrados, redireciona para a página inicial
+        return redirect("site")
 
-    messages.success(request, "Cadastro da gestante excluído com sucesso. Por favor, atualize suas informações.")
-    return redirect("site")  # Redireciona para a página de visualização de clientes
+    messages.success(request, "Cadastro da gestante excluído com sucesso.")
+    return redirect("read_cliente")
+
 
 
 @login_required
@@ -289,49 +311,88 @@ def excluir_conta(request):
     return redirect('site')
 
 
-
 @login_required
-def create_vacina(request):
-    if request.method == 'POST':
-        form = VacinaForm(request.POST, request.FILES)
-        if form.is_valid():
-            vacina = form.save(commit=False)
-            vacina.usuario = request.user  # <- AQUI é onde a mágica acontece
-            vacina.save()
-            return redirect('vacina_read')
-    else:
-        form = VacinaForm()
-    return render(request, 'vacina_create.html', {'form': form})
+def vacina_create(request):
+    form = VacinaForm(request.POST or None, request.FILES or None)
+    if request.method == 'POST' and form.is_valid():
+        vacina = form.save(commit=False)
+        vacina.usuario = request.user
+        vacina.save()
+        return redirect('vacina_create')  # volta para a mesma página com a lista atualizada
 
-
-@login_required
-def read_vacina(request):
     vacinas = Vacina.objects.filter(usuario=request.user)
-    tem_vacina = vacinas.exists()  # <- verifica se tem vacina
-    return render(request, "vacina_read.html", {
-        "vacinas": vacinas,
-        "tem_vacina": tem_vacina,
+
+    posicoes = [
+        {'top': 15, 'left': 10},
+        {'top': 25, 'left': 30},
+        {'top': 40, 'left': 45},
+        {'top': 55, 'left': 65},
+    ]
+
+    circulos = []
+    for i in range(len(posicoes)):
+        if i < len(vacinas):
+            vacina = vacinas[i]
+            vacina.top = posicoes[i]['top']
+            vacina.left = posicoes[i]['left']
+            circulos.append(vacina)
+        else:
+            circulos.append({
+                'nome': '',
+                'top': posicoes[i]['top'],
+                'left': posicoes[i]['left'],
+                'vazio': True
+            })
+
+    return render(request, 'vacina_create.html', {
+        'form': form,
+        'vacinas': vacinas,
+        'circulos': circulos,
+        'editar': False
     })
-
-
-
-
-
-
 
 @login_required
 def update_vacina(request, id):
-    vacina = get_object_or_404(Vacina, id=id)
-    vacina_form = VacinaForm(request.POST or None, request.FILES or None, instance=vacina)
+    vacina = get_object_or_404(Vacina, pk=id, usuario=request.user)
+    form = VacinaForm(request.POST or None, request.FILES or None, instance=vacina)
 
-    if vacina_form.is_valid():
-        vacina_form.save()
-        return redirect("read_vacina")
+    if form.is_valid():
+        form.save()
+        return redirect('vacina_create')
 
-    return render(request, "vacina_create.html", {"vacina_form": vacina_form})
+    vacinas = Vacina.objects.filter(usuario=request.user)
+
+    posicoes = [
+        {'top': 15, 'left': 10},
+        {'top': 25, 'left': 30},
+        {'top': 40, 'left': 45},
+        {'top': 55, 'left': 65},
+    ]
+
+    circulos = []
+    for i in range(len(posicoes)):
+        if i < len(vacinas):
+            vacina = vacinas[i]
+            vacina.top = posicoes[i]['top']
+            vacina.left = posicoes[i]['left']
+            circulos.append(vacina)
+        else:
+            circulos.append({
+                'nome': '',
+                'top': posicoes[i]['top'],
+                'left': posicoes[i]['left'],
+                'vazio': True
+            })
+
+    return render(request, 'vacina_create.html', {
+        'form': form,
+        'vacinas': vacinas,
+        'circulos': circulos,
+        'editar': True
+    })
 
 @login_required
 def delete_vacina(request, id):
-    vacina = get_object_or_404(Vacina, id=id)
+    vacina = get_object_or_404(Vacina, id=id, usuario=request.user)
     vacina.delete()
-    return redirect("read_vacina")
+    return redirect("vacina_create")
