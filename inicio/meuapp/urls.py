@@ -66,7 +66,7 @@ urlpatterns = [
     path('reset/done/', v.MyPasswordResetComplete.as_view(), name='password_reset_complete'),  # noqa E501
     path('excluir-conta/', excluir_conta, name='excluir-conta'),
     
-  path("create_vacina", views.vacina_create, name="vacina_create"),  # você nomeou assim no redirect
+    path("create_vacina", views.vacina_create, name="vacina_create"),  # você nomeou assim no redirect
     path("update_vacina/<int:id>", views.update_vacina, name="update_vacina"),
     path("delete_vacina/<int:id>", views.delete_vacina, name="delete_vacina"),
 

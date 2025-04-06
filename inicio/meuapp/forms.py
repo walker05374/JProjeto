@@ -95,13 +95,16 @@ class CustomUserChangeForm(forms.ModelForm):
 
 
 
+from django import forms
+from .models import Cliente
 
 class ClienteForm(forms.ModelForm):
     datanascimento = forms.DateField(
         widget=forms.DateInput(attrs={
             'class': 'form-control',
-            'type': 'date'
-        })
+            'type': 'date',
+        }),
+        input_formats=['%Y-%m-%d'],  # necessário para o formato ISO reconhecido pelo input date
     )
 
     class Meta:
@@ -111,7 +114,6 @@ class ClienteForm(forms.ModelForm):
             'endereco', 'bairro', 'cep', 'cidade', 'uf',
             'nomecrianca', 'generocrianca', 'foto'
         ]
-
         widgets = {
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
             'cpf': forms.TextInput(attrs={'class': 'form-control'}),
