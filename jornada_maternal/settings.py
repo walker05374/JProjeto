@@ -4,8 +4,18 @@ from django.contrib.messages import constants as messages
 
 AUTH_USER_MODEL = 'meuapp.CustomUser'
 
-DATE_INPUT_FORMATS = ['%Y-%m-%d']
+# settings.py
 
+# Para formulários e exibição no admin
+DATE_INPUT_FORMATS = ['%Y-%m-%d']  # ou outros formatos como '%d/%m/%Y' se quiser
+DATE_FORMAT = 'Y-m-d'  # Afeta templates com {{ date_var|date }}
+
+# Localização (opcional, mas ajuda)
+LANGUAGE_CODE = 'pt-br'
+USE_L10N = False  # IMPORTANTE: desliga a localização automática de datas
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_TZ = True
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -120,10 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LANGUAGE_CODE = 'pt-br'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_TZ = True
+
 
 # Configurações de mensagens
 MESSAGE_TAGS = {

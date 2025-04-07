@@ -216,6 +216,13 @@ from django.contrib.auth.decorators import login_required
 from .models import Cliente
 from .forms import ClienteForm
 
+
+
+
+
+
+
+
 @login_required
 def create_cliente(request):
     try:

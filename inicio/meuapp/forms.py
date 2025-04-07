@@ -7,7 +7,8 @@ from .models import Cliente, ContactMe,CustomUser
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import password_validation
-from django.forms.widgets import DateInput
+from django.forms import DateInput
+
 from django import forms
 from .models import Vacina
 
@@ -20,6 +21,7 @@ class CustomUserLoginForm(AuthenticationForm):
             'class': 'form-control',
             'placeholder': 'Usuário',
             'required': 'required',
+            
         })
     )
     password = forms.CharField(
@@ -95,15 +97,17 @@ class CustomUserChangeForm(forms.ModelForm):
 
 
 
-
+from django import forms
+from django.forms import DateInput
+from .models import Cliente
 
 class ClienteForm(forms.ModelForm):
     datanascimento = forms.DateField(
-        widget=DateInput(attrs={
-            'class': 'form-control',
+        widget=forms.DateInput(attrs={
             'type': 'date',
+            'class': 'form-control'
         }),
-        input_formats=['%Y-%m-%d'],  # ISO format, usado pelo input type="date"
+        input_formats=['%Y-%m-%d']
     )
 
     class Meta:
@@ -113,6 +117,7 @@ class ClienteForm(forms.ModelForm):
             'endereco', 'bairro', 'cep', 'cidade', 'uf',
             'nomecrianca', 'generocrianca', 'foto'
         ]
+        
         widgets = {
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
             'cpf': forms.TextInput(attrs={'class': 'form-control'}),
@@ -130,9 +135,8 @@ class ClienteForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        # Se for edição e a data estiver definida, formata para o padrão do input
         if self.instance and self.instance.pk and self.instance.datanascimento:
+            # Formata a data no formato correto para <input type="date">
             self.fields['datanascimento'].initial = self.instance.datanascimento.strftime('%Y-%m-%d')
 
 class ContactMeForm(forms.ModelForm):

@@ -36,6 +36,8 @@
             <h5>CPF:</h5>
             <input class="form-control" type="text" value="{{ cliente.cpf|slice:'0:3' }}.{{ cliente.cpf|slice:'3:6' }}.{{ cliente.cpf|slice:'6:9' }}-{{ cliente.cpf|slice:'9:11' }}" readonly>
         </div>
+        <pre>{{ cliente_form.datanascimento }}</pre>
+
         <div class="col-md-4">
             <h5>Data de Nascimento:</h5>
             <input class="form-control" type="text" value="{{ cliente.datanascimento|date:'d/m/Y' }}" readonly>
