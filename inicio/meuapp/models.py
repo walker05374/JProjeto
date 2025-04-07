@@ -64,6 +64,8 @@ class GanhoPeso(models.Model):
     usuario = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     peso_inicial = models.FloatField()
     peso_atual = models.FloatField()
+    altura = models.FloatField()
+    semana_gestacional = models.IntegerField()
     imc = models.FloatField()
     classificacao = models.CharField(max_length=20)
     grafico = models.ImageField(upload_to='graficos_gestante/', null=True, blank=True)

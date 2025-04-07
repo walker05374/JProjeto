@@ -154,4 +154,4 @@ class VacinaForm(forms.ModelForm):
 class GanhoPesoForm(forms.ModelForm):
     class Meta:
         model = GanhoPeso
-        fields = ['peso_inicial', 'peso_atual']
+        fields = ['peso_inicial', 'peso_atual', 'altura', 'semana_gestacional']

@@ -7,10 +7,23 @@ from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.core.mail import EmailMessage, send_mail
 from django.contrib.auth.tokens import default_token_generator
+from django.core.files.base import ContentFile
+
+
 import matplotlib.pyplot as plt
 import os
-from django.core.files.base import ContentFile
 from io import BytesIO
+
+from .models import GanhoPeso
+from .forms import GanhoPesoForm
+
+
+
+import matplotlib
+matplotlib.use('Agg')  # Solução para evitar erros com Tkinter em servidores
+
+
+
 
 
 
@@ -410,30 +423,35 @@ def delete_vacina(request, id):
     vacina.delete()
     return redirect("vacina_create")
 
-# views.py
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import GanhoPeso
-from .forms import GanhoPesoForm
-from django.contrib.auth.decorators import login_required
-from django.core.mail import EmailMessage
-from django.conf import settings
-import matplotlib.pyplot as plt
-import os
-from io import BytesIO
-from django.core.files.base import ContentFile
 
-def calcular_imc(peso, altura=1.60):  # altura padrão ou você pode puxar do perfil
+
+
+def calcular_imc(peso, altura=1.60):  # altura padrão, ou pode puxar do perfil do usuário
     return round(peso / (altura ** 2), 2)
 
 def classificar_imc(imc):
     if imc < 18.5:
-        return "Baixo peso"
+        return "Baixo peso (Você começou a gestação com peso abaixo do ideal. O ganho de peso deve ser mais acompanhado para garantir o bom desenvolvimento do bebê.)"
     elif 18.5 <= imc < 25:
-        return "Eutrofia"
+        return "Eutrofia (Você iniciou a gestação com peso considerado adequado. Mantenha uma alimentação equilibrada e continue acompanhando seu ganho de peso.)"
     elif 25 <= imc < 30:
-        return "Sobrepeso"
+        return "Sobrepeso (Você começou a gestação acima do peso ideal. É importante monitorar o ganho de peso para evitar complicações.)"
     else:
-        return "Obesidade"
+        return "Obesidade (Você iniciou a gestação com obesidade. Acompanhar o ganho de peso é essencial para sua saúde e a do bebê.)"
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import GanhoPeso
+from .forms import GanhoPesoForm
+from django.contrib import messages  # <== Adicionado para mensagens
+from django.core.mail import EmailMessage
+from django.conf import settings
+from io import BytesIO
+from django.core.files.base import ContentFile
+import matplotlib.pyplot as plt
+
 
 @login_required
 def ganho_peso_view(request):
@@ -443,21 +461,44 @@ def ganho_peso_view(request):
         ganho = None
 
     if request.method == 'POST':
-        form = GanhoPesoForm(request.POST, instance=ganho)
+        form = GanhoPesoForm(request.POST, request.FILES, instance=ganho)
         if form.is_valid():
             ganho = form.save(commit=False)
             ganho.usuario = request.user
-            ganho.imc = calcular_imc(ganho.peso_inicial)
-            ganho.classificacao = classificar_imc(ganho.imc)
+            ganho.imc = ganho.peso_inicial / (ganho.altura ** 2)
 
-            # Gerar gráfico
-            plt.figure()
-            plt.bar(["Peso Inicial", "Peso Atual"], [ganho.peso_inicial, ganho.peso_atual], color=['blue', 'green'])
-            plt.title("Ganho de Peso Gestacional")
-            plt.xlabel("Situação")
-            plt.ylabel("Peso (kg)")
+            # Classificação IMC
+            if ganho.imc < 18.5:
+                ganho.classificacao = "Baixo peso"
+                curva = [0.0, 4.5, 9.0, 11.5, 12.5]
+            elif 18.5 <= ganho.imc < 25:
+                ganho.classificacao = "Eutrofia"
+                curva = [0.0, 4.0, 8.0, 11.0, 12.0]
+            elif 25 <= ganho.imc < 30:
+                ganho.classificacao = "Sobrepeso"
+                curva = [0.0, 3.0, 6.0, 8.0, 9.0]
+            else:
+                ganho.classificacao = "Obesidade"
+                curva = [0.0, 2.0, 4.0, 5.5, 6.0]
+
+            # Gráfico
+            semanas = [12, 20, 28, 36, 40]
+            peso_ganho = ganho.peso_atual - ganho.peso_inicial
+            semanas_reais = [12, ganho.semana_gestacional]
+            ganho_reais = [0, peso_ganho]
+
+            plt.figure(figsize=(8, 6))
+            plt.plot(semanas, curva, label="Faixa Ideal", color="purple", linestyle="--", linewidth=2)
+            plt.plot(semanas_reais, ganho_reais, label="Seu ganho", color="green", marker='o', linewidth=2)
+            plt.fill_between(semanas, [v - 1.5 for v in curva], [v + 1.5 for v in curva], color='purple', alpha=0.2)
+            plt.title("Ganho de Peso Gestacional (Comparativo com faixa ideal)")
+            plt.xlabel("Semanas de Gestação")
+            plt.ylabel("Ganho de Peso (kg)")
+            plt.grid(True)
+            plt.legend()
 
             buffer = BytesIO()
+            plt.tight_layout()
             plt.savefig(buffer, format='png')
             buffer.seek(0)
             file_name = f"grafico_{request.user.id}.png"
@@ -466,7 +507,10 @@ def ganho_peso_view(request):
             plt.close()
 
             ganho.save()
+            messages.success(request, "Informações salvas com sucesso!")
             return redirect('ganho_peso')
+        else:
+            messages.error(request, "Erro ao enviar os dados. Verifique o formulário.")
     else:
         form = GanhoPesoForm(instance=ganho)
 
@@ -475,33 +519,46 @@ def ganho_peso_view(request):
         'ganho': ganho
     })
 
+
 @login_required
 def excluir_ganho(request, pk):
     ganho = get_object_or_404(GanhoPeso, pk=pk, usuario=request.user)
     ganho.delete()
+    messages.success(request, "Registro de ganho de peso excluído com sucesso!")
     return redirect('ganho_peso')
+
 
 @login_required
 def enviar_email_ganho(request, pk):
     if request.method == 'POST':
         ganho = get_object_or_404(GanhoPeso, pk=pk, usuario=request.user)
         email_destino = request.POST.get('email')
+
         assunto = "Relatório de Ganho de Peso Gestacional"
         corpo = f"""
-        Olá!
+Olá!
 
-        Aqui estão os dados de ganho de peso gestacional:
+Aqui estão os dados do seu acompanhamento de ganho de peso gestacional:
 
-        Peso inicial: {ganho.peso_inicial} kg
-        Peso atual: {ganho.peso_atual} kg
-        IMC: {ganho.imc}
-        Classificação: {ganho.classificacao}
+- Peso inicial: {ganho.peso_inicial} kg
+- Peso atual: {ganho.peso_atual} kg
+- IMC: {ganho.imc:.2f}
+- Classificação: {ganho.classificacao}
 
-        Em anexo está o gráfico correspondente.
+Em anexo está o gráfico comparativo com a faixa ideal de ganho de peso.
+
+Atenciosamente,
+Equipe de acompanhamento gestacional.
         """
 
         email = EmailMessage(assunto, corpo, settings.EMAIL_HOST_USER, [email_destino])
         if ganho.grafico:
             email.attach_file(ganho.grafico.path)
-        email.send()
+
+        try:
+            email.send()
+            messages.success(request, "E-mail enviado com sucesso!")
+        except Exception as e:
+            messages.error(request, f"Erro ao enviar o e-mail: {e}")
+
         return redirect('ganho_peso')

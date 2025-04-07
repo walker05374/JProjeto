@@ -2,74 +2,97 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Ganho de Peso Gestacional</title>
-    <link rel="stylesheet" href="{% static 'css/vacina_create.css' %}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <title>Ganho de Peso Gestacional</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Bootstrap + Ícones -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- CSS personalizado com mesmo nome do HTML -->
+  <link rel="stylesheet" href="{% static 'ganho_peso.css' %}">
 </head>
-<body>
-<div class="container">
-    <ul class="nav nav-tabs justify-content-between my-3">
-        <li class="nav-item">
-            <a class="nav-link text-dark" href="{% url 'site' %}">Início</a>
-        </li>
-    </ul>
+<body style="background-image: url('{% static 'img/fundo_vacina.png' %}'); background-size: cover; background-repeat: no-repeat;">
 
-    <h2 class="text-center mb-4">Ganho de Peso Gestacional</h2>
+  <!-- Botão Início no topo -->
+  <div class="container mt-3 text-end">
+    <a href="{% url 'site' %}" class="btn btn-outline-primary">
+      <i class="fas fa-home"></i> Início
+    </a>
+  </div>
 
-    <!-- Formulário (sempre visível porque só terá 1 gráfico que será atualizado) -->
-    <div class="formulario-ganho mb-5">
-        <form method="POST" enctype="multipart/form-data">
+  <div class="container d-flex justify-content-center align-items-center flex-column my-5">
+    <div class="row w-100 gap-4 justify-content-center">
+
+      <!-- Gráfico à esquerda -->
+      <div class="col-md-6">
+        <div class="card shadow-lg p-4" style="background-color: #ffffffd8; border-radius: 20px;">
+          <h5 class="text-center text-primary mb-3"><i class="fas fa-chart-line"></i> Gráfico de Peso Gestacional</h5>
+          <div class="text-center">
+            {% if ganho.grafico %}
+              <img src="{{ ganho.grafico.url }}" alt="Gráfico de ganho de peso" class="img-fluid mb-3" style="max-height: 400px;">
+            {% else %}
+              <p class="text-muted">Nenhum gráfico disponível ainda.</p>
+            {% endif %}
+          </div>
+          {% if ganho %}
+          <div class="d-flex justify-content-between">
+            <form method="post" action="{% url 'excluir_ganho' ganho.id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash-alt"></i> Excluir
+              </button>
+            </form>
+            <form method="post" action="{% url 'enviar_email_ganho' ganho.id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-primary">
+                <i class="fas fa-paper-plane"></i> Enviar por e-mail
+              </button>
+            </form>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Formulário à direita -->
+      <div class="col-md-5">
+        <div class="card shadow-lg p-4" style="background-color: #ffffffd8; border-radius: 20px;">
+          <h5 class="text-center text-primary mb-3"><i class="fas fa-weight"></i> Inserir Dados</h5>
+          <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-success">
-                {% if editar %}Atualizar Dados{% else %}Cadastrar/Atualizar{% endif %}
-            </button>
-        </form>
-    </div>
-
-    {% if ganho %}
-    <!-- Exibição do Gráfico Atual -->
-    <div class="ganho-card mb-4 p-3 border rounded shadow-sm text-center">
-        <p><strong>Peso Inicial:</strong> {{ ganho.peso_inicial }} kg</p>
-        <p><strong>Peso Atual:</strong> {{ ganho.peso_atual }} kg</p>
-        <p><strong>IMC:</strong> {{ ganho.imc }}</p>
-        <p><strong>Classificação:</strong> {{ ganho.classificacao }}</p>
-
-        {% if ganho.grafico %}
-            <img src="{{ ganho.grafico.url }}" alt="Gráfico de Peso" class="img-fluid rounded">
-        {% endif %}
-
-        <!-- Botões -->
-        <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#emailModal">Enviar por e-mail</button>
-        <a href="{% url 'excluir_ganho' ganho.id %}" class="btn btn-danger mt-3">Excluir</a>
-    </div>
-    {% endif %}
-</div>
-
-<!-- Modal de Envio de E-mail -->
-<div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form method="POST" action="{% url 'enviar_email_ganho' ganho.id %}">
-        {% csrf_token %}
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="emailModalLabel">Enviar por E-mail</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            <div class="text-center">
+              <button type="submit" class="btn btn-outline-dark">
+                <i class="fas fa-plus-circle"></i> Inserir
+              </button>
             </div>
-            <div class="modal-body">
-                <label for="email">Digite o e-mail da gestante:</label>
-                <input type="email" name="email" class="form-control" required>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Enviar</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            </div>
+          </form>
         </div>
-    </form>
-  </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        {% if ganho %}
+        <div class="card mt-3 p-3" style="background-color: #ffffffd8; border-radius: 15px;">
+          <h6 class="text-center text-primary"><i class="fas fa-info-circle"></i> Resultado:</h6>
+          <p class="text-center">
+            Seu IMC é <strong>{{ ganho.imc|floatformat:2 }}</strong> - <strong>{{ ganho.classificacao }}</strong>.<br>
+            <span style="color: {% if ganho.classificacao == 'Eutrofia' %}green{% elif ganho.classificacao == 'Sobrepeso' %}orange{% else %}red{% endif %}; font-weight: bold;">
+              {% if ganho.classificacao == 'Eutrofia' %}
+                (Peso adequado para a gestação)
+              {% elif ganho.classificacao == 'Sobrepeso' %}
+                (Atenção! Ganho de peso acima do ideal)
+              {% elif ganho.classificacao == 'Obesidade' %}
+                (Risco aumentado – monitore com frequência)
+              {% else %}
+                (Ganho de peso abaixo do ideal – converse com seu profissional de saúde)
+              {% endif %}
+            </span>
+          </p>
+        </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+
 </body>
 </html>

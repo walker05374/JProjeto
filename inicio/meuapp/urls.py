@@ -75,6 +75,8 @@ urlpatterns = [
     path('ganho_peso/enviar_email/<int:pk>/', views.enviar_email_ganho, name='enviar_email_ganho'),
 
 
+
+
 ]
 
     
