@@ -70,6 +70,11 @@ urlpatterns = [
     path("update_vacina/<int:id>", views.update_vacina, name="update_vacina"),
     path("delete_vacina/<int:id>", views.delete_vacina, name="delete_vacina"),
 
+    path('ganho_peso/', views.ganho_peso_view, name='ganho_peso'),
+    path('ganho_peso/excluir/<int:pk>/', views.excluir_ganho, name='excluir_ganho'),
+    path('ganho_peso/enviar_email/<int:pk>/', views.enviar_email_ganho, name='enviar_email_ganho'),
+
+
 ]
 
     

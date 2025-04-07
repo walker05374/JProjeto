@@ -60,3 +60,13 @@ class Vacina(models.Model):
     def __str__(self):
         return self.nome
     
+class GanhoPeso(models.Model):
+    usuario = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    peso_inicial = models.FloatField()
+    peso_atual = models.FloatField()
+    imc = models.FloatField()
+    classificacao = models.CharField(max_length=20)
+    grafico = models.ImageField(upload_to='graficos_gestante/', null=True, blank=True)
+
+    def __str__(self):
+        return f"Ganho de Peso - {self.usuario}"

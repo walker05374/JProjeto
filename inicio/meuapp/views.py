@@ -7,6 +7,10 @@ from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.core.mail import EmailMessage, send_mail
 from django.contrib.auth.tokens import default_token_generator
+import matplotlib.pyplot as plt
+import os
+from django.core.files.base import ContentFile
+from io import BytesIO
 
 
 
@@ -33,7 +37,9 @@ from .forms import (
     CustomUserChangeForm, 
     CustomUserLoginForm,
     Vacina,
-    VacinaForm
+    VacinaForm,
+    GanhoPesoForm,
+    GanhoPeso,
 )
 from .utils import google_custom_search
 from inicio.meuapp.services import send_mail_to_user
@@ -403,3 +409,99 @@ def delete_vacina(request, id):
     vacina = get_object_or_404(Vacina, id=id, usuario=request.user)
     vacina.delete()
     return redirect("vacina_create")
+
+# views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import GanhoPeso
+from .forms import GanhoPesoForm
+from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMessage
+from django.conf import settings
+import matplotlib.pyplot as plt
+import os
+from io import BytesIO
+from django.core.files.base import ContentFile
+
+def calcular_imc(peso, altura=1.60):  # altura padrão ou você pode puxar do perfil
+    return round(peso / (altura ** 2), 2)
+
+def classificar_imc(imc):
+    if imc < 18.5:
+        return "Baixo peso"
+    elif 18.5 <= imc < 25:
+        return "Eutrofia"
+    elif 25 <= imc < 30:
+        return "Sobrepeso"
+    else:
+        return "Obesidade"
+
+@login_required
+def ganho_peso_view(request):
+    try:
+        ganho = GanhoPeso.objects.get(usuario=request.user)
+    except GanhoPeso.DoesNotExist:
+        ganho = None
+
+    if request.method == 'POST':
+        form = GanhoPesoForm(request.POST, instance=ganho)
+        if form.is_valid():
+            ganho = form.save(commit=False)
+            ganho.usuario = request.user
+            ganho.imc = calcular_imc(ganho.peso_inicial)
+            ganho.classificacao = classificar_imc(ganho.imc)
+
+            # Gerar gráfico
+            plt.figure()
+            plt.bar(["Peso Inicial", "Peso Atual"], [ganho.peso_inicial, ganho.peso_atual], color=['blue', 'green'])
+            plt.title("Ganho de Peso Gestacional")
+            plt.xlabel("Situação")
+            plt.ylabel("Peso (kg)")
+
+            buffer = BytesIO()
+            plt.savefig(buffer, format='png')
+            buffer.seek(0)
+            file_name = f"grafico_{request.user.id}.png"
+            ganho.grafico.save(file_name, ContentFile(buffer.read()), save=False)
+            buffer.close()
+            plt.close()
+
+            ganho.save()
+            return redirect('ganho_peso')
+    else:
+        form = GanhoPesoForm(instance=ganho)
+
+    return render(request, 'ganho_peso.html', {
+        'form': form,
+        'ganho': ganho
+    })
+
+@login_required
+def excluir_ganho(request, pk):
+    ganho = get_object_or_404(GanhoPeso, pk=pk, usuario=request.user)
+    ganho.delete()
+    return redirect('ganho_peso')
+
+@login_required
+def enviar_email_ganho(request, pk):
+    if request.method == 'POST':
+        ganho = get_object_or_404(GanhoPeso, pk=pk, usuario=request.user)
+        email_destino = request.POST.get('email')
+        assunto = "Relatório de Ganho de Peso Gestacional"
+        corpo = f"""
+        Olá!
+
+        Aqui estão os dados de ganho de peso gestacional:
+
+        Peso inicial: {ganho.peso_inicial} kg
+        Peso atual: {ganho.peso_atual} kg
+        IMC: {ganho.imc}
+        Classificação: {ganho.classificacao}
+
+        Em anexo está o gráfico correspondente.
+        """
+
+        email = EmailMessage(assunto, corpo, settings.EMAIL_HOST_USER, [email_destino])
+        if ganho.grafico:
+            email.attach_file(ganho.grafico.path)
+        email.send()
+        return redirect('ganho_peso')

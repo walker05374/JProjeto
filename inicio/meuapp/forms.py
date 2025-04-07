@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from .models import Cliente, ContactMe,CustomUser,Vacina
+from .models import Cliente, ContactMe,CustomUser,Vacina,GanhoPeso
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import password_validation
@@ -149,3 +149,9 @@ class VacinaForm(forms.ModelForm):
             'data': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'nome': forms.Select(attrs={'class': 'form-control'}),
         }
+
+
+class GanhoPesoForm(forms.ModelForm):
+    class Meta:
+        model = GanhoPeso
+        fields = ['peso_inicial', 'peso_atual']
