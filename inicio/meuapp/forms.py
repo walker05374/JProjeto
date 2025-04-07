@@ -7,7 +7,7 @@ from .models import Cliente, ContactMe,CustomUser
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import password_validation
-
+from django.forms.widgets import DateInput
 from django import forms
 from .models import Vacina
 
@@ -95,16 +95,15 @@ class CustomUserChangeForm(forms.ModelForm):
 
 
 
-from django import forms
-from .models import Cliente
+
 
 class ClienteForm(forms.ModelForm):
     datanascimento = forms.DateField(
-        widget=forms.DateInput(attrs={
+        widget=DateInput(attrs={
             'class': 'form-control',
             'type': 'date',
         }),
-        input_formats=['%Y-%m-%d'],  # necessário para o formato ISO reconhecido pelo input date
+        input_formats=['%Y-%m-%d'],  # ISO format, usado pelo input type="date"
     )
 
     class Meta:
@@ -129,6 +128,12 @@ class ClienteForm(forms.ModelForm):
             'foto': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Se for edição e a data estiver definida, formata para o padrão do input
+        if self.instance and self.instance.pk and self.instance.datanascimento:
+            self.fields['datanascimento'].initial = self.instance.datanascimento.strftime('%Y-%m-%d')
 
 class ContactMeForm(forms.ModelForm):
     class Meta:

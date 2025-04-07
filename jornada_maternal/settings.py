@@ -4,6 +4,7 @@ from django.contrib.messages import constants as messages
 
 AUTH_USER_MODEL = 'meuapp.CustomUser'
 
+DATE_INPUT_FORMATS = ['%Y-%m-%d']
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent

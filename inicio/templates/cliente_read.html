@@ -1,4 +1,5 @@
 {% load static %}
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -14,105 +15,69 @@
         <li class="nav-item">
             <a class="nav-link text-dark" href="{% url 'site' %}">Início</a>
         </li>
-
-        {% for cliente in clientes %}
-
-
         <li class="nav-item ml-auto">
-            <a class="nav-link text-dark" href="">
-                {% if clientes and clientes.0.foto %}
-                <img src="{{ cliente.foto.url }}?{{ cliente.atualizado_em.timestamp }}" alt="Foto do Cliente"class="profile-picture">
-                {% else %}
-                    <span class="profile-text">Perfil do Usuário</span>
-                {% endif %}
-            </a>
+            {% if clientes and clientes.0.foto %}
+                <img src="{{ clientes.0.foto.url }}?{{ clientes.0.atualizado_em.timestamp }}" alt="Foto do Cliente" class="profile-picture">
+            {% else %}
+                <span class="profile-text">Perfil do Usuário</span>
+            {% endif %}
         </li>
     </ul>
 
     <h2 class="text-center">Informações das Gestantes</h2>
 
-
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <h5>Nome:</h5>
-                <input class="form-control" type="text" value="{{ cliente.nome }}" readonly>
-            </div>
-            <div class="col-md-4">
-                <h5>CPF:</h5>
-                <input class="form-control" type="text" value="{{ cliente.cpf|slice:'0:3' }}.{{ cliente.cpf|slice:'3:6' }}.{{ cliente.cpf|slice:'6:9' }}-{{ cliente.cpf|slice:'9:11' }}" readonly>
-            </div>
-            <div class="col-md-4">
-                <h5>Data de Nascimento:</h5>
-                <input class="form-control" type="text" value="{{ cliente.datanascimento|date:'d/m/Y' }}" readonly>
-            </div>
+    {% for cliente in clientes %}
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <h5>Nome:</h5>
+            <input class="form-control" type="text" value="{{ cliente.nome }}" readonly>
         </div>
-
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <h5>Número do SUS:</h5>
-                <input class="form-control" type="text" value="{{ cliente.sus|slice:'0:3' }}.{{ cliente.sus|slice:'3:6' }}.{{ cliente.sus|slice:'6:9' }} {{ cliente.sus|slice:'9:12' }}" readonly>
-            </div>
-            <div class="col-md-4">
-                <h5>Nome da Criança:</h5>
-                <input class="form-control" type="text" value="{{ cliente.nomecrianca }}" readonly>
-            </div>
-            <div class="col-md-4">
-                <h5>Gênero da Criança:</h5>
-                <input class="form-control" type="text" value="{{ cliente.generocrianca }}" readonly>
-            </div>
+        <div class="col-md-4">
+            <h5>CPF:</h5>
+            <input class="form-control" type="text" value="{{ cliente.cpf|slice:'0:3' }}.{{ cliente.cpf|slice:'3:6' }}.{{ cliente.cpf|slice:'6:9' }}-{{ cliente.cpf|slice:'9:11' }}" readonly>
         </div>
-
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <h5>Idade da Criança:</h5>
-                <input class="form-control" type="number" value="{{ cliente.idadecrianca }}" readonly>
-            </div>
-            <div class="col-md-4">
-                <h5>Cep:</h5>
-                <input class="form-control" type="text" value="{{ cliente.cep }}" readonly>
-            </div>
-            <div class="col-md-4">
-                <h5>Endereço:</h5>
-                <input class="form-control" type="text" value="{{ cliente.endereco }}" readonly>
-            </div>
+        <div class="col-md-4">
+            <h5>Data de Nascimento:</h5>
+            <input class="form-control" type="text" value="{{ cliente.datanascimento|date:'d/m/Y' }}" readonly>
         </div>
+    </div>
 
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <h5>Bairro:</h5>
-                <input class="form-control" type="text" value="{{ cliente.bairro }}" readonly>
-            </div>
-            <div class="col-md-4">
-                <h5>Cidade:</h5>
-                <input class="form-control" type="text" value="{{ cliente.cidade }}" readonly>
-            </div>
-            <div class="col-md-4">
-                <h5>UF:</h5>
-                <input class="form-control" type="text" value="{{ cliente.uf }}" readonly>
-            </div>
-        </div>
-            <br>
-                <br>
-                <br>      
-        <div class="row mb-4">
-            <div class="col text-center">
-                <hr>
-                <div class="d-flex justify-content-center">
-                    <div class="mr-5">
-                        <a href="update_cliente/{{ cliente.id }}"><img src="{% static 'images/editar.png' %}" height="35px"></a>
-                    </div>
-                    <div>
-                        <a href="delete_cliente/{{ cliente.id }}"><img src="{% static 'images/excluir.png' %}" height="35px"></a>
-                    </div>
+    <div class="row mb-3">
+        <div class="col-md-4"><h5>SUS:</h5><input class="form-control" type="text" value="{{ cliente.sus|slice:'0:3' }}.{{ cliente.sus|slice:'3:6' }}.{{ cliente.sus|slice:'6:9' }} {{ cliente.sus|slice:'9:12' }}" readonly></div>
+        <div class="col-md-4"><h5>Nome da Criança:</h5><input class="form-control" type="text" value="{{ cliente.nomecrianca }}" readonly></div>
+        <div class="col-md-4"><h5>Gênero da Criança:</h5><input class="form-control" type="text" value="{{ cliente.generocrianca }}" readonly></div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-4"><h5>Idade da Criança:</h5><input class="form-control" type="number" value="{{ cliente.idadecrianca }}" readonly></div>
+        <div class="col-md-4"><h5>CEP:</h5><input class="form-control" type="text" value="{{ cliente.cep }}" readonly></div>
+        <div class="col-md-4"><h5>Endereço:</h5><input class="form-control" type="text" value="{{ cliente.endereco }}" readonly></div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-4"><h5>Bairro:</h5><input class="form-control" type="text" value="{{ cliente.bairro }}" readonly></div>
+        <div class="col-md-4"><h5>Cidade:</h5><input class="form-control" type="text" value="{{ cliente.cidade }}" readonly></div>
+        <div class="col-md-4"><h5>UF:</h5><input class="form-control" type="text" value="{{ cliente.uf }}" readonly></div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col text-center">
+            <hr>
+            <div class="d-flex justify-content-center">
+                <div class="mr-5">
+                    <a href="update_cliente/{{ cliente.id }}"><img src="{% static 'images/editar.png' %}" height="35px"></a>
                 </div>
-                <hr>
+                <div>
+                    <a href="delete_cliente/{{ cliente.id }}"><img src="{% static 'images/excluir.png' %}" height="35px"></a>
+                </div>
             </div>
+            <hr>
         </div>
+    </div>
     {% endfor %}
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="{% static 'js/apicep.js' %}"></script>
 </body>
 </html>
