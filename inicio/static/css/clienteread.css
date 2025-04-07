@@ -44,12 +44,11 @@ h2.text-center {
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
-    /* border: 2px solid #000000; */ /* <- remova isso */
+    border: 2px solid #000000;
     transition: transform 0.3s ease-in-out;
     display: inline-block;
     margin-left: 10px;
 }
-
 
 .profile-picture:hover {
     transform: scale(1.1);
