@@ -1,35 +1,63 @@
-/* Fundo padrão da página */
-body.login0 {
-    background: url('https://i.ibb.co/FLJgGg2C/image.png') repeat;
-    background-size: cover;
+/* Fundo da página */
+body {
+  background: url('/static/images/Login.jpeg') repeat;
+  background-size: cover;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-/* Caixas de conteúdo */
-.box-formulario {
-    background-color: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+/* Cartões (caixas) */
+.card {
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Campos com mesmo tamanho */
-.campo-igual {
-    width: 100%;
+.card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Campo de email no gráfico */
+/* Input animado e mesmo tamanho */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  transform: scale(1.03);
+  border-color: #007bff;
+}
+
+/* Botões */
+button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+/* Email field específico */
 .campo-email {
-    min-width: 200px;
+  min-width: 200px;
+  width: 100%;
 }
 
-/* Ajustes para responsividade */
+/* Responsivo */
 @media (max-width: 768px) {
-    .d-flex.flex-wrap {
-        flex-direction: column;
-    }
-
-    .campo-email {
-        width: 100%;
-        margin-bottom: 10px;
-    }
+  .campo-email {
+      width: 100%;
+      margin-bottom: 10px;
+  }
 }
