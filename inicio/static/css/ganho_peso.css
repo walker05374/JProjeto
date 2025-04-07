@@ -17,7 +17,7 @@ body {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Input animado e mesmo tamanho */
+/* Inputs padronizados */
 input[type="text"],
 input[type="number"],
 input[type="email"],
@@ -38,7 +38,7 @@ textarea:hover {
   border-color: #007bff;
 }
 
-/* Botões */
+/* Botões padrão */
 button {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -48,16 +48,54 @@ button:hover {
   box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
 }
 
-/* Email field específico */
+/* Botões grandes e iguais */
+.btn-acao {
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+}
+
+/* Campo e-mail */
 .campo-email {
   min-width: 200px;
   width: 100%;
 }
 
-/* Responsivo */
-@media (max-width: 768px) {
-  .campo-email {
-      width: 100%;
-      margin-bottom: 10px;
+/* Gráfico responsivo */
+.grafico-img {
+  height: 420px;
+  width: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease-in-out;
+}
+
+.grafico-img:hover {
+  transform: scale(1.05);
+}
+
+/* Responsivo em telas maiores */
+@media (min-width: 992px) {
+  .card {
+    max-width: 650px;
+    margin: 0 auto;
   }
+}
+
+/* Centralização do formulário */
+.formulario-centralizado {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+form .campo-email {
+  height: 50px;
+  margin-top: 10px; /* Abaixa levemente o campo */
+}
+
+/* Garante que o botão fique na mesma altura */
+form .btn-enviar-email {
+  height: 50px;
+  font-size: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }

@@ -1,87 +1,105 @@
 {% load static %}
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Ganho de Peso Gestacional</title>
-    <link rel="stylesheet" href="{% static 'css/ganho_peso.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Ganho de Peso Gestacional</title>
+  <link rel="stylesheet" href="{% static 'css/ganho_peso.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="background py-5">
-  <div class="container">
-    <div class="row">
+  <div class="background py-5">
+    <div class="container">
+          <!-- Navegação -->
+    <ul class="nav nav-tabs justify-content-between mb-4">
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="{% url 'site' %}">
+          <i class="fas fa-home"></i> Início
+        </a>
+      </li>
+    </ul>
+      <div class="row justify-content-center align-items-start g-5">
 
-      <!-- Lado esquerdo: formulário + resultado -->
-      <div class="col-md-6 mb-4">
-        <div class="card p-4">
-          <h5 class="text-center text-primary mb-3">
-            <i class="fas fa-weight"></i> Inserir Dados
-          </h5>
-          <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-
-            <div class="text-center mt-3">
-              <button type="submit" class="btn btn-outline-dark">
-                <i class="fas fa-plus-circle"></i> Inserir
-              </button>
-            </div>
-          </form>
-        </div>
-
-        {% if ganho %}
-        <div class="card p-3 mt-3">
-          <h6 class="text-center text-primary"><i class="fas fa-info-circle"></i> Resultado:</h6>
-          <p class="text-center">
-            Seu IMC é <strong>{{ ganho.imc|floatformat:2 }}</strong> -
-            <strong>{{ ganho.classificacao }}</strong><br>
-            <span style="color: {% if ganho.classificacao == 'Eutrofia' %}green{% elif ganho.classificacao == 'Sobrepeso' %}orange{% else %}red{% endif %}; font-weight: bold;">
-              {% if ganho.classificacao == 'Baixo peso' %}
-                A gestante deve ganhar entre 12,5kg a 18kg.
-              {% elif ganho.classificacao == 'Eutrofia' %}
-                A gestante deve ganhar entre 11,5kg a 16kg.
-              {% elif ganho.classificacao == 'Sobrepeso' %}
-                A gestante deve ganhar entre 7kg a 11,5kg.
-              {% else %}
-                A gestante deve ganhar entre 5kg a 9kg.
-              {% endif %}
-            </span>
-          </p>
-        </div>
-        {% endif %}
-      </div>
-
-      <!-- Lado direito: gráfico + botões -->
-      <div class="col-md-6 mb-4">
-        {% if ganho and ganho.grafico %}
-        <div class="card p-4 text-center">
-          <h5 class="text-primary mb-3"><i class="fas fa-chart-line"></i> Gráfico de Peso</h5>
-          <img src="{{ ganho.grafico.url }}" alt="Gráfico de ganho de peso" class="img-fluid mb-3" style="max-height: 400px; object-fit: contain;">
-          <div class="d-flex justify-content-between">
-            <form method="post" action="{% url 'excluir_ganho' ganho.id %}">
+        <!-- Formulário -->
+        <div class="{% if ganho and ganho.grafico %}col-md-5{% else %}col-12{% endif %}">
+          <div class="card p-4 {% if not ganho or not ganho.grafico %}formulario-centralizado{% endif %} shadow rounded-4">
+            <h5 class="text-center text-primary mb-3">
+              <i class="fas fa-weight"></i> Inserir Dados
+            </h5>
+            <form method="post" enctype="multipart/form-data">
               {% csrf_token %}
-              <button type="submit" class="btn btn-danger">
+              {{ form.as_p }}
+              <div class="text-center mt-3">
+                <button type="submit" class="btn btn-dark btn-lg px-4">
+                  <i class="fas fa-plus-circle"></i> Inserir
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {% if ganho %}
+          <div class="card p-3 mt-4 {% if not ganho.grafico %}formulario-centralizado{% endif %} shadow-sm rounded-4">
+            <h6 class="text-center text-primary"><i class="fas fa-info-circle"></i> Resultado:</h6>
+            <p class="text-center">
+              Seu IMC é <strong>{{ ganho.imc|floatformat:2 }}</strong> - 
+              <strong>{{ ganho.classificacao }}</strong><br>
+              <span style="color: {% if ganho.classificacao == 'Eutrofia' %}green{% elif ganho.classificacao == 'Sobrepeso' %}orange{% else %}red{% endif %}; font-weight: bold;">
+                {% if ganho.classificacao == 'Baixo peso' %}
+                  A gestante deve ganhar entre 12,5kg a 18kg.
+                {% elif ganho.classificacao == 'Eutrofia' %}
+                  A gestante deve ganhar entre 11,5kg a 16kg.
+                {% elif ganho.classificacao == 'Sobrepeso' %}
+                  A gestante deve ganhar entre 7kg a 11,5kg.
+                {% else %}
+                  A gestante deve ganhar entre 5kg a 9kg.
+                {% endif %}
+              </span>
+            </p>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Gráfico -->
+        {% if ganho and ganho.grafico %}
+        <div class="col-md-7">
+          <div class="card p-4 text-center shadow rounded-4">
+            <h5 class="text-primary mb-3">
+              <i class="fas fa-chart-line"></i> Gráfico de Peso
+            </h5>
+            <img src="{{ ganho.grafico.url }}" alt="Gráfico de ganho de peso" class="img-fluid grafico-img mb-4">
+
+            <!-- Envio por e-mail -->
+            <form method="post" action="{% url 'enviar_email_ganho' ganho.id %}" class="row g-2 align-items-center justify-content-center mb-3">
+              {% csrf_token %}
+              <div class="col-md-8">
+                <input type="email" name="email" placeholder="Seu e-mail" 
+       class="form-control form-control-lg campo-email" required>
+
+              </div>
+              <div class="col-md-4 d-grid">
+                <button type="submit" class="btn btn-outline-primary btn-lg btn-enviar-email">
+                  <i class="fas fa-paper-plane"></i> Enviar por Email
+                </button>
+                
+              </div>
+            </form>
+
+            <!-- Botão excluir -->
+            <form method="post" action="{% url 'excluir_ganho' ganho.id %}" class="text-center mt-3">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger px-4 py-2" style="font-size: 1rem;">
                 <i class="fas fa-trash-alt"></i> Excluir
               </button>
             </form>
-            <form method="post" action="{% url 'enviar_email_ganho' ganho.id %}">
-              {% csrf_token %}
-              <input type="email" name="email" placeholder="Seu e-mail" class="form-control me-2 d-inline-block w-auto" required>
-              <button type="submit" class="btn btn-outline-primary mt-2">
-                <i class="fas fa-paper-plane"></i> Enviar por e-mail
-              </button>
-            </form>
+            
+            
           </div>
         </div>
         {% endif %}
-      </div>
 
+      </div>
     </div>
   </div>
-</div>
 </body>
 </html>
