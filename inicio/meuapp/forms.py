@@ -3,14 +3,12 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from .models import Cliente, ContactMe,CustomUser
+from .models import Cliente, ContactMe,CustomUser,Vacina
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import password_validation
 from django.forms import DateInput
 
-from django import forms
-from .models import Vacina
 
 
 class CustomUserLoginForm(AuthenticationForm):
@@ -97,12 +95,9 @@ class CustomUserChangeForm(forms.ModelForm):
 
 
 
-from django import forms
-from django.forms import DateInput
-from .models import Cliente
-
 class ClienteForm(forms.ModelForm):
     datanascimento = forms.DateField(
+          label='Data de Nascimento',  # Aqui você define o verbose_name
         widget=forms.DateInput(attrs={
             'type': 'date',
             'class': 'form-control'
@@ -133,11 +128,6 @@ class ClienteForm(forms.ModelForm):
             'foto': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if self.instance and self.instance.pk and self.instance.datanascimento:
-            # Formata a data no formato correto para <input type="date">
-            self.fields['datanascimento'].initial = self.instance.datanascimento.strftime('%Y-%m-%d')
 
 class ContactMeForm(forms.ModelForm):
     class Meta:

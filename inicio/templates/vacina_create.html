@@ -42,7 +42,7 @@
                     <p>Sem comprovante</p>
                 {% endif %}
 
-                <p style="font-size: 12px;">Usuário: {{ vacina.usuario.username }}</p>
+                <p style="font-size: 12px;">Gestante: {{ vacina.usuario.get_full_name }}</p>
 
                 <a href="{% url 'update_vacina' vacina.id %}" class="btn btn-warning btn-sm">Editar</a>
                 <a href="{% url 'delete_vacina' vacina.id %}" class="btn btn-danger btn-sm">Excluir</a>

@@ -13,8 +13,6 @@
 
 
 
-
-
 </head>
 <body>
     <div id="popup" class="alert alert" role="alert">
@@ -44,41 +42,43 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="login" id="maisDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-user"></i> Usuário
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="maisDropdown">
-                                {% if not request.user.is_authenticated %}
-                                    <a class="dropdown-item" href="{% url 'login' %}">
-                                        <i class="fas fa-sign-in-alt"></i> Login
-                                    </a>
-                                    <a class="dropdown-item" href="{% url 'registro' %}">
-                                        <i class="fas fa-user-plus"></i> Cadastre-se
-                                    </a>
-                                {% endif %}
-                        
-                                <div class="dropdown-divider"></div>
-                        
-                                {% if request.user.is_authenticated %}
-                                    <a class="dropdown-item" href="{% url 'update_profile' %}">
-                                        <i class="fas fa-user-edit"></i> Atualizar perfil
-                                    </a>
-                        
-                                    <a href="#" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
-                                        <i class="fas fa-trash-alt"></i> Excluir Conta
-                                    </a>
-                        
-                                    <form action="{% url 'logout' %}" method="post">
-                                        {% csrf_token %}
-                                        <button type="submit" class="dropdown-item">
-                                            <i class="fas fa-sign-out-alt"></i> Sair
-                                        </button>
-                                    </form>
-                                {% endif %}
-                            </div>
-                        </li>
-                        
+                    
+                    <!-- Aba Usuário -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="login" id="maisDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> Usuário
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="maisDropdown">
+                            {% if not request.user.is_authenticated %}
+                                <a class="dropdown-item" href="{% url 'login' %}">
+                                    <i class="fas fa-sign-in-alt"></i> Login
+                                </a>
+                                <a class="dropdown-item" href="{% url 'registro' %}">
+                                    <i class="fas fa-user-plus"></i> Cadastre-se
+                                </a>
+                            {% endif %}
+                    
+                            <div class="dropdown-divider"></div>
+                    
+                            {% if request.user.is_authenticated %}
+                                <a class="dropdown-item" href="{% url 'update_profile' %}">
+                                    <i class="fas fa-user-edit"></i> Atualizar perfil
+                                </a>
+                    
+                                <a href="#" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                                    <i class="fas fa-trash-alt"></i> Excluir Conta
+                                </a>
+                    
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="fas fa-sign-out-alt"></i> Sair
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </li>
+                    
                         
 {% if request.user.is_authenticated %}
 <li class="nav-item dropdown">
@@ -90,10 +90,6 @@
         <a class="dropdown-item" href="{% url 'prenatal' %}">
             <i class="fas fa-calendar-check"></i> Pré Natal
         </a>
-
-
-
-
 
         
         <!-- Sempre mostrar o botão de cadastro -->
@@ -107,11 +103,10 @@
             </a>
         {% endif %}
 
-
-
-
-
-
+        <a class="dropdown-item" href="">
+            <i class="fas fa-chart-line"></i> Monitoramento do Ganho de Peso Gestacional
+        </a>
+        
         <a class="dropdown-item" href="{% url 'noticias' %}">
             <i class="fas fa-newspaper"></i> Notícias
         </a>

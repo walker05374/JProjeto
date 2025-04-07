@@ -34,9 +34,6 @@ class Cliente(models.Model):
     foto = models.ImageField(upload_to='', null=True, blank=True)
     print 
 
-
-
-
     def __str__(self):
         return f"{self.nome} - CPF: {self.cpf}"
 
