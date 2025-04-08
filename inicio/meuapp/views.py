@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import get_template, render_to_string
 from django_ratelimit.decorators import ratelimit
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.core.mail import EmailMessage, send_mail
@@ -48,11 +48,12 @@ from .forms import (
     CustomUser, 
     CustomUserCreationForm, 
     CustomUserChangeForm, 
-    CustomUserLoginForm,
     Vacina,
     VacinaForm,
     GanhoPesoForm,
     GanhoPeso,
+    ExameForm,
+    Exame
 )
 from .utils import google_custom_search
 from inicio.meuapp.services import send_mail_to_user
@@ -559,3 +560,47 @@ Equipe de acompanhamento gestacional.
             messages.error(request, f"Erro ao enviar o e-mail: {e}")
 
         return redirect('ganho_peso')
+    
+@login_required
+def exames_view(request, id=None):
+    exames = Exame.objects.filter(usuario=request.user)
+    editar = False
+
+    if id:
+        exame = get_object_or_404(Exame, id=id, usuario=request.user)
+        form = ExameForm(request.POST or None, request.FILES or None, instance=exame)
+        editar = True
+    else:
+        form = ExameForm(request.POST or None, request.FILES or None)
+
+    if request.method == 'POST' and form.is_valid():
+        exame_salvo = form.save(commit=False)
+        exame_salvo.usuario = request.user
+        exame_salvo.save()
+        return redirect('exames')  # sem argumentos!
+
+    context = {
+        'form': form,
+        'exames': exames,
+        'editar': editar,
+    }
+    return render(request, 'abaprenatal.html', context)
+
+@login_required
+def delete_exame(request, id):
+    exame = get_object_or_404(Exame, id=id, usuario=request.user)
+    exame.delete()
+    return redirect('exames')
+
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def validar_exame(request, exame_id):
+    exame = get_object_or_404(Exame, id=exame_id)
+    if request.method == 'POST':
+        resultado = request.POST.get('resultado', '')
+        status = request.POST.get('status', 'verificado')
+        exame.resultado = resultado
+        exame.status = status
+        exame.save()
+        return redirect('exames')
+    return render(request, 'validar_exame.html', {'exame': exame})

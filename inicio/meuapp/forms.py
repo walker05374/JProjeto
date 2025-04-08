@@ -7,8 +7,8 @@ from .models import Cliente, ContactMe,CustomUser,Vacina,GanhoPeso
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import password_validation
-from django.forms import DateInput
 
+from .models import Exame
 
 
 class CustomUserLoginForm(AuthenticationForm):
@@ -155,3 +155,12 @@ class GanhoPesoForm(forms.ModelForm):
     class Meta:
         model = GanhoPeso
         fields = ['peso_inicial', 'peso_atual', 'altura', 'semana_gestacional']
+
+
+class ExameForm(forms.ModelForm):
+    class Meta:
+        model = Exame
+        fields = ['nome', 'data', 'comprovante']
+        widgets = {
+            'data': forms.DateInput(attrs={'type': 'date'}),
+        }

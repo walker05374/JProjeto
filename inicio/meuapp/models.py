@@ -72,3 +72,19 @@ class GanhoPeso(models.Model):
 
     def __str__(self):
         return f"Ganho de Peso - {self.usuario}"
+
+class Exame(models.Model):
+    STATUS_CHOICES = [
+        ('aguarde', 'Aguarde'),
+        ('verificado', 'Verificado'),
+    ]
+
+    nome = models.CharField(max_length=100)
+    data = models.DateField()
+    comprovante = models.ImageField(upload_to='comprovantes_exames/')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='aguarde')
+    resultado = models.TextField(blank=True)
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.nome} - {self.usuario.get_full_name()}"

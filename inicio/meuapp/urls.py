@@ -10,6 +10,11 @@ from inicio.meuapp import views as v
 from django.conf import settings
 from django.conf.urls.static import static
 
+
+from inicio.meuapp.views import exames_view, delete_exame, validar_exame
+
+
+
 from .views import excluir_conta
 
 from .views import MyPasswordReset
@@ -24,7 +29,7 @@ router.register(r'cliente', ClienteViewSet, basename="Cliente")
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('', views.site, name='site'),
-    path('prenatal/', views.prenatal, name='prenatal'),
+
     path('informacoes/', views.informacoes, name='informacoes'),
     path('mais/', views.mais, name='mais'),
     path('amamentacao/', views.amamentacao, name='amamentacao'),
@@ -38,7 +43,7 @@ urlpatterns = [
 
     path('read_cliente/', views.read_cliente, name='read_cliente'),
     path('create_cliente', views.create_cliente, name='create_cliente'),
-  path("update_cliente/<int:id>/", views.update_cliente, name='update_cliente'),
+    path("update_cliente/<int:id>/", views.update_cliente, name='update_cliente'),
 
     path("delete_cliente/<int:id>", views.delete_cliente, name='delete_cliente'),
   
@@ -73,8 +78,10 @@ urlpatterns = [
     path('ganho_peso/excluir/<int:pk>/', views.excluir_ganho, name='excluir_ganho'),
     path('ganho_peso/enviar_email/<int:pk>/', views.enviar_email_ganho, name='enviar_email_ganho'),
 
-
-
+    path('exames/', exames_view, name='exames'),  # listar/cadastrar
+    path('exames/<int:id>/', exames_view, name='update_exame'),  # editar
+    path('exames/delete/<int:id>/', delete_exame, name='delete_exame'),
+    path('exames/validar/<int:exame_id>/', validar_exame, name='validar_exame'),
 
 ]
 
