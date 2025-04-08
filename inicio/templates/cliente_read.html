@@ -4,83 +4,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Informações Adicionais</title>
-    <link rel="stylesheet" href="{% static 'css/clienteread.css' %}">
+    <title>Informações da Gestante</title>
+    <link rel="stylesheet" href="{% static 'css/clienteread2.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
+<!-- ALERTA FORA DO CARD -->
+{% if messages %}
+    <div class="alert alert-success alert-dismissible fade show mt-4 mx-auto" role="alert" style="max-width: 1100px; border-radius: 12px; font-weight: 500;">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endif %}
+
+<!-- CONTEÚDO PRINCIPAL -->
 <div class="container">
-    <ul class="nav nav-tabs justify-content-between">
-        <li class="nav-item">
-            <a class="nav-link text-dark" href="{% url 'site' %}">Início</a>
-        </li>
-        <li class="nav-item ml-auto">
-            {% if clientes and clientes.0.foto %}
-                <img src="{{ clientes.0.foto.url }}?{{ clientes.0.atualizado_em.timestamp }}" alt="Foto do Cliente" class="profile-picture">
-            {% else %}
-                <span class="profile-text">Perfil do Usuário</span>
-            {% endif %}
-        </li>
-    </ul>
+    
+    <div class="header-bar d-flex justify-content-between align-items-center mb-4">
+        <a href="{% url 'site' %}" class="btn btn-inicio"><i class="fas fa-home"></i> Início</a>
+        <h2 class="text-center flex-grow-1">Informações da Gestante</h2>
+        
+        {% if clientes and clientes.0.foto %}
+            <img src="{{ clientes.0.foto.url }}?{{ clientes.0.atualizado_em.timestamp }}" alt="Foto" class="foto-perfil">
+        {% else %}
+            <img src="{% static 'images/default-avatar.png' %}" alt="Foto Padrão" class="foto-perfil">
+        {% endif %}
+    </div>
 
-    <h2 class="text-center">Informações das Gestantes</h2>
     {% for cliente in clientes %}
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <h5>Nome:</h5>
-            <input class="form-control" type="text" value="{{ cliente.nome }}" readonly>
-        </div>
-        <div class="col-md-4">
-            <h5>CPF:</h5>
-            <input class="form-control" type="text" value="{{ cliente.cpf|slice:'0:3' }}.{{ cliente.cpf|slice:'3:6' }}.{{ cliente.cpf|slice:'6:9' }}-{{ cliente.cpf|slice:'9:11' }}" readonly>
-        </div>
-        <div class="col-md-4">
-            <h5>Data de Nascimento:</h5>
-            <input class="form-control" type="text" value="{{ cliente.datanascimento|date:'d/m/Y' }}" readonly>
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-md-4"><h5>SUS:</h5><input class="form-control" type="text" value="{{ cliente.sus|slice:'0:3' }}.{{ cliente.sus|slice:'3:6' }}.{{ cliente.sus|slice:'6:9' }} {{ cliente.sus|slice:'9:12' }}" readonly></div>
-        <div class="col-md-4"><h5>Nome da Criança:</h5><input class="form-control" type="text" value="{{ cliente.nomecrianca }}" readonly></div>
-        <div class="col-md-4"><h5>Gênero da Criança:</h5><input class="form-control" type="text" value="{{ cliente.generocrianca }}" readonly></div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-md-4"><h5>Idade da Criança:</h5><input class="form-control" type="number" value="{{ cliente.idadecrianca }}" readonly></div>
-        <div class="col-md-4"><h5>CEP:</h5><input class="form-control" type="text" value="{{ cliente.cep }}" readonly></div>
-        <div class="col-md-4"><h5>Endereço:</h5><input class="form-control" type="text" value="{{ cliente.endereco }}" readonly></div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-md-4"><h5>Bairro:</h5><input class="form-control" type="text" value="{{ cliente.bairro }}" readonly></div>
-        <div class="col-md-4"><h5>Cidade:</h5><input class="form-control" type="text" value="{{ cliente.cidade }}" readonly></div>
-        <div class="col-md-4"><h5>UF:</h5><input class="form-control" type="text" value="{{ cliente.uf }}" readonly></div>
-    </div>
-
-    <div class="row mb-4">
-        <div class="col text-center">
-            <hr>
-            <div class="d-flex justify-content-center">
-                <div class="mr-5">
-                    <a href="{% url 'cliente_update' cliente.id %}">
-                        <img src="{% static 'images/editar.png' %}" height="35px">
-                    </a>
-                </div>
-                <div>
-                    <a href="{% url 'cliente_delete' cliente.id %}">
-                        <img src="{% static 'images/excluir.png' %}" height="35px">
-                    </a>
-                </div>
+    <div class="form-box">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label>Nome:</label>
+                <input class="form-control" value="{{ cliente.nome }}" readonly>
             </div>
-            <hr>
+            <div class="col-md-4 mb-3">
+                <label>CPF:</label>
+                <input class="form-control" value="{{ cliente.cpf|slice:'0:3' }}.{{ cliente.cpf|slice:'3:6' }}.{{ cliente.cpf|slice:'6:9' }}-{{ cliente.cpf|slice:'9:11' }}" readonly>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>Data de Nascimento:</label>
+                <input class="form-control" value="{{ cliente.datanascimento|date:'d/m/Y' }}" readonly>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label>Cartão SUS:</label>
+                <input class="form-control" value="{{ cliente.sus|slice:'0:3' }}.{{ cliente.sus|slice:'3:6' }}.{{ cliente.sus|slice:'6:9' }} {{ cliente.sus|slice:'9:12' }}" readonly>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>Nome da Criança:</label>
+                <input class="form-control" value="{{ cliente.nomecrianca }}" readonly>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>Gênero da Criança:</label>
+                <input class="form-control" value="{{ cliente.generocrianca }}" readonly>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label>Idade da Criança:</label>
+                <input class="form-control" value="{{ cliente.idadecrianca }}" readonly>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>CEP:</label>
+                <input class="form-control" value="{{ cliente.cep }}" readonly>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>Endereço:</label>
+                <input class="form-control" value="{{ cliente.endereco }}" readonly>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label>Bairro:</label>
+                <input class="form-control" value="{{ cliente.bairro }}" readonly>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>Cidade:</label>
+                <input class="form-control" value="{{ cliente.cidade }}" readonly>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>UF:</label>
+                <input class="form-control" value="{{ cliente.uf }}" readonly>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'update_cliente' cliente.id %}" class="btn btn-editar mx-2">
+                <i class="fas fa-pen"></i> Editar
+            </a>
+            <a href="{% url 'delete_cliente' cliente.id %}" class="btn btn-excluir mx-2">
+                <i class="fas fa-trash"></i> Excluir
+            </a>
         </div>
     </div>
     {% endfor %}
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- JS do Bootstrap para fechar o alerta -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

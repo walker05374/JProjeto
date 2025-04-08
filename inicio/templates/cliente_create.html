@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informação Adicional da Gestante</title>
-    <link rel="stylesheet" href="{% static 'css/clientecreate.css' %}">
+    <link rel="stylesheet" href="{% static 'css/clientecreate1.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,7 +18,7 @@
             <i class="fas fa-home"></i> Início
         </a>
 
-        <h2 class="titulo-gestante">Informação Adicional da Gestante</h2>
+        <h2 class="titulo-gestante">Informações da Gestante</h2>
 
         <label for="foto-upload" class="m-0" style="cursor: pointer;">
             {% if cliente and cliente.foto %}
@@ -32,7 +32,7 @@
     <form id="form" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="file" id="foto-upload" name="foto" class="d-none" accept="image/*" onchange="previewImage(event)">
-        <p class="text-center subtitulo">Olá, {{ request.user.get_full_name }}</p>
+
 
         {% if cliente_form.errors %}
             <div class="alert alert-danger">
@@ -76,11 +76,15 @@
             <div class="form-group col-md-4">{{ cliente_form.cidade.label_tag }}{{ cliente_form.cidade }}</div>
             <div class="form-group col-md-4">{{ cliente_form.uf.label_tag }}{{ cliente_form.uf }}</div>
         </div>
-
         <div class="text-center mt-4">
-            <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#modalSalvar">Salvar</button>
+            <button type="button" class="btn btn-salvar" data-toggle="modal" data-target="#modalSalvar">
+                <i class="fas fa-save"></i> Salvar
+            </button>
         </div>
-
+        
+        
+        
+        
         <!-- Modal -->
         <div class="modal fade" id="modalSalvar" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
