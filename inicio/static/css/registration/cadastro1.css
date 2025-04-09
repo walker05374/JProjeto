@@ -1,9 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap');
+
 body {
-  background-image: url(/static/images/Login2.jpg);
-  background-repeat: no-repeat;
-  background-position: center center;
+  background-image: url("/static/images/Login2.jpg");
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
@@ -14,36 +19,43 @@ body {
 }
 
 .area {
-  background-color: #ffffff80;
-  padding: 25px;
-  border-radius: 5%;
-  box-shadow: 4px 4px 1px 1px #00000070;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 700px;
 }
 
-h1 {
+h2 {
   color: #027789;
-  margin-bottom: 30px;
+  font-weight: 500;
 }
 
 .form-control {
   background-color: transparent;
-  width: 100%;
-  padding: 10px 12px;
-  display: inline-block;
   border: none;
   border-bottom: 2px solid #027789;
-  outline: none;
-  min-width: 180px;
-  font-size: 16px;
   border-radius: 0;
-  margin-bottom: 20px;
+  font-size: 16px;
+  outline: none;
 }
 
-.form-group {
-  position: relative;
+.form-control:focus {
+  box-shadow: none;
+  border-color: #014e5c;
 }
 
-.botao {
-  display: flex;
-  justify-content: center;
+.invalid-feedback {
+  font-size: 14px;
+}
+
+.btn-outline-dark {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.btn-outline-dark:disabled {
+  opacity: 0.5;
 }

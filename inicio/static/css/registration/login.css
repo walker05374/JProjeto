@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+
+body {
+  background-image: url('/static/images/Login.jpeg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.card {
+  background-color: #ffffffcc;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+}
+
+.card h2 {
+  font-weight: bold;
+  color: #027789;
+}
+
+.campo-flo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.campo-flo i {
+  position: absolute;
+  left: 10px;
+  color: #027789;
+  font-size: 18px;
+}
+
+.campo-flo input {
+  width: 100%;
+  padding: 10px 10px 10px 35px;
+  border: none;
+  border-bottom: 2px solid #027789;
+  background: transparent;
+  outline: none;
+  font-size: 16px;
+  color: #333;
+}
+
+.campo-flo input:focus {
+  border-color: #01303a;
+}
+
+.centrobotao {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.btn-outline-dark {
+  padding: 10px 25px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.a ,p {
+  text-align: center;
+  font-size: 14px;
+  color: #027789;
+  font-weight: bold;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-btn i {
+  font-size: 26px;
+  color: #027789;
+  transition: 0.3s ease;
+}
+
+.social-btn i:hover {
+  color: #014f5b;
+}
+
+.alert {
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 6px;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
