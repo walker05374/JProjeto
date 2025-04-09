@@ -352,7 +352,7 @@ def vacina_create(request):
                 'vazio': True
             })
 
-    return render(request, 'vacina_create.html', {
+    return render(request, 'vacinas/vacina_create.html', {
         'form': form,
         'vacinas': vacinas,
         'circulos': circulos,
@@ -392,7 +392,7 @@ def update_vacina(request, id):
                 'vazio': True
             })
 
-    return render(request, 'vacina_create.html', {
+    return render(request, 'vacinas/vacina_create.html', {
         'form': form,
         'vacinas': vacinas,
         'circulos': circulos,
