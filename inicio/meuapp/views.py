@@ -1,66 +1,61 @@
+# Django core
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import get_template, render_to_string
-from django_ratelimit.decorators import ratelimit
 from django.conf import settings
-from django.contrib.auth.decorators import login_required,user_passes_test
-from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.core.mail import EmailMessage, send_mail
-from django.contrib.auth.tokens import default_token_generator
 from django.core.files.base import ContentFile
-
-
-import matplotlib.pyplot as plt
-import os
-from io import BytesIO
-
-from .models import GanhoPeso
-from .forms import GanhoPesoForm
-
-
-
-import matplotlib
-matplotlib.use('Agg')  # Solução para evitar erros com Tkinter em servidores
+from django.http import HttpResponse, JsonResponse
+from django.utils.http import urlsafe_base64_encode
 
 
 
 
 
-
-
-
+# Django auth
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import (
     PasswordResetView, 
     PasswordResetDoneView, 
     PasswordResetConfirmView, 
     PasswordResetCompleteView
 )
-from django.utils.http import urlsafe_base64_encode
-from django.http import HttpResponse, JsonResponse
-from notifications.signals import notify
-import logging
 
-# Import models and forms
-from .models import Cliente, CustomUser
+# Terceiros
+from django_ratelimit.decorators import ratelimit
+from notifications.signals import notify
+
+# Bibliotecas padrão / externas
+import os
+import logging
+from io import BytesIO
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.use('Agg')  # Solução para evitar erros com Tkinter em servidores
+
+# Models
+from .models import Cliente, CustomUser, GanhoPeso, Vacina, Exame
+
+# Forms
 from .forms import (
-    ClienteForm, 
-    ContactMeForm, 
-    CustomUser, 
-    CustomUserCreationForm, 
-    CustomUserChangeForm, 
-    Vacina,
+    ClienteForm,
+    ContactMeForm,
+    CustomUser,
+    CustomUserCreationForm,
+    CustomUserChangeForm,
     VacinaForm,
     GanhoPesoForm,
-    GanhoPeso,
-    ExameForm,
-    Exame
+    ExameForm
 )
+
+# Utilitários internos
 from .utils import google_custom_search
 from inicio.meuapp.services import send_mail_to_user
 
-logger = logging.getLogger(__name__)
+# Logger
 logger = logging.getLogger('django.request')
-
 
 
 # Views
@@ -94,7 +89,7 @@ def login_view(request):
             messages.error(request, 'Usuário não encontrado!')
             logger.warning(f"Falha ao fazer login - Usuário não encontrado: {username}")
     
-    return render(request, 'login.html')
+    return render(request, 'registration/login.html')
 
 
 @login_required
@@ -106,7 +101,7 @@ def site(request):
     notify.send(request.user, recipient=request.user, verb=f"Olá {request.user.email}, você está logado")
 
     # Renderiza a página e passa a variável clientes_cadastrados para o template
-    return render(request, 'site.html', {'clientes_cadastrados': clientes_cadastrados})
+    return render(request, 'site/site.html', {'clientes_cadastrados': clientes_cadastrados})
 
 
 def registro(request):
@@ -120,7 +115,7 @@ def registro(request):
         else:
             messages.error(request, 'Ocorreu um erro ao cadastrar o usuário. Verifique os campos.')
     
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'registration/register.html', {'form': form})
 
 
 class MyPasswordReset(PasswordResetView):
@@ -173,11 +168,11 @@ def contact_me(request):
             return redirect('chat')
     else:
         form = ContactMeForm()
-    return render(request, 'subChat.html', {'form': form})
+    return render(request, 'site/subChat.html', {'form': form})
 
 
 def sendmail_contact(data):
-    message_body = get_template('send.html').render(data)
+    message_body = get_template('site/send.html').render(data)
     sendmail = EmailMessage(data['subject'], message_body, settings.DEFAULT_FROM_EMAIL, to=['jornadamaternal@gmail.com'])
     sendmail.content_subtype = "html"
     return sendmail.send()
@@ -192,53 +187,42 @@ def verify_email(request, pk):
 
 
 def register(request):
-    return render(request, 'registration_form.html')
+    return render(request, 'registration/registration_form.html')
 
 
 @login_required
-def prenatal(request):
-    return render(request, 'abaPreNatal.html')
+def agendamento(request):
+    return render(request, 'agendamento/exames.html')
 
 
 def mais(request):
-    return render(request, 'abaMais.html')
+    return render(request, 'site/abaMais.html')
 
 
 def amamentacao(request):
-    return render(request, 'subAmamentacao.html')
+    return render(request, 'site/subAmamentacao.html')
 
 
 def noticias(request):
-    return render(request, 'subNoticias.html')
+    return render(request, 'site/subNoticias.html')
 
 
 def informacoes(request):
-    return render(request, 'adicionarinformacoes.html')
+    return render(request, 'site/adicionarinformacoes.html')
 
 
 def menu(request):
-    return render(request, 'cliente_read.html')
+    return render(request, 'informaçãogestante/cliente_read.html')
 
 
 def cep(request):
-    return render(request, 'cep.html')
+    return render(request, 'site/cep.html')
 
 
 def search_results(request):
     query = request.GET.get('q')
     results = google_custom_search(query) if query else []
-    return render(request, 'search_results.html', {'results': results, 'query': query})
-
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from .models import Cliente
-from .forms import ClienteForm
-
-
-
-
+    return render(request, 'site/search_results.html', {'results': results, 'query': query})
 
 
 
@@ -266,7 +250,7 @@ def create_cliente(request):
     else:
         cliente_form = ClienteForm()
 
-    return render(request, 'cliente_create.html', {
+    return render(request, 'informacaogestante/cliente_create.html', {
         'cliente_form': cliente_form,
         'cliente': cliente
     })
@@ -274,7 +258,7 @@ def create_cliente(request):
 
 def read_cliente(request):
     clientes = Cliente.objects.filter(user=request.user)
-    return render(request, 'cliente_read.html', {'clientes': clientes})
+    return render(request, 'informacaogestante/cliente_read.html', {'clientes': clientes})
 
 
 @login_required
@@ -290,7 +274,7 @@ def update_cliente(request, id):
     else:
         cliente_form = ClienteForm(instance=cliente)
 
-    return render(request, 'cliente_create.html', {
+    return render(request, 'informacaogestante/cliente_create.html', {
         'cliente_form': cliente_form,
         'cliente': cliente
     })
@@ -322,7 +306,7 @@ def update_profile(request):
     else:
         form = CustomUserChangeForm(instance=request.user)
 
-    return render(request, 'update_profile.html', {'form': form})
+    return render(request, 'registration/update_profile.html', {'form': form})
 
 
 @login_required
@@ -423,7 +407,6 @@ def delete_vacina(request, id):
 
 
 
-
 def calcular_imc(peso, altura=1.60):  # altura padrão, ou pode puxar do perfil do usuário
     return round(peso / (altura ** 2), 2)
 
@@ -437,18 +420,6 @@ def classificar_imc(imc):
     else:
         return "Obesidade (Você iniciou a gestação com obesidade. Acompanhar o ganho de peso é essencial para sua saúde e a do bebê.)"
 
-
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .models import GanhoPeso
-from .forms import GanhoPesoForm
-from django.contrib import messages  # <== Adicionado para mensagens
-from django.core.mail import EmailMessage
-from django.conf import settings
-from io import BytesIO
-from django.core.files.base import ContentFile
-import matplotlib.pyplot as plt
 
 
 @login_required
@@ -512,7 +483,7 @@ def ganho_peso_view(request):
     else:
         form = GanhoPesoForm(instance=ganho)
 
-    return render(request, 'ganho_peso.html', {
+    return render(request, 'peso/ganho_peso.html', {
         'form': form,
         'ganho': ganho
     })
@@ -584,7 +555,7 @@ def exames_view(request, id=None):
         'exames': exames,
         'editar': editar,
     }
-    return render(request, 'abaprenatal.html', context)
+    return render(request, 'agendamento/exames.html', context)
 
 @login_required
 def delete_exame(request, id):
@@ -603,4 +574,4 @@ def validar_exame(request, exame_id):
         exame.status = status
         exame.save()
         return redirect('exames')
-    return render(request, 'validar_exame.html', {'exame': exame})
+    return render(request, 'agendamento/validar_exame.html', {'exame': exame})
