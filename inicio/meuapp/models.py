@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 
 
+
 class CustomUser(AbstractUser):
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
@@ -88,3 +89,31 @@ class Exame(models.Model):
 
     def __str__(self):
         return f"{self.nome} - {self.usuario.get_full_name()}"
+    
+
+# Em forms.py ou views.py
+
+
+
+class ExameDisponivel(models.Model):
+    nome = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nome
+
+class ExamePosto(models.Model):
+    nome = models.CharField(max_length=100)
+    cidade = models.CharField(max_length=100)  # Adiciona aqui
+    endereco = models.CharField(max_length=255)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    exames_disponiveis = models.ManyToManyField('ExameDisponivel')
+
+    def __str__(self):
+        return f"{self.nome} - {self.cidade}"
+
+
+class AgendamentoExame(models.Model):
+    exame = models.CharField(max_length=100)
+    outro_exame = models.CharField(max_length=100, blank=True, null=True)
+    posto = models.CharField(max_length=200)

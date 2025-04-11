@@ -3,12 +3,18 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from .models import Cliente, ContactMe,CustomUser,Vacina,GanhoPeso
+from .models import Cliente, ContactMe,CustomUser,Vacina,GanhoPeso,ExameDisponivel
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import password_validation
 
-from .models import Exame
+from .models import Exame, AgendamentoExame, ExameDisponivel
+
+
+
+
+
+
 
 
 class CustomUserLoginForm(AuthenticationForm):
@@ -164,3 +170,8 @@ class ExameForm(forms.ModelForm):
         widgets = {
             'data': forms.DateInput(attrs={'type': 'date'}),
         }
+        
+class AgendamentoExameForm(forms.ModelForm):
+    class Meta:
+        model = AgendamentoExame
+        fields = ['exame', 'outro_exame', 'posto']

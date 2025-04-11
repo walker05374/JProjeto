@@ -83,6 +83,16 @@ urlpatterns = [
     path('exames/delete/<int:id>/', delete_exame, name='delete_exame'),
     path('exames/validar/<int:exame_id>/', validar_exame, name='validar_exame'),
 
+
+    path('agendamento/', views.solicitar_agendamento, name='agendamento'),
+  
+    path('buscar_postos/', views.buscar_postos_saude, name='buscar_postos_saude'),
+    path('proxy-google-amplo/', views.proxy_google_amplo, name='proxy_google_amplo'),
+
+
+
+
+
 ]
 
     

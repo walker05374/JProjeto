@@ -1,0 +1,22 @@
+
+NOME_EXAMES = [
+    ('Selecione um exame'),
+    ('Ultrassonografia obstétrica', 'Ultrassonografia obstétrica'),
+    ('Ultrassonografia morfológica', 'Ultrassonografia morfológica'),
+    ('Ultrassonografia transvaginal', 'Ultrassonografia transvaginal'),
+    ('Hemograma completo', 'Hemograma completo'),
+    ('Tipagem sanguínea e fator Rh', 'Tipagem sanguínea e fator Rh'),
+    ('Teste da sífilis (VDRL)', 'Teste da sífilis (VDRL)'),
+    ('Teste de HIV', 'Teste de HIV'),
+    ('Hepatite B e C', 'Hepatite B e C'),
+    ('Glicemia de jejum', 'Glicemia de jejum'),
+    ('Teste oral de tolerância à glicose (TOTG)', 'Teste oral de tolerância à glicose (TOTG)'),
+    ('Exame de urina (EAS)', 'Exame de urina (EAS)'),
+    ('Urocultura', 'Urocultura'),
+    ('Exame de fezes', 'Exame de fezes'),
+    ('Papanicolau (citopatológico)', 'Papanicolau (citopatológico)'),
+    ('Cardiotocografia', 'Cardiotocografia'),
+    ('Avaliação odontológica', 'Avaliação odontológica'),
+    ('Consulta com nutricionista', 'Consulta com nutricionista'),
+    ('Consulta com assistente social', 'Consulta com assistente social'),
+]

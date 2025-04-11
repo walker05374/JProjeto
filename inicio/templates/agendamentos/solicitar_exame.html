@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Solicitar Exame</title>
+  <link rel="stylesheet" href="{% static 'css/agendamentos/solicitar_exame.css' %}">
+</head>
+<body>
+  <div class="form-container">
+    <div class="card">
+      <h2>Solicitar Exame</h2>
+
+      <form method="POST" id="form-agendamento">
+        {% csrf_token %}
+
+        <!-- Exame -->
+        <label for="exame"><strong>Exame:</strong></label>
+        <select id="exame" name="exame" class="form-control">
+          {% for exame in NOME_EXAMES %}
+            <option value="{{ exame }}">{{ exame }}</option>
+          {% endfor %}
+          <option value="Outro">Outro</option>
+        </select>
+
+        <!-- Outro Exame -->
+        <div id="outro-exame-container" style="display: none; margin-top: 10px;">
+          <input type="text" name="outro_exame" placeholder="Informe o nome do exame" class="form-control">
+        </div>
+
+        <!-- Posto -->
+        <label for="id_posto"><strong>Posto de Saúde:</strong></label>
+        <select id="id_posto" name="posto" class="form-control">
+          <option value="">Selecione um posto</option>
+        </select>
+
+        <!-- Mapa -->
+        <div id="map" data-api-key="{{ GOOGLE_MAPS_API_KEY }}"
+             style="width: 100%; height: 400px; margin-top: 20px; border-radius: 10px;"></div>
+
+        <!-- Observações -->
+        <label for="observacoes"><strong>Observações:</strong></label>
+        <textarea name="observacoes" id="observacoes" rows="4" class="form-control"></textarea>
+
+        <!-- Botão -->
+        <button type="submit" class="btn-acao">Agendar</button>
+      </form>
+
+      <!-- Lista de agendamentos (opcional para debug) -->
+      {% for agendamento in agendamentos %}
+        <p>Posto: {{ agendamento.posto.nome }} - {{ agendamento.posto.endereco }}</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Dados de postos carregados via JSON -->
+  <script>
+    const postosData = JSON.parse('{{ postos_json|escapejs }}');
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const exameSelect = document.getElementById("exame");
+      const outroExameContainer = document.getElementById("outro-exame-container");
+
+      exameSelect.addEventListener("change", function () {
+        if (this.value === "Outro") {
+          outroExameContainer.style.display = "block";
+        } else {
+          outroExameContainer.style.display = "none";
+        }
+      });
+    });
+  </script>
+
+  <!-- Script personalizado -->
+  <script src="{% static 'js/solicitar_exame.js' %}"></script>
+
+  <!-- Google Maps API -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initMap"
+    async defer></script>
+
+</body>
+</html>

@@ -7,8 +7,17 @@ from django.core.mail import EmailMessage, send_mail
 from django.core.files.base import ContentFile
 from django.http import HttpResponse, JsonResponse
 from django.utils.http import urlsafe_base64_encode
+from django.core.serializers.json import DjangoJSONEncoder
+import json
+from inicio.meuapp.choices import NOME_EXAMES
+import math
+import requests
 
+from urllib.parse import urlencode
 
+from .utils import calcular_distancia
+
+from .forms import AgendamentoExameForm
 
 
 
@@ -36,7 +45,7 @@ import matplotlib.pyplot as plt
 matplotlib.use('Agg')  # Solução para evitar erros com Tkinter em servidores
 
 # Models
-from .models import Cliente, CustomUser, GanhoPeso, Vacina, Exame
+from .models import Cliente, CustomUser, GanhoPeso, Vacina, Exame,ExamePosto, ExameDisponivel, AgendamentoExame
 
 # Forms
 from .forms import (
@@ -47,7 +56,9 @@ from .forms import (
     CustomUserChangeForm,
     VacinaForm,
     GanhoPesoForm,
-    ExameForm
+    ExameForm,
+    AgendamentoExameForm,
+    
 )
 
 # Utilitários internos
@@ -555,7 +566,7 @@ def exames_view(request, id=None):
         'exames': exames,
         'editar': editar,
     }
-    return render(request, 'agendamento/exames.html', context)
+    return render(request, 'agendamentos/exames.html', context)
 
 @login_required
 def delete_exame(request, id):
@@ -574,4 +585,142 @@ def validar_exame(request, exame_id):
         exame.status = status
         exame.save()
         return redirect('exames')
-    return render(request, 'agendamento/validar_exame.html', {'exame': exame})
+    return render(request, 'agendamentos/validar_exame.html', {'exame': exame})
+###############################################################################################################
+
+from .forms import AgendamentoExameForm
+
+def solicitar_agendamento(request):
+    form = AgendamentoExameForm()
+
+    context = {
+        "form": form,
+        'GOOGLE_MAPS_API_KEY': settings.GOOGLE_MAPS_API_KEY,
+        "exames": NOME_EXAMES,  # definido como lista de tuplas
+        "postos": [],           # por enquanto vazio, você vai preencher via JSON depois
+        "postos_json": "[]",    # também deixamos como lista vazia inicialmente
+    }
+    return render(request, "agendamentos/solicitar_exame.html", context)
+
+
+import requests
+from django.http import JsonResponse
+def buscar_postos_saude(request):
+    lat = request.GET.get("lat")
+    lng = request.GET.get("lng")
+    key = settings.GOOGLE_MAPS_API_KEY
+
+    url = (
+    f"https://maps.googleapis.com/maps/api/place/textsearch/json"
+    f"?query=posto+de+saúde+hospital+SUS+SESMA+AME+exames+posto+de+saúde+público"
+    f"&location={lat},{lng}&radius=140000&key={key}"
+        )
+
+
+    response = requests.get(url)
+    return JsonResponse(response.json().get("results", []), safe=False)
+
+def proxy_google_places(request):
+    lat = request.GET.get("lat")
+    lng = request.GET.get("lng")
+    key = settings.GOOGLE_MAPS_API_KEY
+
+    url = (
+        f"https://maps.googleapis.com/maps/api/place/textsearch/json"
+        f"?query=posto+de+saúde&location={lat},{lng}&radius=60000&key={key}"
+    )
+
+    response = requests.get(url)
+    return JsonResponse(response.json())
+
+def gerar_pontos_radiais(lat, lng, raio_km=140, passo_km=50):
+    pontos = []
+    R = 6371  # raio da Terra em km
+
+    # Gera uma grade simples em torno do ponto central
+    for dx in [-1, 0, 1]:
+        for dy in [-1, 0, 1]:
+            offset_lat = (passo_km * dy) / R * (180 / math.pi)
+            offset_lng = (passo_km * dx) / (R * math.cos(math.pi * lat / 180)) * (180 / math.pi)
+            nova_lat = lat + offset_lat
+            nova_lng = lng + offset_lng
+            pontos.append((nova_lat, nova_lng))
+
+    return pontos
+def gerar_pontos_radiais(lat, lng, raio_km=140, passo_km=50):
+    pontos = []
+    R = 6371  # Raio da Terra em km
+
+    for dx in [-1, 0, 1]:
+        for dy in [-1, 0, 1]:
+            offset_lat = (passo_km * dy) / R * (180 / math.pi)
+            offset_lng = (passo_km * dx) / (R * math.cos(math.radians(lat))) * (180 / math.pi)
+            nova_lat = lat + offset_lat
+            nova_lng = lng + offset_lng
+            pontos.append((nova_lat, nova_lng))
+
+    return pontos
+
+def busca_ampla_postos(lat, lng):
+    key = settings.GOOGLE_MAPS_API_KEY
+    termos_busca = [
+        "posto de saúde",
+        "hospital",
+        "SUS",
+        "SESMA",
+        "AME",
+        "exames",
+        "posto de saúde público"
+    ]
+    query = "+OR+".join([t.replace(" ", "+") for t in termos_busca])
+
+    pontos = gerar_pontos_radiais(lat, lng)
+    resultados_unicos = {}
+
+    for ponto_lat, ponto_lng in pontos:
+        url = (
+            f"https://maps.googleapis.com/maps/api/place/textsearch/json"
+            f"?query={query}&location={ponto_lat},{ponto_lng}&radius=50000&key={key}"
+        )
+
+        response = requests.get(url)
+        data = response.json()
+
+        for result in data.get("results", []):
+            place_id = result.get("place_id")
+            if place_id and place_id not in resultados_unicos:
+                resultados_unicos[place_id] = result
+
+    return list(resultados_unicos.values())
+
+def proxy_google_amplo(request):
+    lat = float(request.GET.get("lat"))
+    lng = float(request.GET.get("lng"))
+    resultados = busca_ampla_postos(lat, lng)
+    return JsonResponse(resultados, safe=False)
+
+
+
+def proxy_google_amplo(request):
+    lat = request.GET.get("lat")
+    lng = request.GET.get("lng")
+    key = settings.GOOGLE_MAPS_API_KEY
+
+    url = (
+        f"https://maps.googleapis.com/maps/api/place/textsearch/json"
+        f"?query=posto+de+saúde+OR+ame+sus+OR+sesma+OR+hospital+OR+exames+OR+posto+de+saude+publico"
+        f"&location={lat},{lng}&radius=140000&key={key}"
+    )
+
+    response = requests.get(url)
+    return JsonResponse(response.json())
+
+
+def solicitar_agendamento(request):
+    form = AgendamentoExameForm()
+    context = {
+        'form': form,
+        'NOME_EXAMES': NOME_EXAMES,
+        'GOOGLE_MAPS_API_KEY': settings.GOOGLE_MAPS_API_KEY,
+    }
+    return render(request, 'agendamentos/solicitar_exame.html', context)
