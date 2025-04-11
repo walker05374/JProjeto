@@ -9,6 +9,9 @@ from urllib.parse import urlencode
 
 
 
+
+
+
 GOOGLE_API_KEY = 'AIzaSyDzn1gNy0Zjh2JRwULVJ-ZtC9a9r9VHwsw'
 GOOGLE_CSE_ID = '47069417be7bc44e8'
 
@@ -27,22 +30,15 @@ class AppTokenGenerator(PasswordResetTokenGenerator):
 account_activation_token = AppTokenGenerator()
 
 
-
 def calcular_distancia(lat1, lon1, lat2, lon2):
     coords_1 = (lat1, lon1)
     coords_2 = (lat2, lon2)
     return geodesic(coords_1, coords_2).kilometers
 
 
-
 def gerar_pontos_radiais(lat, lng, raio_km=140, passo_km=50):
-    """
-    Gera uma grade de pontos ao redor da latitude/longitude fornecida,
-    com o objetivo de simular uma busca em área ampla.
-    """
     pontos = []
     R = 6371  # Raio médio da Terra em km
-
     num_passos = int((raio_km * 2) / passo_km)
 
     for dx in range(-num_passos//2, num_passos//2 + 1):
@@ -57,40 +53,53 @@ def gerar_pontos_radiais(lat, lng, raio_km=140, passo_km=50):
 
 
 def busca_ampla_postos(lat, lng):
-    """
-    Realiza uma busca usando a API do Google Places (Text Search)
-    com múltiplos termos e em múltiplos pontos da região.
-    """
     key = settings.GOOGLE_MAPS_API_KEY
+
     termos_busca = [
-        "posto de saúde",
-        "hospital",
-        "SUS",
-        "SESMA",
-        "AME",
-        "exames",
-        "posto de saúde público"
+        "SESMA", "SESMA Belém", "Sistema Único de Saúde", "SUS", "Atendimento SUS",
+        "Posto de saúde SUS", "Hospital público", "Clínica pública", "UBS", "UBSF", "USF",
+        "Centro de Saúde", "Unidade de Saúde", "Unidade de Pronto Atendimento", "UPA",
+        "Policlínica", "Policlínica municipal", "Hospital Municipal", "AME", 
+        "AME Atendimento Médico Especializado", "Ambulatório Médico Especializado",
+        "Atendimento pré-natal", "Exames para gestantes", "Pré-natal", 
+        "Clínica obstétrica", "Hospital maternidade", "Atendimento obstétrico SUS",
+        "Exames obstétricos SUS", "Centro de referência da mulher", "Clínica da mulher",
+        "Centro de atenção à gestante", "Posto de saúde", "Clínica da família",
+        "Clínica comunitária", "Saúde da mulher", "Posto médico", 
+        "Hospital para exames", "Exames médicos gratuitos", 
+        "Consultório público", "Centro médico público"
     ]
-    query = " OR ".join(termos_busca)
 
     pontos = gerar_pontos_radiais(lat, lng)
     resultados_unicos = {}
 
-    for ponto_lat, ponto_lng in pontos:
-        params = {
-            "query": query,
-            "location": f"{ponto_lat},{ponto_lng}",
-            "radius": 50000,
-            "key": key
-        }
-        url = f"https://maps.googleapis.com/maps/api/place/textsearch/json?{urlencode(params)}"
+    termos_destaque = ["sesma", "sus", "ame", "maternidade", "gestante", "obstetr", "mulher"]
 
-        response = requests.get(url)
-        data = response.json()
+    for termo in termos_busca:
+        for ponto_lat, ponto_lng in pontos:
+            params = {
+                "query": termo,
+                "location": f"{ponto_lat},{ponto_lng}",
+                "radius": 50000,
+                "key": key
+            }
+            url = f"https://maps.googleapis.com/maps/api/place/textsearch/json?{urlencode(params)}"
 
-        for result in data.get("results", []):
-            place_id = result.get("place_id")
-            if place_id not in resultados_unicos:
-                resultados_unicos[place_id] = result
+            response = requests.get(url)
+            if response.status_code != 200:
+                continue
+
+            data = response.json()
+
+            for result in data.get("results", []):
+                place_id = result.get("place_id")
+                nome_lower = result.get("name", "").lower()
+
+                if place_id not in resultados_unicos:
+                    resultados_unicos[place_id] = result
+
+                # Garante que entradas importantes apareçam
+                elif any(kw in nome_lower for kw in termos_destaque):
+                    resultados_unicos[place_id] = result
 
     return list(resultados_unicos.values())
