@@ -74,46 +74,25 @@ class GanhoPeso(models.Model):
     def __str__(self):
         return f"Ganho de Peso - {self.usuario}"
 
-class Exame(models.Model):
-    STATUS_CHOICES = [
-        ('aguarde', 'Aguarde'),
-        ('verificado', 'Verificado'),
-    ]
+from django.db import models
 
-    nome = models.CharField(max_length=100)
-    data = models.DateField()
-    comprovante = models.ImageField(upload_to='comprovantes_exames/')
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='aguarde')
-    resultado = models.TextField(blank=True)
-    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.nome} - {self.usuario.get_full_name()}"
-    
-
-# Em forms.py ou views.py
-
-
-
-class ExameDisponivel(models.Model):
-    nome = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.nome
+from django.db import models
 
 class ExamePosto(models.Model):
     nome = models.CharField(max_length=100)
-    cidade = models.CharField(max_length=100)  # Adiciona aqui
+    cidade = models.CharField(max_length=100)
     endereco = models.CharField(max_length=255)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    exames_disponiveis = models.ManyToManyField('ExameDisponivel')
 
     def __str__(self):
         return f"{self.nome} - {self.cidade}"
 
-
+# Modelo para armazenar o agendamento do exame
 class AgendamentoExame(models.Model):
-    exame = models.CharField(max_length=100)
-    outro_exame = models.CharField(max_length=100, blank=True, null=True)
-    posto = models.CharField(max_length=200)
+    exame = models.CharField(max_length=100)  # Exame escolhido
+    posto = models.ForeignKey(ExamePosto, on_delete=models.CASCADE)  # Posto de saúde selecionado
+    data_agendamento = models.DateTimeField(auto_now_add=True)  # Data e hora do agendamento
+
+    def __str__(self):
+        return f"Agendamento: {self.exame} no posto {self.posto.nome} em {self.data_agendamento}"

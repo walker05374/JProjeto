@@ -2,82 +2,54 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Solicitar Exame</title>
-  <link rel="stylesheet" href="{% static 'css/agendamentos/solicitar_exame.css' %}">
+    <meta charset="UTF-8">
+    <title>Solicitar Exame</title>
+    <link rel="stylesheet" href="{% static 'css/agendamentos/solicitar_exame.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
 <body>
-  <div class="form-container">
-    <div class="card">
-      <h2>Solicitar Exame</h2>
+<div class="background py-5">
+    <div class="container">
+        <ul class="nav nav-tabs justify-content-between my-3">
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{% url 'site' %}">
+                    <i class="fas fa-home"></i> Início
+                </a>
+            </li>
+        </ul>
 
-      <form method="POST" id="form-agendamento">
-        {% csrf_token %}
+        <div class="row justify-content-center g-4">
+            <div class="col-lg-6">
+                <div class="card p-4">
+                    <h5 class="text-center text-primary mb-3">
+                        <i class="fas fa-notes-medical"></i> Solicitar Exame
+                    </h5>
+                    <!-- solicitar_exame.html -->
+<form method="POST" >
+  {% csrf_token %}
+  {{ form.as_p }} 
+  <button type="submit" class="btn btn-primary mt-3">Agendar Exame</button>
+</form>
 
-        <!-- Exame -->
-        <label for="exame"><strong>Exame:</strong></label>
-        <select id="exame" name="exame" class="form-control">
-          {% for exame in NOME_EXAMES %}
-            <option value="{{ exame }}">{{ exame }}</option>
-          {% endfor %}
-          <option value="Outro">Outro</option>
-        </select>
+                </div>
+            </div>
 
-        <!-- Outro Exame -->
-        <div id="outro-exame-container" style="display: none; margin-top: 10px;">
-          <input type="text" name="outro_exame" placeholder="Informe o nome do exame" class="form-control">
+            <div class="col-lg-6">
+                <div id="map" data-api-key="{{ google_maps_api_key }}"></div>
+            </div>
         </div>
-
-        <!-- Posto -->
-        <label for="id_posto"><strong>Posto de Saúde:</strong></label>
-        <select id="id_posto" name="posto" class="form-control">
-          <option value="">Selecione um posto</option>
-        </select>
-
-        <!-- Mapa -->
-        <div id="map" data-api-key="{{ GOOGLE_MAPS_API_KEY }}"
-             style="width: 100%; height: 400px; margin-top: 20px; border-radius: 10px;"></div>
-
-        <!-- Observações -->
-        <label for="observacoes"><strong>Observações:</strong></label>
-        <textarea name="observacoes" id="observacoes" rows="4" class="form-control"></textarea>
-
-        <!-- Botão -->
-        <button type="submit" class="btn-acao">Agendar</button>
-      </form>
-
-      <!-- Lista de agendamentos (opcional para debug) -->
-      {% for agendamento in agendamentos %}
-        <p>Posto: {{ agendamento.posto.nome }} - {{ agendamento.posto.endereco }}</p>
-      {% endfor %}
     </div>
-  </div>
+</div>
 
-  <!-- Dados de postos carregados via JSON -->
-  <script>
-    const postosData = JSON.parse('{{ postos_json|escapejs }}');
+<!-- Google Maps -->
+<script
+  src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap&libraries=places"
+  async
+  defer
+></script>
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const exameSelect = document.getElementById("exame");
-      const outroExameContainer = document.getElementById("outro-exame-container");
-
-      exameSelect.addEventListener("change", function () {
-        if (this.value === "Outro") {
-          outroExameContainer.style.display = "block";
-        } else {
-          outroExameContainer.style.display = "none";
-        }
-      });
-    });
-  </script>
-
-  <!-- Script personalizado -->
-  <script src="{% static 'js/solicitar_exame.js' %}"></script>
-
-  <!-- Google Maps API -->
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initMap"
-    async defer></script>
-
+<!-- JS separado -->
+<script src="{% static 'js/solicitar_exame.js' %}"></script>
 </body>
 </html>

@@ -103,3 +103,4 @@ def busca_ampla_postos(lat, lng):
                     resultados_unicos[place_id] = result
 
     return list(resultados_unicos.values())
+

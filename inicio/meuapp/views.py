@@ -17,7 +17,6 @@ from urllib.parse import urlencode
 
 from .utils import calcular_distancia
 
-from .forms import AgendamentoExameForm
 
 
 
@@ -45,7 +44,7 @@ import matplotlib.pyplot as plt
 matplotlib.use('Agg')  # Solução para evitar erros com Tkinter em servidores
 
 # Models
-from .models import Cliente, CustomUser, GanhoPeso, Vacina, Exame,ExamePosto, ExameDisponivel, AgendamentoExame
+from .models import Cliente, CustomUser, GanhoPeso, Vacina,ExamePosto
 
 # Forms
 from .forms import (
@@ -56,8 +55,7 @@ from .forms import (
     CustomUserChangeForm,
     VacinaForm,
     GanhoPesoForm,
-    ExameForm,
-    AgendamentoExameForm,
+    SolicitarExameForm
     
 )
 
@@ -543,79 +541,23 @@ Equipe de acompanhamento gestacional.
 
         return redirect('ganho_peso')
     
-@login_required
-def exames_view(request, id=None):
-    exames = Exame.objects.filter(usuario=request.user)
-    editar = False
 
-    if id:
-        exame = get_object_or_404(Exame, id=id, usuario=request.user)
-        form = ExameForm(request.POST or None, request.FILES or None, instance=exame)
-        editar = True
-    else:
-        form = ExameForm(request.POST or None, request.FILES or None)
-
-    if request.method == 'POST' and form.is_valid():
-        exame_salvo = form.save(commit=False)
-        exame_salvo.usuario = request.user
-        exame_salvo.save()
-        return redirect('exames')  # sem argumentos!
-
-    context = {
-        'form': form,
-        'exames': exames,
-        'editar': editar,
-    }
-    return render(request, 'agendamentos/exames.html', context)
-
-@login_required
-def delete_exame(request, id):
-    exame = get_object_or_404(Exame, id=id, usuario=request.user)
-    exame.delete()
-    return redirect('exames')
-
-@login_required
-@user_passes_test(lambda u: u.is_staff)
-def validar_exame(request, exame_id):
-    exame = get_object_or_404(Exame, id=exame_id)
-    if request.method == 'POST':
-        resultado = request.POST.get('resultado', '')
-        status = request.POST.get('status', 'verificado')
-        exame.resultado = resultado
-        exame.status = status
-        exame.save()
-        return redirect('exames')
-    return render(request, 'agendamentos/validar_exame.html', {'exame': exame})
-###############################################################################################################
-
-from .forms import AgendamentoExameForm
-
-def solicitar_agendamento(request):
-    form = AgendamentoExameForm()
-
-    context = {
-        "form": form,
-        'GOOGLE_MAPS_API_KEY': settings.GOOGLE_MAPS_API_KEY,
-        "exames": NOME_EXAMES,  # definido como lista de tuplas
-        "postos": [],           # por enquanto vazio, você vai preencher via JSON depois
-        "postos_json": "[]",    # também deixamos como lista vazia inicialmente
-    }
-    return render(request, "agendamentos/solicitar_exame.html", context)
 
 
 import requests
 from django.http import JsonResponse
+
+
 def buscar_postos_saude(request):
     lat = request.GET.get("lat")
     lng = request.GET.get("lng")
     key = settings.GOOGLE_MAPS_API_KEY
 
     url = (
-    f"https://maps.googleapis.com/maps/api/place/textsearch/json"
-    f"?query=posto+de+saúde+hospital+SUS+SESMA+AME+exames+posto+de+saúde+público"
-    f"&location={lat},{lng}&radius=140000&key={key}"
-        )
-
+        f"https://maps.googleapis.com/maps/api/place/textsearch/json"
+        f"?query=posto+de+saúde+hospital+SUS+SESMA+AME+exames+posto+de+saúde+público"
+        f"&location={lat},{lng}&radius=140000&key={key}"
+    )
 
     response = requests.get(url)
     return JsonResponse(response.json().get("results", []), safe=False)
@@ -693,13 +635,6 @@ def busca_ampla_postos(lat, lng):
 
     return list(resultados_unicos.values())
 
-def proxy_google_amplo(request):
-    lat = float(request.GET.get("lat"))
-    lng = float(request.GET.get("lng"))
-    resultados = busca_ampla_postos(lat, lng)
-    return JsonResponse(resultados, safe=False)
-
-
 
 def proxy_google_amplo(request):
     lat = request.GET.get("lat")
@@ -714,13 +649,56 @@ def proxy_google_amplo(request):
 
     response = requests.get(url)
     return JsonResponse(response.json())
+from django.shortcuts import render, redirect
+from .forms import SolicitarExameForm
+from django.conf import settings
 
+from .models import ExamePosto # Importa a função de buscar postos
 
 def solicitar_agendamento(request):
-    form = AgendamentoExameForm()
-    context = {
+    # Certifique-se de passar latitude e longitude da localização atual
+    lat = -1.458176  # Substitua com a latitude real
+    lng = -48.4605952  # Substitua com a longitude real
+
+    # Buscar e armazenar os postos de saúde na base de dados
+    buscar_postos(lat, lng)
+
+    if request.method == 'POST':
+        form = SolicitarExameForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('confirmacao_exame')
+    else:
+        form = SolicitarExameForm()
+
+    return render(request, 'agendamentos/solicitar_exame.html', {
         'form': form,
-        'NOME_EXAMES': NOME_EXAMES,
-        'GOOGLE_MAPS_API_KEY': settings.GOOGLE_MAPS_API_KEY,
-    }
-    return render(request, 'agendamentos/solicitar_exame.html', context)
+        'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
+    })
+
+
+
+def buscar_postos(lat, lng):
+    # Requisição para a API do Google Places (Nearby Search)
+    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius=5000&type=hospital&key={settings.GOOGLE_MAPS_API_KEY}"
+    
+    response = requests.get(url)
+    data = response.json()
+
+    # Armazenar os postos no banco
+    for lugar in data['results']:
+        nome = lugar['name']
+        endereco = lugar['vicinity']
+        latitude = lugar['geometry']['location']['lat']
+        longitude = lugar['geometry']['location']['lng']
+        
+        # Verifique se o posto já existe no banco antes de salvar
+        if not ExamePosto.objects.filter(nome=nome, latitude=latitude, longitude=longitude).exists():
+            ExamePosto.objects.create(
+                nome=nome,
+           
+                endereco=endereco,
+                latitude=latitude,
+                longitude=longitude
+            )

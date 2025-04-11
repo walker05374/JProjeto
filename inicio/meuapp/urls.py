@@ -11,7 +11,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-from inicio.meuapp.views import exames_view, delete_exame, validar_exame
 
 
 
@@ -78,18 +77,11 @@ urlpatterns = [
     path('ganho_peso/excluir/<int:pk>/', views.excluir_ganho, name='excluir_ganho'),
     path('ganho_peso/enviar_email/<int:pk>/', views.enviar_email_ganho, name='enviar_email_ganho'),
 
-    path('exames/', exames_view, name='exames'),  # listar/cadastrar
-    path('exames/<int:id>/', exames_view, name='update_exame'),  # editar
-    path('exames/delete/<int:id>/', delete_exame, name='delete_exame'),
-    path('exames/validar/<int:exame_id>/', validar_exame, name='validar_exame'),
 
 
-    path('agendamento/', views.solicitar_agendamento, name='agendamento'),
-  
+      path('solicitar_agendamento/', views.solicitar_agendamento, name='solicitar_agendamento'),
     path('buscar_postos/', views.buscar_postos_saude, name='buscar_postos_saude'),
     path('proxy-google-amplo/', views.proxy_google_amplo, name='proxy_google_amplo'),
-
-
 
 
 

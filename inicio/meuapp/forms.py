@@ -3,12 +3,11 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from .models import Cliente, ContactMe,CustomUser,Vacina,GanhoPeso,ExameDisponivel
+from .models import Cliente, ContactMe,CustomUser,Vacina,GanhoPeso,ExamePosto
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import password_validation
 
-from .models import Exame, AgendamentoExame, ExameDisponivel
 
 
 
@@ -162,16 +161,63 @@ class GanhoPesoForm(forms.ModelForm):
         model = GanhoPeso
         fields = ['peso_inicial', 'peso_atual', 'altura', 'semana_gestacional']
 
+EXAMES_CHOICES = [
+    ('', 'Selecione o Exame'),
+    ('Outro', 'Outro'),  # Opção para o usuário escrever o exame
+    ('glicose', 'Exame de Glicose (Curva glicêmica)'),
+    ('urina', 'Exame de Urina (Sumário de Urina)'),
+    ('ultrassom', 'Ultrassonografia Obstétrica'),
+    ('hemograma', 'Exame de Hemograma Completo'),
+    ('toxoplasmose', 'Exame de Toxoplasmose'),
+    ('rubeola', 'Exame de Rubéola'),
+    ('hepatite_b', 'Exame de Hepatite B e C'),
+    ('hiv', 'Exame de HIV'),
+    ('sifilis', 'Exame de Sífilis'),
+    ('papanicolau', 'Exame de Papanicolau'),
+    ('fezes', 'Exame de Fezes'),
+    ('estriol', 'Exame de Estriol (hormonal)'),
+    ('funcao_renal', 'Teste de Função Renal'),
+    ('ecg', 'Exame de Eletrocardiograma (ECG)'),
+    ('vitaminas', 'Exame de Vitaminas (como a vitamina D)')
+]
 
-class ExameForm(forms.ModelForm):
-    class Meta:
-        model = Exame
-        fields = ['nome', 'data', 'comprovante']
-        widgets = {
-            'data': forms.DateInput(attrs={'type': 'date'}),
-        }
-        
-class AgendamentoExameForm(forms.ModelForm):
-    class Meta:
-        model = AgendamentoExame
-        fields = ['exame', 'outro_exame', 'posto']
+
+from django import forms
+from .models import ExamePosto, AgendamentoExame
+
+from django import forms
+
+# Lista de exames para gestantes
+EXAMES_CHOICES = [
+    ('ultrassonografia_obstetrica', 'Ultrassonografia Obstétrica'),
+    ('exame_de_sangue', 'Exame de Sangue (Hemograma Completo)'),
+    ('teste_de_glicemia', 'Teste de Glicemia'),
+    ('exame_de_urina', 'Exame de Urina'),
+    ('exame_de_sangue_hiv', 'Exame de Sangue para HIV'),
+    ('exame_toxoplasmose', 'Exame de Toxoplasmose'),
+    ('exame_hepatite_b', 'Exame de Hepatite B'),
+    ('exame_hepatite_c', 'Exame de Hepatite C'),
+    ('eletrocardiograma', 'Eletrocardiograma'),
+    ('exame_streptococcus', 'Exame de Streptococcus do Grupo B'),
+    ('exame_de_vitaminas', 'Exame de Vitaminas e Minerais'),
+    ('ecocardiograma_fetal', 'Ecocardiograma Fetal'),
+    ('ultra_translucidencia_nucal', 'Ultra-transluminância Nucal (TN)'),
+    ('exame_bioquimico', 'Exame de Bioquímica (Função renal e hepática)'),
+    ('teste_papanicolau', 'Teste de Papanicolau'),
+    ('exame_pressao_arterial', 'Exame de Pressão Arterial'),
+    ('monitoramento_cardiaco_fetal', 'Exame de Monitoramento Cardíaco Fetal'),
+    ('anticorpos_rubeola', 'Exame de Anticorpos para Rubéola'),
+    ('teste_glicose_oral', 'Teste de Glicose Oral'),
+    ('testes_geneticos', 'Testes Genéticos e Screening de Anomalias Genéticas'),
+    ('exame_dna_fetal', 'Exame de DNA Fetal Não Invasivo'),
+]
+
+class SolicitarExameForm(forms.Form):
+    exame = forms.ChoiceField(
+        choices=EXAMES_CHOICES,  # Lista de exames de gestação
+        label="Selecione o Exame"
+    )
+    posto = forms.ModelChoiceField(
+        queryset=ExamePosto.objects.all(),  # Aqui você passa todos os postos armazenados
+        label="Selecione o Posto de Saúde"
+    )
