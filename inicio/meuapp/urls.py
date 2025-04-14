@@ -77,12 +77,8 @@ urlpatterns = [
     path('ganho_peso/excluir/<int:pk>/', views.excluir_ganho, name='excluir_ganho'),
     path('ganho_peso/enviar_email/<int:pk>/', views.enviar_email_ganho, name='enviar_email_ganho'),
 
-
-
-      path('solicitar_agendamento/', views.solicitar_agendamento, name='solicitar_agendamento'),
-    path('buscar_postos/', views.buscar_postos_saude, name='buscar_postos_saude'),
-    path('proxy-google-amplo/', views.proxy_google_amplo, name='proxy_google_amplo'),
-
+   
+    path('mapa/', views.mapa_view, name='mapa'),
 
 
 ]

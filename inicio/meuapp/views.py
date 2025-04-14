@@ -12,10 +12,7 @@ import json
 from inicio.meuapp.choices import NOME_EXAMES
 import math
 import requests
-
 from urllib.parse import urlencode
-
-from .utils import calcular_distancia
 
 
 
@@ -44,7 +41,7 @@ import matplotlib.pyplot as plt
 matplotlib.use('Agg')  # Solução para evitar erros com Tkinter em servidores
 
 # Models
-from .models import Cliente, CustomUser, GanhoPeso, Vacina,ExamePosto
+from .models import Cliente, CustomUser, GanhoPeso, Vacina
 
 # Forms
 from .forms import (
@@ -54,8 +51,7 @@ from .forms import (
     CustomUserCreationForm,
     CustomUserChangeForm,
     VacinaForm,
-    GanhoPesoForm,
-    SolicitarExameForm
+    GanhoPesoForm
     
 )
 
@@ -542,10 +538,11 @@ Equipe de acompanhamento gestacional.
         return redirect('ganho_peso')
     
 
-
-
-import requests
-from django.http import JsonResponse
+def mapa_view(request):
+    context = {
+        'GOOGLE_MAPS_API_KEY': settings.GOOGLE_MAPS_API_KEY
+    }
+    return render(request, 'agendamentos/mapa.html', context)
 
 
 def buscar_postos_saude(request):
@@ -562,37 +559,12 @@ def buscar_postos_saude(request):
     response = requests.get(url)
     return JsonResponse(response.json().get("results", []), safe=False)
 
-def proxy_google_places(request):
-    lat = request.GET.get("lat")
-    lng = request.GET.get("lng")
-    key = settings.GOOGLE_MAPS_API_KEY
 
-    url = (
-        f"https://maps.googleapis.com/maps/api/place/textsearch/json"
-        f"?query=posto+de+saúde&location={lat},{lng}&radius=60000&key={key}"
-    )
-
-    response = requests.get(url)
-    return JsonResponse(response.json())
-
-def gerar_pontos_radiais(lat, lng, raio_km=140, passo_km=50):
-    pontos = []
-    R = 6371  # raio da Terra em km
-
-    # Gera uma grade simples em torno do ponto central
-    for dx in [-1, 0, 1]:
-        for dy in [-1, 0, 1]:
-            offset_lat = (passo_km * dy) / R * (180 / math.pi)
-            offset_lng = (passo_km * dx) / (R * math.cos(math.pi * lat / 180)) * (180 / math.pi)
-            nova_lat = lat + offset_lat
-            nova_lng = lng + offset_lng
-            pontos.append((nova_lat, nova_lng))
-
-    return pontos
 def gerar_pontos_radiais(lat, lng, raio_km=140, passo_km=50):
     pontos = []
     R = 6371  # Raio da Terra em km
 
+    # Gera uma grade simples em torno do ponto central
     for dx in [-1, 0, 1]:
         for dy in [-1, 0, 1]:
             offset_lat = (passo_km * dy) / R * (180 / math.pi)
@@ -602,7 +574,6 @@ def gerar_pontos_radiais(lat, lng, raio_km=140, passo_km=50):
             pontos.append((nova_lat, nova_lng))
 
     return pontos
-
 def busca_ampla_postos(lat, lng):
     key = settings.GOOGLE_MAPS_API_KEY
     termos_busca = [
@@ -634,8 +605,6 @@ def busca_ampla_postos(lat, lng):
                 resultados_unicos[place_id] = result
 
     return list(resultados_unicos.values())
-
-
 def proxy_google_amplo(request):
     lat = request.GET.get("lat")
     lng = request.GET.get("lng")
@@ -649,56 +618,3 @@ def proxy_google_amplo(request):
 
     response = requests.get(url)
     return JsonResponse(response.json())
-from django.shortcuts import render, redirect
-from .forms import SolicitarExameForm
-from django.conf import settings
-
-from .models import ExamePosto # Importa a função de buscar postos
-
-def solicitar_agendamento(request):
-    # Certifique-se de passar latitude e longitude da localização atual
-    lat = -1.458176  # Substitua com a latitude real
-    lng = -48.4605952  # Substitua com a longitude real
-
-    # Buscar e armazenar os postos de saúde na base de dados
-    buscar_postos(lat, lng)
-
-    if request.method == 'POST':
-        form = SolicitarExameForm(request.POST)
-        
-        if form.is_valid():
-            form.save()
-            return redirect('confirmacao_exame')
-    else:
-        form = SolicitarExameForm()
-
-    return render(request, 'agendamentos/solicitar_exame.html', {
-        'form': form,
-        'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
-    })
-
-
-
-def buscar_postos(lat, lng):
-    # Requisição para a API do Google Places (Nearby Search)
-    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius=5000&type=hospital&key={settings.GOOGLE_MAPS_API_KEY}"
-    
-    response = requests.get(url)
-    data = response.json()
-
-    # Armazenar os postos no banco
-    for lugar in data['results']:
-        nome = lugar['name']
-        endereco = lugar['vicinity']
-        latitude = lugar['geometry']['location']['lat']
-        longitude = lugar['geometry']['location']['lng']
-        
-        # Verifique se o posto já existe no banco antes de salvar
-        if not ExamePosto.objects.filter(nome=nome, latitude=latitude, longitude=longitude).exists():
-            ExamePosto.objects.create(
-                nome=nome,
-           
-                endereco=endereco,
-                latitude=latitude,
-                longitude=longitude
-            )

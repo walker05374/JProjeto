@@ -73,26 +73,3 @@ class GanhoPeso(models.Model):
 
     def __str__(self):
         return f"Ganho de Peso - {self.usuario}"
-
-from django.db import models
-
-from django.db import models
-
-class ExamePosto(models.Model):
-    nome = models.CharField(max_length=100)
-    cidade = models.CharField(max_length=100)
-    endereco = models.CharField(max_length=255)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-
-    def __str__(self):
-        return f"{self.nome} - {self.cidade}"
-
-# Modelo para armazenar o agendamento do exame
-class AgendamentoExame(models.Model):
-    exame = models.CharField(max_length=100)  # Exame escolhido
-    posto = models.ForeignKey(ExamePosto, on_delete=models.CASCADE)  # Posto de saúde selecionado
-    data_agendamento = models.DateTimeField(auto_now_add=True)  # Data e hora do agendamento
-
-    def __str__(self):
-        return f"Agendamento: {self.exame} no posto {self.posto.nome} em {self.data_agendamento}"

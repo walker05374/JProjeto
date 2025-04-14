@@ -1,0 +1,42 @@
+/* Fundo da página */
+body {
+  background: url('/static/images/Login.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Cartões (caixas) */
+.card {
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Mapa responsivo */
+#map {
+  height: 500px;
+  width: 100%;
+}
+
+/* Botões padrão */
+button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+/* Responsivo em telas maiores */
+@media (min-width: 992px) {
+  .card {
+    max-width: 650px;
+    margin: 0 auto;
+  }
+}
