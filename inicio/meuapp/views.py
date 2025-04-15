@@ -549,22 +549,23 @@ def mapa_view(request):
     }
     return render(request, 'agendamentos/mapa1.html', context)
 
-def calcular_distancia(lat1, lon1, lat2, lon2):
-    """
-    Calcula a distância entre duas coordenadas (latitude e longitude) usando a fórmula de Haversine.
-    """
-    R = 6371  # Raio da Terra em km
-    phi1 = math.radians(lat1)
-    phi2 = math.radians(lat2)
-    delta_phi = math.radians(lat2 - lat1)
-    delta_lambda = math.radians(lon2 - lon1)
 
-    a = math.sin(delta_phi / 2)**2 + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2)**2
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-    return R * c
+
+
+
 def buscar_postos_saude(request):
-    lat = float(request.GET.get("lat"))
-    lng = float(request.GET.get("lng"))
+    # Verifica se os parâmetros 'lat' e 'lng' foram passados corretamente
+    lat = request.GET.get("lat")
+    lng = request.GET.get("lng")
+
+    if not lat or not lng:
+        return JsonResponse({"error": "Latitude e Longitude não fornecidos."}, status=400)
+
+    try:
+        lat = float(lat)
+        lng = float(lng)
+    except ValueError:
+        return JsonResponse({"error": "Latitude e Longitude devem ser números válidos."}, status=400)
 
     # Busca todos os postos de saúde
     postos = PostoSaude.objects.all()

@@ -28,6 +28,9 @@
               <i class="fas fa-map-marker-alt"></i> Buscar Hospitais Próximos
             </h5>
             <div id="map" style="width: 100%; height: 500px;"></div>
+            <button id="current-location-btn" class="btn btn-primary mt-3">
+              <i class="fas fa-location-arrow"></i> Localizar Agora
+            </button>
           </div>
         </div>
 
@@ -35,7 +38,7 @@
         <div class="col-12 col-md-4 mt-4 mt-md-0">
           <div class="card p-4 shadow rounded-4">
             <h5 class="text-center text-primary mb-3">
-              <i class="fas fa-hospital-alt"></i> Postos de Saúde Próximos
+              <i class="fas fa-hospital-alt"></i> Postos de Saúde
             </h5>
             <div class="table-container">
               <table class="table table-bordered">
@@ -60,7 +63,7 @@
 
   <!-- Incluir o script JS separado -->
   <script src="{% static 'js/mapa.js' %}"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVljhMbXIqux_EmMx-h_SOTH5kC1WRDDo&libraries=places&callback=initMap" async defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initMap" async defer></script>
 
 </body>
 </html>
