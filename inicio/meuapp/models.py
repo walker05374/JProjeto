@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-
+import math
 
 
 class CustomUser(AbstractUser):
@@ -73,3 +73,34 @@ class GanhoPeso(models.Model):
 
     def __str__(self):
         return f"Ganho de Peso - {self.usuario}"
+    
+from django.db import models
+
+class PostoSaude(models.Model):
+    nome = models.CharField(max_length=255)
+    endereco = models.CharField(max_length=255)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    tipo = models.CharField(max_length=100, null=True, blank=True)  # Tipo de serviço (hospital, posto, etc.)
+
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        ordering = ['nome']
+
+    def calcular_distancia(self, lat, lng):
+        """
+        Método para calcular a distância entre o posto de saúde e a localização fornecida (lat, lng)
+        Usamos a fórmula de Haversine para calcular a distância em km
+        """
+        R = 6371  # Raio da Terra em km
+        phi1 = math.radians(lat)
+        phi2 = math.radians(self.latitude)
+        delta_phi = math.radians(self.latitude - lat)
+        delta_lambda = math.radians(self.longitude - lng)
+
+        a = math.sin(delta_phi / 2)**2 + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2)**2
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        distancia = R * c
+        return distancia        

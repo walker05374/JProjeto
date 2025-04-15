@@ -1,0 +1,100 @@
+/* Fundo da página */
+body {
+  background: url('/static/images/Login.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Cartões (caixas) */
+.card {
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Inputs padronizados */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  transform: scale(1.03);
+  border-color: #007bff;
+}
+
+/* Gráfico responsivo */
+.grafico-img {
+  height: 420px;
+  width: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease-in-out;
+}
+
+.grafico-img:hover {
+  transform: scale(1.05);
+}
+
+/* Estilo para a tabela de postos com barra de rolagem */
+.table-container {
+  max-height: 500px;  /* Limita a altura do campo de postos */
+  overflow-y: scroll; /* Habilita a rolagem vertical */
+  margin-top: 20px;   /* Espaçamento superior */
+}
+
+/* Ajustes nas colunas da tabela */
+.table th, .table td {
+  word-wrap: break-word;
+  white-space: normal;
+  text-align: left;
+}
+
+.table {
+  width: 100%; /* A tabela ocupa toda a largura disponível */
+  table-layout: auto; /* Para que as colunas da tabela se ajustem corretamente */
+}
+
+/* Responsivo em telas maiores */
+@media (min-width: 992px) {
+  .card {
+    max-width: 650px;
+    margin: 0 auto;
+  }
+}
+
+/* Centralização do formulário */
+.formulario-centralizado {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Responsividade para telas pequenas */
+@media (max-width: 768px) {
+  /* Ajuste o mapa e a tabela para que ocupem toda a largura da tela em dispositivos móveis */
+  .col-md-8, .col-md-4 {
+    width: 100%;
+  }
+
+  #map {
+    height: 400px;  /* Ajuste a altura do mapa para dispositivos móveis */
+  }
+
+  .table {
+    font-size: 14px;  /* Ajuste a fonte da tabela para telas menores */
+  }
+}

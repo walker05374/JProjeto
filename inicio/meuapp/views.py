@@ -41,7 +41,7 @@ import matplotlib.pyplot as plt
 matplotlib.use('Agg')  # Solução para evitar erros com Tkinter em servidores
 
 # Models
-from .models import Cliente, CustomUser, GanhoPeso, Vacina
+from .models import Cliente, CustomUser, GanhoPeso, Vacina,PostoSaude
 
 # Forms
 from .forms import (
@@ -536,85 +536,56 @@ Equipe de acompanhamento gestacional.
             messages.error(request, f"Erro ao enviar o e-mail: {e}")
 
         return redirect('ganho_peso')
-    
+
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import PostoSaude
+import math
+from django.shortcuts import render
+from django.http import JsonResponse
+import math
+from .models import PostoSaude
 
 def mapa_view(request):
+    # Passa a chave diretamente para o template
     context = {
-        'GOOGLE_MAPS_API_KEY': settings.GOOGLE_MAPS_API_KEY
+        'GOOGLE_MAPS_API_KEY': 'AIzaSyDVljhMbXIqux_EmMx-h_SOTH5kC1WRDDo'  # Coloque sua chave de API diretamente
     }
-    return render(request, 'agendamentos/mapa.html', context)
+    return render(request, 'agendamentos/mapa1.html', context)
 
+def calcular_distancia(lat1, lon1, lat2, lon2):
+    """
+    Calcula a distância entre duas coordenadas (latitude e longitude) usando a fórmula de Haversine.
+    """
+    R = 6371  # Raio da Terra em km
+    phi1 = math.radians(lat1)
+    phi2 = math.radians(lat2)
+    delta_phi = math.radians(lat2 - lat1)
+    delta_lambda = math.radians(lon2 - lon1)
+
+    a = math.sin(delta_phi / 2)**2 + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    return R * c
 
 def buscar_postos_saude(request):
-    lat = request.GET.get("lat")
-    lng = request.GET.get("lng")
-    key = settings.GOOGLE_MAPS_API_KEY
+    lat = float(request.GET.get("lat"))
+    lng = float(request.GET.get("lng"))
 
-    url = (
-        f"https://maps.googleapis.com/maps/api/place/textsearch/json"
-        f"?query=posto+de+saúde+hospital+SUS+SESMA+AME+exames+posto+de+saúde+público"
-        f"&location={lat},{lng}&radius=140000&key={key}"
-    )
+    # Busca todos os postos de saúde
+    postos = PostoSaude.objects.all()
 
-    response = requests.get(url)
-    return JsonResponse(response.json().get("results", []), safe=False)
+    # Calcular a distância de cada posto para o usuário
+    postos_com_distancia = []
+    for posto in postos:
+        distancia = calcular_distancia(lat, lng, posto.latitude, posto.longitude)
+        postos_com_distancia.append({
+            'nome': posto.nome,
+            'endereco': posto.endereco,
+            'distancia': distancia
+        })
 
+    # Ordena os postos pela distância (menor para maior)
+    postos_com_distancia.sort(key=lambda x: x['distancia'])
 
-def gerar_pontos_radiais(lat, lng, raio_km=140, passo_km=50):
-    pontos = []
-    R = 6371  # Raio da Terra em km
-
-    # Gera uma grade simples em torno do ponto central
-    for dx in [-1, 0, 1]:
-        for dy in [-1, 0, 1]:
-            offset_lat = (passo_km * dy) / R * (180 / math.pi)
-            offset_lng = (passo_km * dx) / (R * math.cos(math.radians(lat))) * (180 / math.pi)
-            nova_lat = lat + offset_lat
-            nova_lng = lng + offset_lng
-            pontos.append((nova_lat, nova_lng))
-
-    return pontos
-def busca_ampla_postos(lat, lng):
-    key = settings.GOOGLE_MAPS_API_KEY
-    termos_busca = [
-        "posto de saúde",
-        "hospital",
-        "SUS",
-        "SESMA",
-        "AME",
-        "exames",
-        "posto de saúde público"
-    ]
-    query = "+OR+".join([t.replace(" ", "+") for t in termos_busca])
-
-    pontos = gerar_pontos_radiais(lat, lng)
-    resultados_unicos = {}
-
-    for ponto_lat, ponto_lng in pontos:
-        url = (
-            f"https://maps.googleapis.com/maps/api/place/textsearch/json"
-            f"?query={query}&location={ponto_lat},{ponto_lng}&radius=50000&key={key}"
-        )
-
-        response = requests.get(url)
-        data = response.json()
-
-        for result in data.get("results", []):
-            place_id = result.get("place_id")
-            if place_id and place_id not in resultados_unicos:
-                resultados_unicos[place_id] = result
-
-    return list(resultados_unicos.values())
-def proxy_google_amplo(request):
-    lat = request.GET.get("lat")
-    lng = request.GET.get("lng")
-    key = settings.GOOGLE_MAPS_API_KEY
-
-    url = (
-        f"https://maps.googleapis.com/maps/api/place/textsearch/json"
-        f"?query=posto+de+saúde+OR+ame+sus+OR+sesma+OR+hospital+OR+exames+OR+posto+de+saude+publico"
-        f"&location={lat},{lng}&radius=140000&key={key}"
-    )
-
-    response = requests.get(url)
-    return JsonResponse(response.json())
+    return JsonResponse(postos_com_distancia, safe=False)
