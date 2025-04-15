@@ -43,7 +43,6 @@ urlpatterns = [
     path('read_cliente/', views.read_cliente, name='read_cliente'),
     path('create_cliente', views.create_cliente, name='create_cliente'),
     path("update_cliente/<int:id>/", views.update_cliente, name='update_cliente'),
-
     path("delete_cliente/<int:id>", views.delete_cliente, name='delete_cliente'),
   
 
@@ -80,8 +79,13 @@ urlpatterns = [
    
     path('mapa/', views.mapa_view, name='mapa'),
 
+    path('forum/', views.forum, name='forum'),
+    path('deletar-topico/<int:topico_id>/', views.deletar_topico, name='deletar_topico'),
+    path('topico/<int:topico_id>/', views.detalhes_topico, name='detalhes_topico'),
+    path('comentar/<int:topico_id>/', views.comentar_topico, name='comentar_topico'),
+    path('deletar-comentario/<int:comentario_id>/', views.deletar_comentario, name='deletar_comentario'),
+    path('curtir/<str:tipo>/<int:id_conteudo>/', views.curtir_conteudo, name='curtir_conteudo'),  # Certifique-se de que essa URL está registrada
 
 ]
-
     
 urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

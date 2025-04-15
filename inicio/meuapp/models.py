@@ -12,7 +12,7 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
 
 class Cliente(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     GENERO_CHOICES = [
         ('M', 'Masculino'),
         ('F', 'Feminino'),
@@ -104,3 +104,62 @@ class PostoSaude(models.Model):
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
         distancia = R * c
         return distancia        
+
+
+##################
+#forum
+class Moderador(models.Model):
+    cliente = models.OneToOneField(Cliente, on_delete=models.CASCADE)
+    ativo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'{self.cliente.username} (Moderador)'
+
+
+class Topico(models.Model):
+    titulo = models.CharField(max_length=255)
+    descricao = models.TextField()
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Relacionando ao CustomUser
+    data_criacao = models.DateTimeField(auto_now_add=True)
+    ativo = models.BooleanField(default=True)  # Para ativar/desativar tópicos
+
+    def __str__(self):
+        return self.titulo
+    
+
+# models.py
+class Comentario(models.Model):
+    texto = models.TextField()
+    cliente = models.ForeignKey('Cliente', related_name='comentarios', on_delete=models.CASCADE)
+    topico = models.ForeignKey(Topico, related_name='comentarios', on_delete=models.CASCADE)
+    data_criacao = models.DateTimeField(auto_now_add=True)
+    ativo = models.BooleanField(default=True)
+    resposta = models.ForeignKey('self', null=True, blank=True, related_name='respostas', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Comentário de {self.cliente.nome}'
+
+
+class Curtida(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='curtidas', on_delete=models.CASCADE)
+    topico = models.ForeignKey(Topico, related_name='curtidas', null=True, blank=True, on_delete=models.CASCADE)
+    comentario = models.ForeignKey(Comentario, related_name='curtidas', null=True, blank=True, on_delete=models.CASCADE)
+    data = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        # Garante que o usuário só possa curtir o mesmo tópico ou comentário uma vez
+        unique_together = ('usuario', 'topico', 'comentario')
+
+    def __str__(self):
+        return f'{self.usuario.username} curtiu'
+
+class Relatorio(models.Model):
+    cliente = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='relatorios', on_delete=models.CASCADE)
+    comentario = models.ForeignKey(Comentario, related_name='relatorios', on_delete=models.CASCADE, null=True, blank=True)
+    topico = models.ForeignKey(Topico, related_name='relatorios', on_delete=models.CASCADE, null=True, blank=True)
+    motivo = models.TextField()
+    data_relatorio = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Relatório de {self.cliente.username}'
+

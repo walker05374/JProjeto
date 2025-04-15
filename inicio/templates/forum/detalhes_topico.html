@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Fórum - Detalhes do Tópico</title>
+    <link rel="stylesheet" href="{% static 'css/forum/forum.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="topico">
+                    <h2>{{ topico.titulo }}</h2>
+                    <p>{{ topico.descricao }}</p>
+                    <p><small>Criado por {{ topico.usuario.username }} em {{ topico.data_criacao }}</small></p>
+                </div>
+
+                <!-- Botão de Curtir Tópico -->
+                {% if not curtiu_topico %}
+                    <a href="{% url 'curtir_conteudo' tipo='topico' id_conteudo=topico.id %}" class="btn-curtir">
+                        <i class="fas fa-thumbs-up"></i> Curtir Tópico
+                    </a>
+                {% else %}
+                    <a href="{% url 'curtir_conteudo' tipo='topico' id_conteudo=topico.id %}" class="btn-curtir">
+                        <i class="fas fa-thumbs-down"></i> Descurtir Tópico
+                    </a>
+                {% endif %}
+                <span class="curtidas-num">{{ topico.curtidas.count }} Curtidas</span>
+
+                <hr>
+
+                <h3>Comentários</h3>
+                {% for item in comentarios %}
+                    <div class="comentario mb-4">
+                        <div class="d-flex align-items-center">
+                            <!-- Foto do Cliente -->
+                            {% if item.comentario.cliente.foto %}
+                                <img src="{{ item.comentario.cliente.foto.url }}?{{ item.comentario.cliente.atualizado_em.timestamp }}" 
+                                     alt="Foto de {{ item.comentario.cliente.nome }}" 
+                                     class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
+                            {% else %}
+                                <img src="{% static 'images/default-avatar.png' %}" 
+                                     alt="Foto Padrão" 
+                                     class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
+                            {% endif %}
+                            <!-- Nome do Cliente -->
+                            <p><strong>{{ item.comentario.cliente.nome }}</strong> disse:</p>
+                        </div>
+                        <p>{{ item.comentario.texto }}</p>
+                        <p><small>Comentado em {{ item.comentario.data_criacao }}</small></p>
+                
+                        <!-- Botão de Curtir Comentário -->
+                        {% if not item.curtiu %}
+                            <a href="{% url 'curtir_conteudo' tipo='comentario' id_conteudo=item.comentario.id %}" class="btn btn-primary">
+                                <i class="fas fa-thumbs-up"></i> Curtir Comentário
+                            </a>
+                        {% else %}
+                            <a href="{% url 'curtir_conteudo' tipo='comentario' id_conteudo=item.comentario.id %}" class="btn btn-danger">
+                                <i class="fas fa-thumbs-down"></i> Descurtir Comentário
+                            </a>
+                        {% endif %}
+                        <span class="curtidas-num">{{ item.comentario.curtidas.count }} Curtidas</span>
+                
+                        <!-- Excluir comentário -->
+                        {% if user == item.comentario.cliente.user or user.is_superuser %}
+                            <a href="{% url 'deletar_comentario' comentario_id=item.comentario.id %}" class="btn btn-danger">Excluir Comentário</a>
+                        {% endif %}
+                    </div>
+                
+                    <!-- Formulário de Resposta dentro do comentário -->
+                    <div id="resposta_{{ item.comentario.id }}" class="resposta-comment mb-3" style="display: none;">
+                        <form method="POST" action="{% url 'comentar_topico' topico_id=topico.id %}">
+                            {% csrf_token %}
+                            <textarea name="texto" class="form-control" placeholder="Sua resposta..."></textarea>
+                            <button type="submit" class="btn btn-success mt-2">Responder Comentário</button>
+                        </form>
+                    </div>
+                {% endfor %}
+                
+                <!-- Formulário de Resposta ao Tópico -->
+                <form method="POST" action="{% url 'comentar_topico' topico_id=topico.id %}">
+                    {% csrf_token %}
+                    <textarea name="texto" class="form-control" placeholder="Sua resposta ao tópico..."></textarea>
+                    <button type="submit" class="btn btn-success mt-2">Responder ao Tópico</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Script para abrir o formulário de resposta para um comentário específico
+        document.querySelectorAll('.btn-responder').forEach(button => {
+            button.addEventListener('click', function() {
+                const commentId = this.getAttribute('data-comment-id');
+                const form = document.getElementById(`resposta_${commentId}`);
+                form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+    </script>
+
+
+    <script src="{% static 'js/comentarios.js' %}"></script>
+</body>
+</html>

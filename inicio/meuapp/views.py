@@ -41,7 +41,7 @@ import matplotlib.pyplot as plt
 matplotlib.use('Agg')  # Solução para evitar erros com Tkinter em servidores
 
 # Models
-from .models import Cliente, CustomUser, GanhoPeso, Vacina,PostoSaude
+from .models import Cliente, CustomUser, GanhoPeso, Vacina,PostoSaude, Topico, Comentario, Curtida, Relatorio
 
 # Forms
 from .forms import (
@@ -542,6 +542,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .models import PostoSaude
 import math
+from .utils import calcular_distancia
 
 def mapa_view(request):
     context = {
@@ -551,21 +552,10 @@ def mapa_view(request):
 
 
 
-
-
+    # Busca todos os postos de saúde
 def buscar_postos_saude(request):
-    # Verifica se os parâmetros 'lat' e 'lng' foram passados corretamente
-    lat = request.GET.get("lat")
-    lng = request.GET.get("lng")
-
-    if not lat or not lng:
-        return JsonResponse({"error": "Latitude e Longitude não fornecidos."}, status=400)
-
-    try:
-        lat = float(lat)
-        lng = float(lng)
-    except ValueError:
-        return JsonResponse({"error": "Latitude e Longitude devem ser números válidos."}, status=400)
+    lat = float(request.GET.get("lat"))
+    lng = float(request.GET.get("lng"))
 
     # Busca todos os postos de saúde
     postos = PostoSaude.objects.all()
@@ -573,6 +563,7 @@ def buscar_postos_saude(request):
     # Calcular a distância de cada posto para o usuário
     postos_com_distancia = []
     for posto in postos:
+        # Calcula a distância usando a função calcular_distancia
         distancia = calcular_distancia(lat, lng, posto.latitude, posto.longitude)
         postos_com_distancia.append({
             'nome': posto.nome,
@@ -584,3 +575,146 @@ def buscar_postos_saude(request):
     postos_com_distancia.sort(key=lambda x: x['distancia'])
 
     return JsonResponse(postos_com_distancia, safe=False)
+
+
+# views.py
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Topico, Comentario, Moderador, Curtida, Relatorio
+from .forms import ComentarioForm, TopicoForm
+
+# Página principal do fórum: Listar tópicos e permitir criação de novos tópicos
+@login_required
+def forum(request):
+    topicos = Topico.objects.all()  # Recupera todos os tópicos
+
+    if request.method == 'POST':
+        form = TopicoForm(request.POST)
+        if form.is_valid():
+            topico = form.save(commit=False)
+            topico.usuario = request.user  # Associando o usuário logado ao tópico
+            topico.save()  # Salva o tópico no banco de dados
+            return redirect('forum')  # Redireciona para a lista de tópicos
+    else:
+        form = TopicoForm()  # Formulário vazio para criação de tópico
+
+    return render(request, 'forum/forum.html', {
+        'topicos': topicos,
+        'form': form,
+    })
+from .models import Topico, Comentario
+from .forms import ComentarioForm
+from django.contrib.auth.decorators import login_required
+@login_required
+
+
+
+
+
+def detalhes_topico(request, topico_id):
+    topico = get_object_or_404(Topico, id=topico_id)
+    comentarios = topico.comentarios.all()  # Recupera todos os comentários do tópico
+
+    # Verificar se o usuário já curtiu o tópico
+    curtiu_topico = Curtida.objects.filter(usuario=request.user, topico=topico).exists()
+
+    # Verificar se o usuário já curtiu os comentários
+    comentarios_com_curtidas = []
+    for comentario in comentarios:
+        curtiu_comentario = Curtida.objects.filter(usuario=request.user, comentario=comentario).exists()
+        comentarios_com_curtidas.append({
+            'comentario': comentario,
+            'curtiu': curtiu_comentario
+        })
+
+    return render(request, 'forum/detalhes_topico.html', {
+        'topico': topico,
+        'comentarios': comentarios_com_curtidas,
+        'curtiu_topico': curtiu_topico
+    })
+
+@login_required
+def deletar_topico(request, topico_id):
+    # Buscar o tópico
+    topico = get_object_or_404(Topico, id=topico_id)
+
+    # Verificar se o usuário é o dono do tópico ou um moderador
+    if topico.usuario == request.user or request.user.is_superuser or Moderador.objects.filter(cliente=request.user.cliente, ativo=True).exists():
+        topico.delete()  # Excluir o tópico
+        return redirect('forum')  # Redireciona para o fórum após exclusão
+
+    # Caso contrário, redireciona para os detalhes do tópico
+    return redirect('detalhes_topico', topico_id=topico.id)
+
+@login_required
+def deletar_comentario(request, comentario_id):
+    comentario = get_object_or_404(Comentario, id=comentario_id)
+
+    # Verifica se o usuário é o dono do comentário ou um moderador
+    if comentario.cliente.user == request.user or CustomUser.is_superuser or Moderador.objects.filter(cliente=request.user.cliente, ativo=True).exists():
+        comentario.delete()  # Se o usuário for dono ou moderador, o comentário é excluído
+        return redirect('detalhes_topico', topico_id=comentario.topico.id)  # Redireciona de volta para o tópico
+    else:
+        return redirect('detalhes_topico', topico_id=comentario.topico.id)  # Se não for dono nem moderador, redireciona para o tópico
+
+@login_required
+def curtir_conteudo(request, tipo, id_conteudo):
+    if tipo == 'topico':
+        conteudo = get_object_or_404(Topico, id=id_conteudo)
+        # Verifica se o usuário já curtiu o tópico
+        curtida_existente = Curtida.objects.filter(usuario=request.user, topico=conteudo).exists()
+    elif tipo == 'comentario':
+        conteudo = get_object_or_404(Comentario, id=id_conteudo)
+        # Verifica se o usuário já curtiu o comentário
+        curtida_existente = Curtida.objects.filter(usuario=request.user, comentario=conteudo).exists()
+
+    if curtida_existente:
+        # Se já curtiu, remove a curtida (descurtir)
+        Curtida.objects.filter(usuario=request.user, **{tipo: conteudo}).delete()
+    else:
+        # Caso contrário, cria a curtida
+        Curtida.objects.get_or_create(usuario=request.user, **{tipo: conteudo})
+
+    # Redireciona para o tópico correspondente
+    if tipo == 'comentario':
+        return redirect('detalhes_topico', topico_id=conteudo.topico.id)  # Comentário redireciona para o tópico que pertence
+    else:
+        return redirect('detalhes_topico', topico_id=conteudo.id)  # Tópico redireciona para o próprio tópico
+
+@login_required
+def reportar_conteudo(request, tipo, id_conteudo):
+    if tipo == 'topico':
+        conteudo = get_object_or_404(Topico, id=id_conteudo)
+    elif tipo == 'comentario':
+        conteudo = get_object_or_404(Comentario, id=id_conteudo)
+
+    if request.method == 'POST':
+        motivo = request.POST.get('motivo')
+        relatorio = Relatorio(cliente=request.user, **{tipo: conteudo}, motivo=motivo)
+        relatorio.save()
+        return redirect('detalhes_topico', topico_id=conteudo.topico.id)
+    
+    return render(request, 'forum/reportar_conteudo.html', {'conteudo': conteudo})
+
+
+@login_required
+def comentar_topico(request, topico_id):
+    topico = get_object_or_404(Topico, id=topico_id)
+    
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.topico = topico
+            comentario.cliente = request.user.cliente
+            comentario.save()
+
+            print(f"Comentário salvo: {comentario}")  # Log para verificação
+
+            return redirect('detalhes_topico', topico_id=topico.id)
+        else:
+            print("Erro ao salvar o comentário: ", form.errors)  # Se o formulário não for válido, imprima os erros
+    else:
+        form = ComentarioForm()
+
+    return render(request, 'forum/comentar_topico.html', {'form': form, 'topico': topico})

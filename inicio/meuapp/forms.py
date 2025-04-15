@@ -180,3 +180,17 @@ EXAMES_CHOICES = [
     ('ecg', 'Exame de Eletrocardiograma (ECG)'),
     ('vitaminas', 'Exame de Vitaminas (como a vitamina D)')
 ]
+
+
+#forumfrom django import forms
+from .models import Comentario, Topico
+
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['texto']
+class TopicoForm(forms.ModelForm):
+    class Meta:
+        model = Topico
+        fields = ['titulo', 'descricao']
+
