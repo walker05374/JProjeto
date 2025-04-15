@@ -542,15 +542,10 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .models import PostoSaude
 import math
-from django.shortcuts import render
-from django.http import JsonResponse
-import math
-from .models import PostoSaude
 
 def mapa_view(request):
-    # Passa a chave diretamente para o template
     context = {
-        'GOOGLE_MAPS_API_KEY': 'AIzaSyDVljhMbXIqux_EmMx-h_SOTH5kC1WRDDo'  # Coloque sua chave de API diretamente
+        'GOOGLE_MAPS_API_KEY': settings.GOOGLE_MAPS_API_KEY  # Passando a chave para o template
     }
     return render(request, 'agendamentos/mapa1.html', context)
 
@@ -567,7 +562,6 @@ def calcular_distancia(lat1, lon1, lat2, lon2):
     a = math.sin(delta_phi / 2)**2 + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2)**2
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     return R * c
-
 def buscar_postos_saude(request):
     lat = float(request.GET.get("lat"))
     lng = float(request.GET.get("lng"))

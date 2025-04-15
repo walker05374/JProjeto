@@ -1,8 +1,4 @@
-let map;
-let infowindow;
-let userLocation;
-
-// Função de inicialização do mapa
+// Função para inicializar o mapa
 function initMap() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -35,13 +31,13 @@ function initMap() {
 
             // Refatoração da busca: incluindo termos como SUS, SESMA, UTI, hospital
             const request = {
-                location: userLocation,
+                location: userLocation,  // Aqui garantimos que a localização do usuário é passada corretamente
                 radius: 140000, // Raio de 140 km
                 query: 'posto de saúde OR SUS OR SESMA OR UTI OR hospital' // Modificação para incluir termos relevantes
             };
-            
+
             const service = new google.maps.places.PlacesService(map);
-            service.findPlaceFromQuery(request, (results, status) => {
+            service.textSearch(request, (results, status) => {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                     results.forEach((place) => {
                         createMarker(place);
@@ -51,8 +47,6 @@ function initMap() {
                     console.error("Erro ao buscar postos de saúde:", status);
                 }
             });
-            
-            
         }, (error) => {
             console.error("Erro ao obter a localização:", error.message);
         });
@@ -68,7 +62,7 @@ function createMarker(place) {
         position: place.geometry.location,
         title: place.name,
         icon: {
-            url: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Heart_symbol_red.png',  // Ícone de coração vermelho sem fundo
+            url: '',  // Ícone de coração vermelho sem fundo
             scaledSize: new google.maps.Size(30, 30)  // Ajusta o tamanho do ícone
         }
     });
