@@ -120,6 +120,11 @@ def site(request):
     return render(request, 'site/site.html', {'clientes_cadastrados': bool(cliente)})
 
 
+
+
+
+
+
 def registro(request):
     form = CustomUserCreationForm(request.POST or None)
     if request.method == 'POST':
@@ -312,6 +317,10 @@ def delete_cliente(request, id):
     # Caso o cliente ainda tenha algum cadastro
     messages.success(request, "Cadastro da gestante excluído com sucesso.")
     return redirect("read_cliente")
+
+
+
+
 
 @login_required
 def update_profile(request):

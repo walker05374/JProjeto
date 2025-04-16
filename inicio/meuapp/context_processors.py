@@ -1,7 +1,7 @@
 from .models import Cliente
 from .models import Vacina
-def clientes_context(request):
-    return {'clientes_cadastrados': Cliente.objects.exists()}
+
+
 
 
 
@@ -11,3 +11,15 @@ def vacina_context(request):
     else:
         tem_vacina = False
     return {'tem_vacina': tem_vacina}
+
+def clientes_context(request):
+    """
+    Verifica se o usuário tem clientes cadastrados e retorna uma variável booleana
+    para ser usada globalmente nos templates.
+    """
+    if request.user.is_authenticated:
+        # Verifica se o usuário tem um cliente cadastrado
+        cliente = Cliente.objects.filter(user=request.user).first()
+        return {'clientes_cadastrados': bool(cliente)}
+        return {'clientes_cadastrados': Cliente.objects.exists()}
+    return {'clientes_cadastrados': False}

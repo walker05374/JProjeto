@@ -102,9 +102,6 @@ urlpatterns = [
 
     path('formacaobebe/', views.formacaobebe, name='formacaobebe'),
 
-
-
-
 ]
     
 urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
