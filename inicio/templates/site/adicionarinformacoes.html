@@ -1,7 +1,9 @@
+
+{% extends 'site/base.html' %}
 {% load static %}
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Atualização de Informações da Gestante</title>
     <link rel="stylesheet" href="{% static 'css/site/informacoesadicionais1.css' %}">
@@ -191,3 +193,4 @@
 <script src="{% static 'js/apicep.js' %}"></script>
 </body>
 </html>
+{% endblock %}

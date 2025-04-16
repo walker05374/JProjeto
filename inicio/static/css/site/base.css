@@ -9,6 +9,36 @@ body {
   background-size: cover;
   background-attachment: fixed;
 }
+/* Adicionar esta parte ao seu arquivo CSS */
+html, body {
+  height: 100%;  /* A altura total da página será 100% */
+  margin: 0;
+  display: flex;
+  flex-direction: column;  /* Organiza o conteúdo em uma coluna */
+}
+
+main {
+  flex: 1; /* Faz com que o conteúdo principal ocupe o máximo de espaço disponível */
+}
+
+footer {
+  margin-top: auto; /* Garante que o rodapé seja empurrado para baixo */
+  width: 100%;
+  background-color: #f8f9fa;
+  text-align: center;
+  padding: 1rem 0;
+  position: relative; /* Certifique-se de que o rodapé não se sobreponha ao conteúdo */
+}
+
+/* Outros estilos do rodapé */
+#footer_content {
+  background-color: #f8f9fa;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 3rem 3.5rem;
+  text-align: center;
+}
+
 
 /* Títulos e subtítulos */
 h1, h2, h3, h4, h5, h6 {

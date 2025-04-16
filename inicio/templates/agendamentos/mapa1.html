@@ -1,8 +1,9 @@
+{% extends 'site/base.html' %}
+
+{% block title %}Página Inicial{% endblock %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
+{% block content %}
+
   <title>Buscador de Hospitais</title>
   <link rel="stylesheet" href="{% static 'css/agendamentos/mapa1.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,13 +13,7 @@
   <div class="background py-5">
     <div class="container">
       <!-- Navegação -->
-      <ul class="nav nav-tabs justify-content-between mb-4">
-        <li class="nav-item">
-          <a class="nav-link text-dark" href="{% url 'site' %}">
-            <i class="fas fa-home"></i> Início
-          </a>
-        </li>
-      </ul>
+
 
       <div class="row">
         <!-- Mapa -->
@@ -66,4 +61,4 @@
   <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initMap" async defer></script>
 
 </body>
-</html>
+</html>    {% endblock %}

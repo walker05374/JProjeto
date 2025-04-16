@@ -4,126 +4,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informação Adicional da Gestante</title>
+    <title>Página Inicial</title>
+
+    <link rel="stylesheet" href="{% static 'css/site/site.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/informacaogestante/clientecreate1.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                document.getElementById('preview-img').src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/apicep.js' %}"></script>
 </head>
 <body>
 
-<div class="container">
-    <div class="top-bar">
-        <a href="{% url 'site' %}" class="btn btn-inicio">
-            <i class="fas fa-home"></i> Início
-        </a>
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent centered-navbar">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            
+            <!-- Ícone "Início" à esquerda -->
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="{% url 'site' %}">
+                        <i class="fas fa-home"></i> Início
+                    </a>
+                </li>
+            </ul>
 
-        <h2 class="titulo-gestante">Informações da Gestante</h2>
-
-        <label for="foto-upload" class="m-0" style="cursor: pointer;">
-            {% if cliente and cliente.foto %}
-                <img id="preview-img" src="{{ cliente.foto.url }}" alt="Foto do Cliente" class="profile-picture">
-            {% else %}
-                <img id="preview-img" src="{% static 'images/default-avatar.png' %}" alt="Foto Padrão" class="profile-picture default">
-            {% endif %}
-        </label>
-    </div>
-
-    <form id="form" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" id="foto-upload" name="foto" class="d-none" accept="image/*" onchange="previewImage(event)">
-
-
-        {% if cliente_form.errors %}
-            <div class="alert alert-danger">
-                <ul>
-                    {% for field in cliente_form %}
-                        {% if field.errors %}
-                            <li>{{ field.label }}: {{ field.errors }}</li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-
-        <!-- Formulário -->
-        <div class="form-row">
-            <div class="form-group col-md-4">{{ cliente_form.nome.label_tag }}{{ cliente_form.nome }}</div>
-            <div class="form-group col-md-4">{{ cliente_form.cpf.label_tag }}{{ cliente_form.cpf }}</div>
-            <div class="form-group col-md-4">{{ cliente_form.datanascimento.label_tag }}{{ cliente_form.datanascimento }}</div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-4">{{ cliente_form.sus.label_tag }}{{ cliente_form.sus }}</div>
-            <div class="form-group col-md-4">{{ cliente_form.nomecrianca.label_tag }}{{ cliente_form.nomecrianca }}</div>
-            <div class="form-group col-md-4">{{ cliente_form.generocrianca.label_tag }}{{ cliente_form.generocrianca }}</div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-4">{{ cliente_form.idadecrianca.label_tag }}{{ cliente_form.idadecrianca }}</div>
-            <div class="form-group col-md-4">
-                {{ cliente_form.cep.label_tag }}
-                <div class="input-group">
-                    {{ cliente_form.cep }}
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-dark" type="button" onclick="findCEP2();">Buscar Cep</button>
+            <!-- Formulário de Pesquisa à direita -->
+            <div class="d-flex align-items-center">
+                <!-- Ícone de Pesquisa -->
+                <form class="form-inline" id="search-form">
+                    <div class="input-group mb-3">
+                        <input type="search" class="form-control" placeholder="Pesquise sobre sua gestação" aria-label="Pesquise sobre sua gestação" id="search-input" aria-describedby="search-button">
+                        <button class="btn btn-outline-secondary" type="button" id="search-button">
+                            <i class="fas fa-search"></i> Pesquisar
+                        </button>
                     </div>
-                </div>
-                <div id="cep-error" class="text-danger mt-1"></div>
+                </form>
             </div>
-            <div class="form-group col-md-4">{{ cliente_form.endereco.label_tag }}{{ cliente_form.endereco }}</div>
+
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-4">{{ cliente_form.bairro.label_tag }}{{ cliente_form.bairro }}</div>
-            <div class="form-group col-md-4">{{ cliente_form.cidade.label_tag }}{{ cliente_form.cidade }}</div>
-            <div class="form-group col-md-4">{{ cliente_form.uf.label_tag }}{{ cliente_form.uf }}</div>
-        </div>
-        <div class="text-center mt-4">
-            <button type="button" class="btn btn-salvar" data-toggle="modal" data-target="#modalSalvar">
-                <i class="fas fa-save"></i> Salvar
+    </nav>
+
+    <!-- ALERTA FORA DO CARD -->
+    {% if messages %}
+        <div class="alert alert-success alert-dismissible fade show mt-4 mx-auto" role="alert" style="max-width: 1100px; border-radius: 12px; font-weight: 500;">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Fechar">
+                <span aria-hidden="true">&times;</span>
             </button>
         </div>
+    {% endif %}
+    
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="container pag">
+        <div class="row justify-content-center">
+            <!-- Centralizar a foto -->
+            <div class="col-md-4 text-center">
+                <label for="foto-upload" class="m-0" style="cursor: pointer;">
+                    {% if cliente and cliente.foto %}
+                        <img id="preview-img" src="{{ cliente.foto.url }}" alt="Foto do Cliente" class="profile-picture">
+                    {% else %}
+                        <img id="preview-img" src="{% static 'images/default-avatar.png' %}" alt="Foto Padrão" class="profile-picture default">
+                    {% endif %}
+                </label>
+            </div>
+        </div>
         
-        
-        
-        
-        <!-- Modal -->
-        <div class="modal fade" id="modalSalvar" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-dark text-white">
-                        <h5 class="modal-title w-100 text-center">Deseja Salvar?</h5>
-                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        <h2 class="text-center">Informações da Gestante</h2>
+
+        <form id="form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" id="foto-upload" name="foto" class="d-none" accept="image/*" onchange="previewImage(event)">
+
+            {% if cliente_form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for field in cliente_form %}
+                            {% if field.errors %}
+                                <li>{{ field.label }}: {{ field.errors }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <!-- Formulário -->
+            <div class="form-row">
+                <div class="form-group col-md-4">{{ cliente_form.nome.label_tag }}{{ cliente_form.nome }}</div>
+                <div class="form-group col-md-4">{{ cliente_form.cpf.label_tag }}{{ cliente_form.cpf }}</div>
+                <div class="form-group col-md-4">{{ cliente_form.datanascimento.label_tag }}{{ cliente_form.datanascimento }}</div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">{{ cliente_form.sus.label_tag }}{{ cliente_form.sus }}</div>
+                <div class="form-group col-md-4">{{ cliente_form.nomecrianca.label_tag }}{{ cliente_form.nomecrianca }}</div>
+                <div class="form-group col-md-4">{{ cliente_form.generocrianca.label_tag }}{{ cliente_form.generocrianca }}</div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">{{ cliente_form.idadecrianca.label_tag }}{{ cliente_form.idadecrianca }}</div>
+                <div class="form-group col-md-4">
+                    {{ cliente_form.cep.label_tag }}
+                    <div class="input-group">
+                        {{ cliente_form.cep }}
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-dark" type="button" onclick="findCEP2();">Buscar Cep</button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <p>Antes de salvar, verifique:</p>
-                        <ul>
-                            <li><strong>📌 Preenchimento:</strong> Todos os campos obrigatórios.</li>
-                            <li><strong>🖼️ Imagem:</strong> Se desejar, anexe uma imagem válida.</li>
-                            <li><strong>👤 Usuário:</strong> Os dados serão vinculados ao seu perfil.</li>
-                        </ul>
+                    <div id="cep-error" class="text-danger mt-1"></div>
+                </div>
+                <div class="form-group col-md-4">{{ cliente_form.endereco.label_tag }}{{ cliente_form.endereco }}</div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">{{ cliente_form.bairro.label_tag }}{{ cliente_form.bairro }}</div>
+                <div class="form-group col-md-4">{{ cliente_form.cidade.label_tag }}{{ cliente_form.cidade }}</div>
+                <div class="form-group col-md-4">{{ cliente_form.uf.label_tag }}{{ cliente_form.uf }}</div>
+            </div>
+            <div class="text-center mt-4">
+                <button type="button" class="btn btn-salvar" data-toggle="modal" data-target="#modalSalvar">
+                    <i class="fas fa-save"></i> Salvar
+                </button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="modalSalvar" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-dark text-white">
+                            <h5 class="modal-title w-100 text-center">Deseja Salvar?</h5>
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Antes de salvar, verifique:</p>
+                            <ul>
+                                <li><strong>📌 Preenchimento:</strong> Todos os campos obrigatórios.</li>
+                                <li><strong>🖼️ Imagem:</strong> Se desejar, anexe uma imagem válida.</li>
+                                <li><strong>👤 Usuário:</strong> Os dados serão vinculados ao seu perfil.</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn btn-success">Salvar mudanças</button>
+                        </div>
                     </div>
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-success">Salvar mudanças</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <footer>
+        <div id="footer_content">
+            <div id="footer_contacts">
+                <img src="{% static 'images/back.png' %}" alt="Logo" width="230" height="80">
+                <h6>SIGA NOS:</h6>
+
+                <div id="footer_social_media">
+                    <a href="https://www.instagram.com" class="footer-link" id="instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/" class="footer-link" id="facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.whatsapp.com/?lang=pt_BR" class="footer-link" id="whatsapp">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                    <a href="https://twitter.com" class="footer-link" id="twitter">
+                        <i class="fa-brands fa-twitter"></i>
+                    </a>
+                    <a href="https://www.youtube.com" class="footer-link" id="youtube">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Subscrição e outros links -->
+            <ul class="footer-list">
+                <li><h3>Produtos</h3></li>
+                <li><a href="#" class="footer-link">App</a></li>
+                <li><a href="#" class="footer-link">ChatBot</a></li>
+                <li><a href="#" class="footer-link">Mapa</a></li>
+            </ul>
+
+            <ul class="footer-list">
+                <li><h3>Sobre nós</h3></li>
+                <li><a href="#" class="footer-link">Endereço</a></li>
+                <li><a href="#" class="footer-link">Quem Somos</a></li>
+                <li><a href="{% url 'contact' %}" class="footer-link">Envie seu Feedback</a></li>
+            </ul>
+
+            <div id="footer_subscribe">
+                <h3>Escreva-se</h3>
+                <p>Para receber novidades.</p>
+
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control text-center" placeholder="Escreva-se" aria-label="Escrever">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="email">
+                            <i class="far fa-envelope"></i>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
-</div>
+    </footer>
 
-<script>
-    function previewImage(event) {
-        const reader = new FileReader();
-        reader.onload = function () {
-            document.getElementById('preview-img').src = reader.result;
-        }
-        reader.readAsDataURL(event.target.files[0]);
-    }
-</script>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{% static 'js/apicep.js' %}"></script>
-
+    <script src="https://kit.fontawesome.com/3d88e1abe7.js" crossorigin="anonymous"></script>
+    <script type="application/javascript" src="{% static 'js/alert.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
