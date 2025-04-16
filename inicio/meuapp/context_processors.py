@@ -12,6 +12,10 @@ def vacina_context(request):
         tem_vacina = False
     return {'tem_vacina': tem_vacina}
 
+
+
+
+
 def clientes_context(request):
     """
     Verifica se o usuário tem clientes cadastrados e retorna uma variável booleana
