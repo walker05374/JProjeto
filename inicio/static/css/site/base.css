@@ -1,57 +1,71 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap');
-
+/* Definindo o tamanho padrão de texto para todo o site */
 body {
-  background-image: url(/static/images/Login0.jpg);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px; /* Tamanho base de fonte para o corpo do texto */
+  line-height: 1.6; /* Define o espaçamento entre as linhas de texto */
+  background-image: url(/static/images/Login.jpeg);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   background-attachment: fixed;
+}
+
+/* Títulos e subtítulos */
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Roboto', sans-serif;
-  margin: 0;
-  padding: 0;
+  font-weight: bold;
+  color: #333;
 }
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+/* Definindo o tamanho para os títulos principais */
+h1 {
+  font-size: 32px;  /* Ajuste o tamanho conforme necessário */
 }
 
-.area {
-  background-color: #ffffffcc;
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 450px;
-  text-align: center;
+/* Subtítulos */
+h2 {
+  font-size: 28px;  /* Ajuste o tamanho conforme necessário */
 }
 
-.btn-editar, .btn-excluir {
-  font-weight: 500;
-  padding: 10px 20px;
-  border-radius: 8px;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
-  transition: 0.3s ease;
+h3 {
+  font-size: 24px;  /* Ajuste o tamanho conforme necessário */
 }
 
-.btn-editar {
-  background-color: #007bff;
-  color: white;
-  border: none;
+/* Parágrafos */
+p {
+  font-size: 16px;  /* Tamanho do texto dos parágrafos */
+  color: #555;
 }
 
-.btn-editar:hover {
-  background-color: #0056b3;
+/* Links no conteúdo */
+a {
+  color: #007bff;  /* Cor dos links */
+  text-decoration: none;
 }
 
-.btn-excluir {
-  background-color: #dc3545;
-  color: white;
-  border: none;
+a:hover {
+  text-decoration: underline;
 }
 
-.btn-excluir:hover {
-  background-color: #a71d2a;
+/* Certifique-se de que o conteúdo do rodapé também use o mesmo estilo */
+footer {
+  font-size: 16px;  /* Tamanho de fonte para o rodapé */
+  color: #dcdcdc;  /* Cor do texto do rodapé */
+}
+
+/* Definindo o tamanho de fonte para o conteúdo da navbar */
+.navbar-nav .nav-item {
+  font-size: 18px;  /* Ajuste o tamanho conforme necessário */
+}
+
+/* Adicionando uma classe para controlar o tamanho do texto em todas as seções */
+.text-content {
+  font-size: 16px; /* Altere conforme necessário para outros textos */
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Defina o tamanho da fonte para as mensagens de alerta */
+.alert {
+  font-size: 14px;  /* Ajuste o tamanho conforme necessário */
 }

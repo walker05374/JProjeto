@@ -168,3 +168,5 @@ class Relatorio(models.Model):
     topico = models.ForeignKey(Topico, null=True, blank=True, on_delete=models.CASCADE)
     comentario = models.ForeignKey(Comentario, null=True, blank=True, on_delete=models.CASCADE)
     data_relatorio = models.DateTimeField(auto_now_add=True)
+
+

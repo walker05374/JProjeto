@@ -184,14 +184,14 @@ def contact_me(request):
         if form.is_valid():
             form = form.save(commit=False)
             form.save()
-            return redirect('chat')
+            return redirect('site')
     else:
         form = ContactMeForm()
     return render(request, 'site/subChat.html', {'form': form})
 
 
 def sendmail_contact(data):
-    message_body = get_template('site/send.html').render(data)
+    message_body = get_template('registration/send.html').render(data)
     sendmail = EmailMessage(data['subject'], message_body, settings.DEFAULT_FROM_EMAIL, to=['jornadamaternal@gmail.com'])
     sendmail.content_subtype = "html"
     return sendmail.send()
@@ -790,3 +790,12 @@ def ver_relatorios(request):
     relatorios = Relatorio.objects.all().order_by('-data_relatorio')
 
     return render(request, 'forum/ver_relatorios.html', {'relatorios': relatorios})
+
+
+def formacaobebe(request):
+    # Se necessário, você pode adicionar lógica para processar dados aqui (por exemplo, fazer cálculos com base na semana de gestação)
+    
+    return render(request, 'formacaobebe/formacaobebe.html')
+
+
+

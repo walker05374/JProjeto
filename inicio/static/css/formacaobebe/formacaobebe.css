@@ -1,0 +1,130 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f3f8ff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    width: 100%;
+    max-width: 1000px;
+    gap: 50px;
+}
+
+.form {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    max-width: 500px;
+}
+
+h1 {
+    color: #027789;
+}
+
+label, input {
+    display: block;
+    margin: 10px 0;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #027789;
+    width: 200px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #027789;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #025b68;
+}
+
+.baby-development {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 700px;
+}
+
+#babyModel {
+    width: 100%;
+    max-width: 400px;
+    height: 400px;
+    background-color: #eeeeee;
+    margin: 20px auto;
+    border-radius: 10px;
+}
+
+#development-info {
+    font-size: 16px;
+    color: #333;
+    margin-top: 20px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .form {
+        max-width: 100%;
+    }
+}
+
+/* Centralização e Estilo do Formulário */
+.input-container {
+    text-align: center;
+}
+
+input[type="number"] {
+    width: 60%;
+    max-width: 250px;
+}
+
+button {
+    margin-top: 15px;
+}
+
+/* Estilos de Imagem do Bebê */
+.baby-model img {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* Layout responsivo */
+@media (min-width: 768px) {
+    .container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .baby-development {
+        max-width: 500px;
+    }
+}

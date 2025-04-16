@@ -1,15 +1,9 @@
-{% load static %}
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Amamentação</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css//site/amamentacao.css' %}">
+{% extends 'site/base.html' %}
 
+{% block title %}Página Inicial{% endblock %}
 
-</head>
-<body>
-    <div class="container">
-        <div class="area">
+{% block content %}
+
             <h1>Amamentação: Benefícios para você e seu bebê</h1>
 
             <h2>Por que amamentar?</h2>
@@ -34,9 +28,4 @@
             <p>A amamentação pode ter seus desafios, mas você não precisa enfrentá-los sozinha. Procure apoio de profissionais de saúde e grupos de apoio à amamentação para receber orientações e suporte.</p>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+    {% endblock %}

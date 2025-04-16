@@ -1,51 +1,37 @@
-{% load static %}
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dicas e Notícias sobre Gestantes: Riscos de uma Alimentação Não Regularizada</title>
-  <link rel="stylesheet" href="{% static 'css//site/noticia.css' %}">
+{% extends 'site/base.html' %}
 
-</head>
-<body>
-  <div class="container">
-    <div class="area">
-      <h1>Dicas e Notícias: Riscos de uma Alimentação Não Regularizada</h1>
-      <p>
-        Durante a gravidez, uma alimentação adequada é essencial para a saúde da gestante e o desenvolvimento saudável do bebê.
-        Uma alimentação não regularizada pode acarretar riscos significativos. Confira as principais informações sobre os perigos
-        de uma dieta inadequada durante a gestação e obtenha dicas valiosas para uma alimentação saudável.
-      </p>
-      <p>
-        Deficiências nutricionais podem levar a complicações graves para a mãe e afetar o desenvolvimento do feto.
-      </p>
-      <p>
-        A falta de nutrientes essenciais na dieta da gestante pode resultar em retardo no crescimento fetal e problemas no
-        desenvolvimento neurológico do bebê.
-      </p>
-      <p>
-        Uma alimentação desequilibrada aumenta o risco de complicações para a saúde da mãe, como ganho excessivo de peso,
-        diabetes gestacional e hipertensão.
-      </p>
-      <h2>Dicas para uma alimentação saudável durante a gestação:</h2>
-      <ul>
-        <li>Consulte um médico ou nutricionista para orientações personalizadas.</li>
-        <li>Consuma uma variedade de alimentos, incluindo frutas, legumes, grãos integrais, proteínas magras e laticínios.</li>
-        <li>Garanta a ingestão suficiente de ácido fólico, ferro, cálcio e outros nutrientes essenciais.</li>
-        <li>Evite alimentos processados, fast food, bebidas açucaradas e alimentos ricos em gorduras saturadas e trans.</li>
-        <li>Mantenha-se hidratada, bebendo bastante água.</li>
-      </ul>
-      <h2>Notícias recentes sobre alimentação na gravidez:</h2>
-      <ul>
-        <li>Estudos destacam a importância do ômega-3 para o desenvolvimento cerebral do bebê.</li>
-        <li>A ingestão excessiva de cafeína pode estar associada a complicações, como baixo peso ao nascer e parto prematuro.</li>
-        <li>Novas diretrizes sugerem benefícios do consumo moderado de chocolate amargo durante a gravidez.</li>
-      </ul>
-      <p>
-        <em>Para saber mais detalhes sobre os riscos de uma alimentação não regularizada e obter informações adicionais,
-          <a href="link">clique aqui</a>.</em>
-      </p>
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+
+                <h1 class="text-center">Dicas e Notícias: Riscos de uma Alimentação Não Regularizada</h1>
+                <p>Durante a gravidez, uma alimentação adequada é essencial para a saúde da gestante e o desenvolvimento saudável do bebê. Uma alimentação não regularizada pode acarretar riscos significativos. Confira as principais informações sobre os perigos de uma dieta inadequada durante a gestação e obtenha dicas valiosas para uma alimentação saudável.</p>
+                
+                <h3>Riscos de uma Alimentação Não Regularizada:</h3>
+                <ul>
+                    <li>Deficiências nutricionais podem levar a complicações graves para a mãe e afetar o desenvolvimento do feto.</li>
+                    <li>A falta de nutrientes essenciais na dieta da gestante pode resultar em retardo no crescimento fetal e problemas no desenvolvimento neurológico do bebê.</li>
+                    <li>Uma alimentação desequilibrada aumenta o risco de complicações para a saúde da mãe, como ganho excessivo de peso, diabetes gestacional e hipertensão.</li>
+                </ul>
+
+                <h3>Dicas para uma Alimentação Saudável Durante a Gestação:</h3>
+                <ul>
+                    <li>Consulte um médico ou nutricionista para orientações personalizadas.</li>
+                    <li>Consuma uma variedade de alimentos, incluindo frutas, legumes, grãos integrais, proteínas magras e laticínios.</li>
+                    <li>Garanta a ingestão suficiente de ácido fólico, ferro, cálcio e outros nutrientes essenciais.</li>
+                    <li>Evite alimentos processados, fast food, bebidas açucaradas e alimentos ricos em gorduras saturadas e trans.</li>
+                    <li>Mantenha-se hidratada, bebendo bastante água.</li>
+                </ul>
+
+                <h3>Notícias Recentes sobre Alimentação na Gravidez:</h3>
+                <ul>
+                    <li>Estudos destacam a importância do ômega-3 para o desenvolvimento cerebral do bebê.</li>
+                    <li>A ingestão excessiva de cafeína pode estar associada a complicações, como baixo peso ao nascer e parto prematuro.</li>
+                    <li>Novas diretrizes sugerem benefícios do consumo moderado de chocolate amargo durante a gravidez.</li>
+                </ul>
+
+                <p>Para saber mais detalhes sobre os riscos de uma alimentação não regularizada e obter informações adicionais, <a href="#">clique aqui</a>.</p>
+            </div>
+        </div>
     </div>
-  </div>
-</body>
-</html>
+    {% endblock %}

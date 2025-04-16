@@ -98,6 +98,13 @@ urlpatterns = [
     path('moderador/relatorios/', views.ver_relatorios, name='ver_relatorios'),
     path('excluir_relatorio/<int:relatorio_id>/', views.excluir_relatorio, name='excluir_relatorio'),
 
+
+
+    path('formacaobebe/', views.formacaobebe, name='formacaobebe'),
+
+
+
+
 ]
     
 urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
