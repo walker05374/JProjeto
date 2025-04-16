@@ -1,20 +1,148 @@
 {% load static %}
-
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Resultados da Busca</title>
-    <link rel="stylesheet" href="{% static 'css//site/search_results.css' %}">
+    
+    <!-- CSS personalizados -->
+    <link rel="stylesheet" href="{% static 'css/site/search_results.css' %}">
+    <link rel="stylesheet" href="{% static 'css/site/site.css' %}">
+    
+    <!-- Bootstrap 4 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Font Awesome (para os ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
 <body>
 
-<div class="container">
-    <div class="row">
+    <!-- Barra de navegação -->
+  
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent centered-navbar">
+        <a class="navbar-brand" href="{% url 'site' %}">
+            <img src="{% static 'images/back.png' %}" width="250" alt="Logo" class="img-fluid">
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+
+                <!-- Aba Usuário -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="login" id="maisDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user"></i> Usuário
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="maisDropdown">
+                        {% if not request.user.is_authenticated %}
+                            <a class="dropdown-item" href="{% url 'login' %}">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </a>
+                            <a class="dropdown-item" href="{% url 'registro' %}">
+                                <i class="fas fa-user-plus"></i> Cadastre-se
+                            </a>
+                        {% endif %}
+                
+                        <div class="dropdown-divider"></div>
+                
+                        {% if request.user.is_authenticated %}
+                            <a class="dropdown-item" href="{% url 'update_profile' %}">
+                                <i class="fas fa-user-edit"></i> Atualizar perfil
+                            </a>
+                
+                            <a href="#" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                                <i class="fas fa-trash-alt"></i> Excluir Conta
+                            </a>
+                
+                            <form action="{% url 'logout' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item">
+                                    <i class="fas fa-sign-out-alt"></i> Sair
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </li>
+                
+                {% if request.user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-heartbeat"></i> Acompanhamento
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'mapa' %}">
+                            <i class="fas fa-hospital"></i> Postos de Saúde
+                        </a>
+                        <a class="dropdown-item" href="{% url 'ganho_peso' %}">
+                            <i class="fas fa-chart-line"></i> Monitoramento do GPG
+                        </a>
+                        <a class="dropdown-item" href="{% url 'formacaobebe' %}">
+                            <i class="fas fa-baby"></i> Formação do Bebê
+                        </a>
+                        <a class="dropdown-item" href="{% url 'vacina_create' %}">
+                            <i class="fas fa-syringe"></i> Cadastrar Vacinas
+                        </a>
+                        <a class="dropdown-item" href="{% url 'noticias' %}">
+                            <i class="fas fa-newspaper"></i> Notícias
+                        </a>
+                        <a class="dropdown-item" href="{% url 'amamentacao' %}">
+                            <i class="fas fa-baby"></i> Amamentação
+                        </a>
+                        <a class="dropdown-item" href="">
+
+                            <i class="fas fa-calendar-check"></i> Pré Natal
+                        </a>
+                    </div>
+                </li>
+                {% endif %}
+                
+                {% if request.user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-baby"></i> Gestante
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% if not clientes_cadastrados %}
+                            <!-- Se o cliente não foi cadastrado, mostra a opção de cadastrar -->
+                            <a class="dropdown-item" href="{% url 'create_cliente' %}">
+                                <i class="fas fa-user-plus"></i> Cadastrar
+                            </a>
+                        {% else %}
+                            <!-- Se o cliente foi cadastrado, mostra a opção de visualizar -->
+                            <a class="dropdown-item" href="{% url 'read_cliente' %}">
+                                <i class="fas fa-eye"></i> Visualizar Perfil
+                            </a>
+                            <a class="dropdown-item" href="{% url 'forum' %}">
+                                <i class="fas fa-comments"></i> Fórum
+                            </a>
+                            {% if request.user.is_superuser %}
+                                <a class="dropdown-item" href="{% url 'ver_relatorios' %}">
+                                    <i class="fas fa-file-alt"></i> Ver Relatórios
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </li>
+                {% endif %}
+                <div class="container">
+                    <div class="row">
+        
+                
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container pag">
         <div class="col-md-6 offset-md-3">
             <br>
             <h1 class="text-center">Resultados da Busca</h1>
+            <br>
             <form method="GET" class="d-flex justify-content-center mt-3">
                 <div class="input-group">
                     <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Digite sua busca...">
@@ -22,20 +150,26 @@
                 </div>
             </form>
         </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col-md-6 offset-md-3">
-            <ul>
+        <br>
+        <br>
+   
+        <div class="row mt-3">
+            <div class="col-md-8 offset-md-2">
+                <!-- Adicionando cards para resultados -->
                 {% for result in results %}
-                    <li><a href="{{ result.link }}">{{ result.title }}</a></li>
-                    <p>{{ result.snippet }}</p>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="{{ result.link }}">{{ result.title }}</a></h5>
+                            <p class="card-text">{{ result.snippet }}</p>
+                        </div>
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
     </div>
-</div>
 
 </body>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

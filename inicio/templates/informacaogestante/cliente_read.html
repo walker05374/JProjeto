@@ -1,8 +1,11 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
+
     <link rel="stylesheet" href="{% static 'css/site/site.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -12,11 +15,24 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/apicep.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/informacaogestante/clienteread2.css' %}">
-
-
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                document.getElementById('preview-img').src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+    <script>
+        // Para fechar o alerta automaticamente após o clique
+        setTimeout(function() {
+            $('.alert').alert('close');
+        }, 5000); // Fecha o alerta após 5 segundos
+    </script>
+    
 </head>
 <body>
- <!-- Barra de navegação -->
 
     <!-- Barra de navegação -->
     <nav class="navbar navbar-expand-lg navbar-light bg-transparent centered-navbar">
@@ -33,7 +49,6 @@
 
             <!-- Formulário de Pesquisa à direita -->
             <div class="d-flex align-items-center">
-                <!-- Ícone de Pesquisa -->
                 <form class="form-inline" id="search-form">
                     <div class="input-group mb-3">
                         <input type="search" class="form-control" placeholder="Pesquise sobre sua gestação" aria-label="Pesquise sobre sua gestação" id="search-input" aria-describedby="search-button">
@@ -43,10 +58,9 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </nav>
-<!-- ALERTA FORA DO CARD -->
+
 {% if messages %}
     <div class="alert alert-success alert-dismissible fade show mt-4 mx-auto" role="alert" style="max-width: 1100px; border-radius: 12px; font-weight: 500;">
         {% for message in messages %}
@@ -58,190 +72,166 @@
     </div>
 {% endif %}
 
-<!-- CONTEÚDO PRINCIPAL -->
-<div class="container">
-
-
-
-    <div class="row justify-content-center">    
-        {% if clientes and clientes.0.foto %}
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="container pag">
+        <div class="row justify-content-center">
+            <!-- Centralizar a foto -->
+            <div class="col-md-4 text-center">
+                <label for="foto-upload" class="m-0" style="cursor: pointer;">
+ {% if clientes and clientes.0.foto %}
         <img src="{{ clientes.0.foto.url }}?{{ clientes.0.atualizado_em.timestamp }}" alt="Foto" class="foto-perfil">
     {% else %}
         <img src="{% static 'images/default-avatar.png' %}" alt="Foto Padrão" class="foto-perfil">
     {% endif %}
+                
+                </label>
+            </div>
+        </div>
 
 
-    </label>
-</div>  
+
         <h2 class="text-center flex-grow-1">Informações da Gestante</h2>
-        
-
-    {% for cliente in clientes %}
-    <div class="form-box">
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <label>Nome:</label>
-                <input class="form-control" value="{{ cliente.nome }}" readonly>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label>CPF:</label>
-                <input class="form-control" value="{{ cliente.cpf|slice:'0:3' }}.{{ cliente.cpf|slice:'3:6' }}.{{ cliente.cpf|slice:'6:9' }}-{{ cliente.cpf|slice:'9:11' }}" readonly>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label>Data de Nascimento:</label>
-                <input class="form-control" value="{{ cliente.datanascimento|date:'d/m/Y' }}" readonly>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <label>Cartão SUS:</label>
-                <input class="form-control" value="{{ cliente.sus|slice:'0:3' }}.{{ cliente.sus|slice:'3:6' }}.{{ cliente.sus|slice:'6:9' }} {{ cliente.sus|slice:'9:12' }}" readonly>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label>Nome da Criança:</label>
-                <input class="form-control" value="{{ cliente.nomecrianca }}" readonly>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label>Gênero da Criança:</label>
-                <input class="form-control" value="{{ cliente.generocrianca }}" readonly>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <label>Idade da Criança:</label>
-                <input class="form-control" value="{{ cliente.idadecrianca }}" readonly>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label>CEP:</label>
-                <input class="form-control" value="{{ cliente.cep }}" readonly>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label>Endereço:</label>
-                <input class="form-control" value="{{ cliente.endereco }}" readonly>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <label>Bairro:</label>
-                <input class="form-control" value="{{ cliente.bairro }}" readonly>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label>Cidade:</label>
-                <input class="form-control" value="{{ cliente.cidade }}" readonly>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label>UF:</label>
-                <input class="form-control" value="{{ cliente.uf }}" readonly>
-            </div>
-        </div>
-
-        <div class="text-center mt-4">
-            <a href="{% url 'update_cliente' cliente.id %}" class="btn btn-editar mx-2">
-                <i class="fas fa-pen"></i> Editar
-            </a>
-            <a href="{% url 'delete_cliente' cliente.id %}" class="btn btn-excluir mx-2">
-                <i class="fas fa-trash"></i> Excluir
-            </a>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-
-<!-- JS do Bootstrap para fechar o alerta -->
-
-
-<footer>
-    <div id="footer_content">
-        <div id="footer_contacts">
-            <img src="{% static 'images/back.png' %}" alt="Logo" width="230" height="80">
- <h6>SIGA NOS:</h6>
-
-            <div id="footer_social_media">
-                <a href="https://www.instagram.com" class="footer-link" id="instagram">
-                    <i class="fa-brands fa-instagram"></i>
-                </a>
-                <a href="https://www.facebook.com/" class="footer-link" id="facebook">
-                    <i class="fa-brands fa-facebook-f"></i>
-                </a>
-                <a href="https://www.whatsapp.com/?lang=pt_BR" class="footer-link" id="whatsapp">
-                    <i class="fa-brands fa-whatsapp"></i>
-                </a>
-                <a href="https://twitter.com" class="footer-link" id="twitter">
-                    <i class="fa-brands fa-twitter"></i>
-                </a>
-                <a href="https://www.youtube.com" class="footer-link" id="youtube">
-                    <i class="fa-brands fa-youtube"></i>
-                </a>
-            </div>
-        </div>
-        
-        <ul class="footer-list">
-            <li>
-                <h3>Produtos</h3>
-            </li>
-            <li>
-                <a href="#" class="footer-link">App</a>
-            </li>
-            <li>
-                <a href="#" class="footer-link">ChatBot</a>
-            </li>
-            <li>
-                <a href="#" class="footer-link">Mapa</a>
-            </li>
-        </ul>
-
-        <ul class="footer-list">
-            <li>
-                <h3>Sobre nos</h3>
-            </li>
-            <li>
-                <a href="#" class="footer-link">Endereço</a>
-            </li>
-            <li>
-                <a href="#" class="footer-link">Quem Somos</a>
-            </li>
-            <li>
-                <a href="{% url 'contact' %}"class="footer-link", class="contact">Envie seu Feedback</a> 
-            </li>
-
-        </ul>
-
-        <div id="footer_subscribe">
-            <h3>Escreva-se</h3>
-
-            <p>
-                Para receber novidades.
-            </p>
-
-            <div class="input-group mb-3">
-                <input type="text" class="form-control text-center" placeholder="Escreva-se" aria-label="Escrever">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" id="email">
-                        <i class="far fa-envelope"></i>
-                    </button>
+<br>
+        {% for cliente in clientes %}
+        <div class="form-box">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label>Nome:</label>
+                    <input class="form-control" value="{{ cliente.nome }}" readonly>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>CPF:</label>
+                    <input class="form-control" value="{{ cliente.cpf|slice:'0:3' }}.{{ cliente.cpf|slice:'3:6' }}.{{ cliente.cpf|slice:'6:9' }}-{{ cliente.cpf|slice:'9:11' }}" readonly>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Data de Nascimento:</label>
+                    <input class="form-control" value="{{ cliente.datanascimento|date:'d/m/Y' }}" readonly>
                 </div>
             </div>
-            
-            
-            
 
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label>Cartão SUS:</label>
+                    <input class="form-control" value="{{ cliente.sus|slice:'0:3' }}.{{ cliente.sus|slice:'3:6' }}.{{ cliente.sus|slice:'6:9' }} {{ cliente.sus|slice:'9:12' }}" readonly>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Nome da Criança:</label>
+                    <input class="form-control" value="{{ cliente.nomecrianca }}" readonly>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Gênero da Criança:</label>
+                    <input class="form-control" value="{{ cliente.generocrianca }}" readonly>
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label>Idade da Criança:</label>
+                    <input class="form-control" value="{{ cliente.idadecrianca }}" readonly>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>CEP:</label>
+                    <input class="form-control" value="{{ cliente.cep }}" readonly>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Endereço:</label>
+                    <input class="form-control" value="{{ cliente.endereco }}" readonly>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label>Bairro:</label>
+                    <input class="form-control" value="{{ cliente.bairro }}" readonly>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Cidade:</label>
+                    <input class="form-control" value="{{ cliente.cidade }}" readonly>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>UF:</label>
+                    <input class="form-control" value="{{ cliente.uf }}" readonly>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{% url 'update_cliente' cliente.id %}" class="btn btn-editar mx-2">
+                    <i class="fas fa-pen"></i> Editar
+                </a>
+                <a href="{% url 'delete_cliente' cliente.id %}" class="btn btn-excluir mx-2">
+                    <i class="fas fa-trash"></i> Excluir
+                </a>
             </div>
         </div>
-</footer>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://kit.fontawesome.com/3d88e1abe7.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script type="application/javascript" src="{% static 'js/alert.js' %}"></script>
-<script type="application/javascript" src="{% static 'js/barra_pesquisa.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+        {% endfor %}
+    </div>
 
+    <!-- Rodapé -->
+    <footer>
+        <div id="footer_content">
+            <div id="footer_contacts">
+                <img src="{% static 'images/back.png' %}" alt="Logo" width="230" height="80">
+                <h6>SIGA NOS:</h6>
 
+                <div id="footer_social_media">
+                    <a href="https://www.instagram.com" class="footer-link" id="instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/" class="footer-link" id="facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.whatsapp.com/?lang=pt_BR" class="footer-link" id="whatsapp">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                    <a href="https://twitter.com" class="footer-link" id="twitter">
+                        <i class="fa-brands fa-twitter"></i>
+                    </a>
+                    <a href="https://www.youtube.com" class="footer-link" id="youtube">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Subscrição e outros links -->
+            <ul class="footer-list">
+                <li><h3>Produtos</h3></li>
+                <li><a href="#" class="footer-link">App</a></li>
+                <li><a href="#" class="footer-link">ChatBot</a></li>
+                <li><a href="#" class="footer-link">Mapa</a></li>
+            </ul>
+
+            <ul class="footer-list">
+                <li><h3>Sobre nós</h3></li>
+                <li><a href="#" class="footer-link">Endereço</a></li>
+                <li><a href="#" class="footer-link">Quem Somos</a></li>
+                <li><a href="{% url 'contact' %}" class="footer-link">Envie seu Feedback</a></li>
+            </ul>
+
+            <div id="footer_subscribe">
+                <h3>Escreva-se</h3>
+                <p>Para receber novidades.</p>
+
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control text-center" placeholder="Escreva-se" aria-label="Escrever">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="email">
+                            <i class="far fa-envelope"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://kit.fontawesome.com/3d88e1abe7.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="application/javascript" src="{% static 'js/alert.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="application/javascript" src="{% static 'js/barra_pesquisa.js' %}"></script>
 
 
 </body>
