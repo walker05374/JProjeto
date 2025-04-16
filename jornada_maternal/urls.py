@@ -19,6 +19,7 @@ urlpatterns = [
     path('', include('allauth.urls')),
     path('', lambda x: HttpResponse('')),
     
+    
    
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='ogout'),

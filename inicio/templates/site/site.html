@@ -87,15 +87,11 @@
         <i class="fas fa-heartbeat"></i> Acompanhamento
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="">
-            <i class="fas fa-calendar-check"></i> Pré Natal
-        </a>
+     
         <a class="dropdown-item" href="{% url 'mapa' %}">
-            <i class="fas fa-calendar-check"></i> Agendar Consulta
+            <i class="fas fa-hospital"></i>Postos de Saúde
         </a>
-
-
-        
+          
         <!-- Sempre mostrar o botão de cadastro -->
         {% if not tem_vacina %}
             <a class="dropdown-item" href="{% url 'vacina_create' %}">
@@ -106,7 +102,6 @@
                 <i class="fas fa-plus-circle"></i> Adicionar Nova Vacina
             </a>
         {% endif %}
-
         <a class="dropdown-item" href="{% url 'ganho_peso' %}">
             <i class="fas fa-chart-line"></i> Monitoramento do GPG
         </a>
@@ -116,6 +111,9 @@
         </a>
         <a class="dropdown-item" href="{% url 'amamentacao' %}">
             <i class="fas fa-baby"></i> Amamentação
+        </a>
+        <a class="dropdown-item" href="">
+            <i class="fas fa-calendar-check"></i> Pré Natal
         </a>
     </div>
 </li>
@@ -133,32 +131,32 @@
 
 
 
-
-
-
-
                             {% if not clientes_cadastrados %}
-                                <!-- Se o cliente não foi cadastrado, mostra a opção de cadastrar -->
-                                <a class="dropdown-item" href="{% url 'create_cliente' %}">
-                                    <i class="fas fa-user-plus"></i> Cadastrar
+                            <!-- Se o cliente não foi cadastrado, mostra a opção de cadastrar -->
+                            <a class="dropdown-item" href="{% url 'create_cliente' %}">
+                                <i class="fas fa-user-plus"></i> Cadastrar
+                            </a>
+                        {% else %}
+                            <!-- Se o cliente foi cadastrado, mostra a opção de visualizar -->
+                            <a class="dropdown-item" href="{% url 'read_cliente' %}">
+                                <i class="fas fa-eye"></i> Visualizar Perfil
+                            </a>
+            
+                            <!-- Fórum Link -->
+                            <a class="dropdown-item" href="{% url 'forum' %}">
+                                <i class="fas fa-comments"></i> Fórum
+                            </a>
+            
+                            <!-- Mostrar 'Ver Relatórios' apenas se for superusuário -->
+                            {% if user.is_superuser %}
+                                <a class="dropdown-item" href="{% url 'ver_relatorios' %}">
+                                    <i class="fas fa-file-alt"></i> Ver Relatórios
                                 </a>
-                            {% else %}
-                                <!-- Se o cliente foi cadastrado, mostra a opção de visualizar -->
-                                <a class="dropdown-item" href="{% url 'read_cliente' %}">
-                                    <i class="fas fa-eye"></i> Visualizar Perfil
-                                </a>
-
-                                <a class="dropdown-item" href="{% url 'forum' %}">
-                                    <i class="fas fa-eye"></i> Forum
-                                </a>
-
-
-                            
-
-
-
                             {% endif %}
-                        </div>
+                        {% endif %}
+                    </ul>
+                </div>
+
                     </li>
                 {% endif %}
                 

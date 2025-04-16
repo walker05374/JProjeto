@@ -36,7 +36,7 @@ async function initMap() {
           // Busca postos de saúde
           const request = {
               location: userLocation,
-              radius: 10000, // Raio de 10 km
+              radius: 100000, 
               query: 'hospital OR posto de saúde OR SUS OR SESMA OR CMVA OR AME OR Centro Médico OR Atendimento Médico Especializado OR UTI'
           };
 

@@ -76,14 +76,16 @@ textarea.form-control {
 
 .btn-submit:hover {
   background-color: #218838;
-}/* Centralização dos botões de ação (Curtir, Excluir, Reportar) */
-.d-flex.justify-content-center {
-  display: flex; /* Utilizando flexbox para o layout */
-  justify-content: flex-end; /* Alinha os botões à direita */
-  gap: 10px; /* Adiciona espaço entre os botões */
 }
 
-/* Adicionalmente, ajuste o estilo dos botões, se necessário */
+/* Centralização dos botões de ação (Curtir, Excluir, Reportar) */
+.d-flex.justify-content-center {
+  display: flex; /* Utilizando flexbox para o layout */
+  justify-content: center; /* Alinha os botões ao centro */
+  gap: 20px; /* Adiciona espaço entre os botões */
+}
+
+/* Estilos dos botões */
 .comment-btn, .delete-btn, .report-btn {
   display: inline-flex;
   align-items: center;
@@ -119,93 +121,6 @@ textarea.form-control {
 
 .report-btn:hover {
   color: #e0a800;
-}
-
-/* Responsividade para telas menores */
-@media (max-width: 768px) {
-  .comentario {
-    flex-direction: column;
-    align-items: center;
-  }
-  .comentario img {
-    margin-bottom: 10px;
-  }
-  .comentario .cliente-info {
-    font-size: 1rem;
-  }
-}
-/* Estilos gerais do layout */
-body {
-  background: #f9f9f9 url('/static/images/Login.jpeg') no-repeat center center fixed;
-  background-size: cover;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Cartões com bordas arredondadas e sombras */
-.card {
-  background-color: rgba(255, 255, 255, 0.95);
-  border-radius: 1rem;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
-}
-
-/* Centralização de conteúdo */
-.text-center {
-  text-align: center;
-}
-
-/* Formulário */
-.formulario-centralizado {
-  background-color: rgba(255, 255, 255, 0.85);
-  border-radius: 1rem;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-/* Espaçamento entre os tópicos */
-.topico-card {
-  border: 1px solid #e0e0e0;
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Títulos dos tópicos centralizados */
-.topico-card h6 {
-  text-align: center;
-}
-
-.topico-card p {
-  text-align: center;
-  color: #555;
-}
-
-/* Botão Excluir abaixo do Tópico */
-.topico-card .btn-danger {
-  margin-top: 10px;
-  width: 100%;
-  display: inline-block;
-}
-
-/* Ajustes no formulário de comentário */
-textarea.form-control {
-  border-radius: 1rem;
-  padding: 1rem;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-}
-
-.btn-submit {
-  background-color: #28a745;
-  color: white;
-  font-size: 1rem;
-  border-radius: 1rem;
-  padding: 0.5rem 1.5rem;
-  cursor: pointer;
-}
-
-.btn-submit:hover {
-  background-color: #218838;
 }
 
 /* Responsividade para telas menores */

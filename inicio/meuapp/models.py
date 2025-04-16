@@ -45,6 +45,7 @@ class ContactMe(models.Model):
     subject = models.CharField(max_length=200)
     message = models.TextField()
 
+
 class Vacina(models.Model):
     NOME_VACINAS = [
         ('BCG', 'BCG'),
@@ -56,11 +57,12 @@ class Vacina(models.Model):
     nome = models.CharField(max_length=100, choices=NOME_VACINAS)
     data = models.DateField()
     comprovante = models.ImageField(upload_to='comprovantes/')
-    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome
-    
+
+
 class GanhoPeso(models.Model):
     usuario = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     peso_inicial = models.FloatField()
@@ -161,5 +163,6 @@ class Relatorio(models.Model):
     data_relatorio = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Relatório de {self.cliente.username}'
+        return f'Relatório de {self.cliente.username} sobre {self.comentario or self.topico}'
+
 

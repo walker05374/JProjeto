@@ -60,6 +60,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'notifications',
 
+    
+
 ]
 
 
@@ -73,6 +75,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+
+    
 
     
 

@@ -26,6 +26,10 @@ router.register(r'cliente', ClienteViewSet, basename="Cliente")
 
 
 urlpatterns = [
+
+
+
+    
     path('', include('django.contrib.auth.urls')),
     path('', views.site, name='site'),
 
@@ -85,7 +89,8 @@ urlpatterns = [
     path('comentar/<int:topico_id>/', views.comentar_topico, name='comentar_topico'),
     path('deletar-comentario/<int:comentario_id>/', views.deletar_comentario, name='deletar_comentario'),
     path('curtir/<str:tipo>/<int:id_conteudo>/', views.curtir_conteudo, name='curtir_conteudo'),  # Certifique-se de que essa URL está registrada
-
+    path('reportar/<str:tipo>/<int:id_conteudo>/', views.reportar_conteudo, name='reportar_conteudo'),
+    path('moderador/relatorios/', views.ver_relatorios, name='ver_relatorios'),
 ]
     
 urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

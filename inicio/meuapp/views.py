@@ -357,7 +357,7 @@ def vacina_create(request):
                 'vazio': True
             })
 
-    return render(request, 'vacinas/vacina_create.html', {
+    return render(request, 'vacinas/vacina_create1.html', {
         'form': form,
         'vacinas': vacinas,
         'circulos': circulos,
@@ -397,7 +397,7 @@ def update_vacina(request, id):
                 'vazio': True
             })
 
-    return render(request, 'vacinas/vacina_create.html', {
+    return render(request, 'vacinas/vacina_create1.html', {
         'form': form,
         'vacinas': vacinas,
         'circulos': circulos,
@@ -409,6 +409,9 @@ def delete_vacina(request, id):
     vacina = get_object_or_404(Vacina, id=id, usuario=request.user)
     vacina.delete()
     return redirect("vacina_create")
+
+
+
 
 
 
@@ -605,12 +608,10 @@ def forum(request):
 from .models import Topico, Comentario
 from .forms import ComentarioForm
 from django.contrib.auth.decorators import login_required
+
+
+
 @login_required
-
-
-
-
-
 def detalhes_topico(request, topico_id):
     topico = get_object_or_404(Topico, id=topico_id)
     comentarios = topico.comentarios.all()  # Recupera todos os comentários do tópico
@@ -627,7 +628,7 @@ def detalhes_topico(request, topico_id):
             'curtiu': curtiu_comentario
         })
 
-    return render(request, 'forum/detalhes_topico.html', {
+    return render(request, 'forum/_detalhes_topico.html', {
         'topico': topico,
         'comentarios': comentarios_com_curtidas,
         'curtiu_topico': curtiu_topico
@@ -718,3 +719,33 @@ def comentar_topico(request, topico_id):
         form = ComentarioForm()
 
     return render(request, 'forum/comentar_topico.html', {'form': form, 'topico': topico})
+
+@login_required
+def reportar_conteudo(request, tipo, id_conteudo):
+    if tipo == 'topico':
+        conteudo = get_object_or_404(Topico, id=id_conteudo)
+    elif tipo == 'comentario':
+        conteudo = get_object_or_404(Comentario, id=id_conteudo)
+
+    if request.method == 'POST':
+        motivo = request.POST.get('motivo')
+        # Cria um relatório no banco de dados
+        relatorio = Relatorio(cliente=request.user, **{tipo: conteudo}, motivo=motivo)
+        relatorio.save()
+        return redirect('detalhes_topico', topico_id=conteudo.topico.id)
+    
+    return render(request, 'forum/reportar_conteudo.html', {'conteudo': conteudo})
+
+@login_required
+def ver_relatorios(request):
+    # Verificar se o usuário é moderador ou superusuário
+    if not request.user.is_superuser:
+        try:
+            moderador = Moderador.objects.get(cliente=request.user.cliente, ativo=True)
+        except Moderador.DoesNotExist:
+            return redirect('forum')  # Se não for moderador nem superusuário, redireciona para o fórum
+
+    # Recupera todos os relatórios
+    relatorios = Relatorio.objects.all().order_by('-data_relatorio')
+
+    return render(request, 'forum/ver_relatorios.html', {'relatorios': relatorios})

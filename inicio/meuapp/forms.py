@@ -161,26 +161,6 @@ class GanhoPesoForm(forms.ModelForm):
         model = GanhoPeso
         fields = ['peso_inicial', 'peso_atual', 'altura', 'semana_gestacional']
 
-EXAMES_CHOICES = [
-    ('', 'Selecione o Exame'),
-    ('Outro', 'Outro'),  # Opção para o usuário escrever o exame
-    ('glicose', 'Exame de Glicose (Curva glicêmica)'),
-    ('urina', 'Exame de Urina (Sumário de Urina)'),
-    ('ultrassom', 'Ultrassonografia Obstétrica'),
-    ('hemograma', 'Exame de Hemograma Completo'),
-    ('toxoplasmose', 'Exame de Toxoplasmose'),
-    ('rubeola', 'Exame de Rubéola'),
-    ('hepatite_b', 'Exame de Hepatite B e C'),
-    ('hiv', 'Exame de HIV'),
-    ('sifilis', 'Exame de Sífilis'),
-    ('papanicolau', 'Exame de Papanicolau'),
-    ('fezes', 'Exame de Fezes'),
-    ('estriol', 'Exame de Estriol (hormonal)'),
-    ('funcao_renal', 'Teste de Função Renal'),
-    ('ecg', 'Exame de Eletrocardiograma (ECG)'),
-    ('vitaminas', 'Exame de Vitaminas (como a vitamina D)')
-]
-
 
 #forumfrom django import forms
 from .models import Comentario, Topico

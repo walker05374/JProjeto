@@ -1,0 +1,118 @@
+/* Fundo com imagem e cor suave */
+body {
+  background: #f9f9f9 url('/static/images/Login.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Cartões com sombras e bordas arredondadas */
+.card {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 2rem;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+/* Títulos */
+.card h5 {
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* Estilo do formulário centralizado */
+.formulario-centralizado {
+  margin: 0 auto;
+  float: none;
+}
+
+/* Área de vacinas com mais espaço e rolagem quando necessário */
+.vacinas-wrapper {
+  display: flex;
+  flex-wrap: wrap; /* Permite que as vacinas quebrem para uma nova linha */
+  justify-content: space-around; /* Coloca as vacinas em duas colunas, se houver espaço suficiente */
+  gap: 1.5rem; /* Menor espaço entre os cartões */
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  max-height: 80vh; /* Limita a altura para aplicar rolagem */
+  overflow-y: auto; /* Habilita a rolagem vertical quando necessário */
+}
+
+/* Nome e data */
+.vacina-nome {
+  font-size: 1rem; /* Diminui o tamanho da fonte */
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+
+.vacina-data {
+  font-size: 0.8rem; /* Diminui o tamanho da fonte */
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+/* Imagem do comprovante com tamanho padronizado e menor */
+.comprovante-img {
+  width: 120px; /* Diminui o tamanho da imagem */
+  height: 80px; /* Diminui o tamanho da imagem */
+  object-fit: cover;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin: 0.5rem 0;
+}
+
+/* Cartão individual da vacina mais compacto */
+.vacina-card {
+  background-color: #e9f7fc;
+  border-left: 6px solid #007bff;
+  padding: 0.8rem; /* Reduz o padding */
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  width: 180px; /* Diminui a largura do cartão */
+  min-height: 250px; /* Reduz a altura do cartão */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
+
+/* Botões */
+.btn {
+  border-radius: 1rem;
+  font-size: 0.85rem; /* Diminui o tamanho do botão */
+  padding: 0.3rem 0.7rem; /* Menor padding */
+  margin: 0.2rem;
+}
+
+.btn i {
+  margin-right: 6px;
+}
+
+/* Hover nos botões */
+.btn-success:hover {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-warning:hover {
+  background-color: #ffc107;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .vacinas-wrapper {
+    flex-direction: column; /* Alinha as vacinas em coluna em telas menores */
+    align-items: center;
+  }
+
+  .vacina-card {
+    width: 80%; /* Faz os cartões ocuparem mais espaço em telas menores */
+    max-width: 300px;
+  }
+}
