@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Termos de Uso - Jornada Maternal</title>
+
+    <!-- Estilo personalizado -->
+    <link rel="stylesheet" href="{% static 'css/registration/termos.css' %}">
+</head>
+<body>
+    <div class="container-area">
+        <div class="form-box">
+            <h1><i class="fas fa-file-alt"></i> Termos de Uso</h1>
+            
+            <div class="termos-conteudo">
+                <p><strong>Bem-vindo à plataforma Jornada Maternal!</strong></p>
+
+                <h3>1. Aceitação dos Termos</h3>
+                <p>Ao utilizar a plataforma Jornada Maternal, você concorda com os seguintes termos de uso. Caso não concorde com estes termos, não utilize nossa plataforma.</p>
+
+                <h3>2. Modificações nos Termos</h3>
+                <p>Podemos atualizar ou modificar estes termos a qualquer momento. Aconselhamos que você revise esta página periodicamente para se manter informado sobre alterações.</p>
+
+                <h3>3. Responsabilidade do Usuário</h3>
+                <p>Você se compromete a usar a plataforma de forma ética e legal, respeitando todas as normas aplicáveis.</p>
+
+                <h3>4. Propriedade Intelectual</h3>
+                <p>Todo o conteúdo presente na plataforma, incluindo textos, imagens e logotipos, é protegido por direitos autorais e pertence à Jornada Maternal ou a seus licenciadores.</p>
+
+                <h3>5. Termos de Suspensão ou Cancelamento</h3>
+                <p>A Jornada Maternal se reserva o direito de suspender ou cancelar contas de usuários que violarem estes termos.</p>
+
+                <h3>6. Limitação de Responsabilidade</h3>
+                <p>Não nos responsabilizamos por danos diretos, indiretos, incidentais ou consequenciais relacionados ao uso da plataforma.</p>
+
+                <h3>7. Legislação Aplicável</h3>
+                <p>Este contrato é regido pelas leis do Brasil. Quaisquer disputas serão resolvidas nos tribunais competentes.</p>
+
+                <p>Se você tiver dúvidas sobre os termos, entre em contato conosco.</p>
+            </div>
+
+            <div class="termos-footer">
+                <a href="{% url 'registro' %}" class="btn btn-primary">Voltar para o Cadastro</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,7 +9,7 @@
     <!-- Estilo personalizado -->
     <link rel="stylesheet" href="{% static 'css/registration/register.css' %}">
     <!-- Ícones -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
     <!-- JS -->
     <script src="{% static 'js/registro.js' %}" defer></script>
 </head>
@@ -69,43 +68,22 @@
                     {% endif %}
                 </div>
 
-                <div class="termos">
-                    <button type="button" id="registerButton" disabled class="btn-termos" data-bs-toggle="modal" data-bs-target="#modalTermos">
-                        Ler os Termos de Uso
+                <!-- Botão "Cadastrar" -->
+                <div class="submit-btn">
+                    <button type="submit" class="btn-cadastrar" id="submitButton">
+                        Cadastrar
                     </button>
                 </div>
 
-                <div class="submit-btn">
-                    <button type="submit" class="btn-cadastrar">Cadastrar</button>
-                </div>
+                <p class="login-link">Ao se cadastrar, você concorda com nossos 
+                    <a href="{% url 'termos' %}" class="login-link" style="text-decoration: underline;">Termos de Uso</a>.
+                </p>
 
                 <p class="login-link">Já possui conta? <a href="{% url 'login' %}">Entrar</a></p>
             </form>
         </div>
     </div>
 
-    <!-- Modal dos Termos -->
-    <div class="modal fade" id="modalTermos" tabindex="-1" aria-labelledby="TituloModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content termos-modal">
-                <div class="modal-header">
-                    <h5 class="modal-title w-100 text-center" id="TituloModal">Termos de Uso</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <ul>
-                        <li>✔ Ao utilizar a plataforma Jornada Maternal, você concorda com os termos.</li>
-                        <li>🔄 Podemos alterar estes termos. Revise-os periodicamente.</li>
-                        <li>✅ Use a plataforma de forma ética e legal.</li>
-                        <li>⚠ Contas podem ser encerradas por violação dos termos.</li>
-                    </ul>
-                    <p>Clique em "Aceitar" para confirmar a leitura.</p>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
-                    <button type="button" class="btn btn-primary" onclick="document.getElementById('registroForm').submit();">Aceitar</button>
-                </div>
-            </div>
         </div>
     </div>
 

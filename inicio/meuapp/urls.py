@@ -54,7 +54,7 @@ urlpatterns = [
     path('contact', views.contact_me, name='contact'),
     
     
-    
+    path('termos/', views.termos, name='termos'),
     path('reset-password/', MyPasswordReset.as_view(), name='password_reset'),
     path('password_reset/', auth_views.PasswordResetView.as_view(), name="password_reset"),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
@@ -72,6 +72,11 @@ urlpatterns = [
     path('reset/done/', v.MyPasswordResetComplete.as_view(), name='password_reset_complete'),  # noqa E501
     path('excluir-conta/', excluir_conta, name='excluir-conta'),
     
+
+
+
+
+
     path("create_vacina", views.vacina_create, name="vacina_create"),  # você nomeou assim no redirect
     path("update_vacina/<int:id>", views.update_vacina, name="update_vacina"),
     path("delete_vacina/<int:id>", views.delete_vacina, name="delete_vacina"),
@@ -91,6 +96,8 @@ urlpatterns = [
     path('curtir/<str:tipo>/<int:id_conteudo>/', views.curtir_conteudo, name='curtir_conteudo'),  # Certifique-se de que essa URL está registrada
     path('reportar/<str:tipo>/<int:id_conteudo>/', views.reportar_conteudo, name='reportar_conteudo'),
     path('moderador/relatorios/', views.ver_relatorios, name='ver_relatorios'),
+    path('excluir_relatorio/<int:relatorio_id>/', views.excluir_relatorio, name='excluir_relatorio'),
+
 ]
     
 urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

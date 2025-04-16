@@ -14,7 +14,7 @@
             <div class="col-md-8">
                 <div class="card p-4 shadow rounded-4">
                     <h2 class="text-center">Reportar Conteúdo</h2>
-                    <p class="text-center">Informe o motivo pelo qual está reportando este comentário.</p>
+                    <p class="text-center">Informe o motivo pelo qual está reportando este conteúdo.</p>
 
                     <form method="POST">
                         {% csrf_token %}
@@ -32,6 +32,7 @@
 
                     <hr>
                     <div class="text-center">
+                        <!-- Botão Voltar para o Tópico -->
                         <a href="{% url 'detalhes_topico' topico_id=conteudo.topico.id %}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left"></i> Voltar para o Tópico
                         </a>
@@ -41,6 +42,6 @@
         </div>
     </div>
 
-    <script src="{% static 'js/comentarios.js' %}"></script>
+    <script src="{% static 'js/forum.js' %}"></script>
 </body>
 </html>

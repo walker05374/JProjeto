@@ -1,0 +1,151 @@
+/* Estilos gerais do layout */
+body {
+  background: #f9f9f9 url('/static/images/Login.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Cartões com bordas arredondadas e sombras */
+.card {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+/* Centralização de conteúdo */
+.text-center {
+  text-align: center;
+}
+
+/* Ajustes nos botões */
+.curtir-btn, .comment-btn, .delete-btn, .report-btn {
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.curtir-btn:hover, .comment-btn:hover, .delete-btn:hover, .report-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Estilo do comentário */
+.comentario {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.comentario img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.comentario .texto-comentario {
+  flex: 1;
+}
+
+/* Nome do cliente logo abaixo da foto */
+.comentario .cliente-info {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #007bff;
+  margin-top: 10px;
+}
+
+/* Ajustes no formulário de comentário */
+textarea.form-control {
+  border-radius: 1rem;
+  padding: 1rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.btn-submit {
+  background-color: #28a745;
+  color: white;
+  font-size: 1rem;
+  border-radius: 1rem;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: #218838;
+}
+
+/* Centralização dos botões de ação (Curtir, Excluir, Reportar) */
+.d-flex.justify-content-center {
+  display: flex; /* Utilizando flexbox para o layout */
+  justify-content: center; /* Alinha os botões ao centro */
+  gap: 20px; /* Adiciona espaço entre os botões */
+}
+
+/* Estilos dos botões */
+.comment-btn, .delete-btn, .report-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 8px 15px; /* Ajuste para um tamanho de botão confortável */
+}
+
+.comment-btn:hover, .delete-btn:hover, .report-btn:hover {
+  transform: scale(1.1);
+}
+
+.comment-btn {
+  color: #007bff;
+}
+
+.comment-btn:hover {
+  color: #0056b3;
+}
+
+.delete-btn {
+  color: #dc3545;
+}
+
+.delete-btn:hover {
+  color: #c82333;
+}
+
+.report-btn {
+  color: #ffc107;
+}
+
+.report-btn:hover {
+  color: #e0a800;
+}
+
+/* Botões de navegação */
+.btn-secondary {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .comentario {
+    flex-direction: column;
+    align-items: center;
+  }
+  .comentario img {
+    margin-bottom: 10px;
+  }
+  .comentario .cliente-info {
+    font-size: 1rem;
+  }
+
+  /* Centralizar os textos no formulário */
+  .topico-card p,
+  .topico-card h6 {
+    text-align: center;
+  }
+}

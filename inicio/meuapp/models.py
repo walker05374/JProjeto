@@ -31,9 +31,14 @@ class Cliente(models.Model):
     nomecrianca = models.CharField(max_length=40, verbose_name='Nome da Criança')
     generocrianca = models.CharField(max_length=1, choices=GENERO_CHOICES, verbose_name='Gênero da Criança')
 
+
+    aviso_mostrado = models.BooleanField(default=False, verbose_name="Aviso mostrado ao usuário")
+
+
+
     atualizado_em = models.DateTimeField(auto_now=True)  # Atualiza a cada alteração
     foto = models.ImageField(upload_to='', null=True, blank=True)
-    print 
+
 
     def __str__(self):
         return f"{self.nome} - CPF: {self.cpf}"
@@ -155,14 +160,11 @@ class Curtida(models.Model):
     def __str__(self):
         return f'{self.usuario.username} curtiu'
 
+
+
 class Relatorio(models.Model):
-    cliente = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='relatorios', on_delete=models.CASCADE)
-    comentario = models.ForeignKey(Comentario, related_name='relatorios', on_delete=models.CASCADE, null=True, blank=True)
-    topico = models.ForeignKey(Topico, related_name='relatorios', on_delete=models.CASCADE, null=True, blank=True)
+    cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     motivo = models.TextField()
+    topico = models.ForeignKey(Topico, null=True, blank=True, on_delete=models.CASCADE)
+    comentario = models.ForeignKey(Comentario, null=True, blank=True, on_delete=models.CASCADE)
     data_relatorio = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'Relatório de {self.cliente.username} sobre {self.comentario or self.topico}'
-
-

@@ -96,17 +96,28 @@ def login_view(request):
     
     return render(request, 'registration/login.html')
 
-
 @login_required
 def site(request):
     # Verifica se o usuário tem clientes cadastrados
-    clientes_cadastrados = Cliente.objects.filter(user=request.user).exists()
+    cliente = Cliente.objects.filter(user=request.user).first()
 
-    # Envia a notificação corretamente
+    # Se não houver cliente cadastrado ou o aviso não foi mostrado
+    if cliente:
+        # Se o aviso não foi mostrado ainda, mostra a notificação
+        if not cliente.aviso_mostrado:
+            messages.info(request, ' Olá😊 Parabéns pelo seu cadastro completo! Agora você está pronto(a) para aproveitar todas as funcionalidades do nosso fórum. Interaja com outras mamães, compartilhe experiências e tenha acesso a dicas valiosas sobre a sua jornada de gestação. Vamos juntas!')
+            # Marca o aviso como mostrado
+            cliente.aviso_mostrado = True
+            cliente.save()
+    else:
+        # Se não tiver cliente cadastrado, envia mensagem de cadastro
+        messages.info(request, 'Por favor, cadastre suas informações pessoais, na aba "gestante", para acessar o fórum e interagir com outras mamães.')
+
+    # Envia a notificação para o usuário logado
     notify.send(request.user, recipient=request.user, verb=f"Olá {request.user.email}, você está logado")
 
     # Renderiza a página e passa a variável clientes_cadastrados para o template
-    return render(request, 'site/site.html', {'clientes_cadastrados': clientes_cadastrados})
+    return render(request, 'site/site.html', {'clientes_cadastrados': bool(cliente)})
 
 
 def registro(request):
@@ -121,6 +132,9 @@ def registro(request):
             messages.error(request, 'Ocorreu um erro ao cadastrar o usuário. Verifique os campos.')
     
     return render(request, 'registration/register.html', {'form': form})
+
+def termos(request):
+    return render(request, 'registration/termos.html')
 
 
 class MyPasswordReset(PasswordResetView):
@@ -284,20 +298,20 @@ def update_cliente(request, id):
         'cliente': cliente
     })
 
-
 @login_required
 def delete_cliente(request, id):
     cliente = get_object_or_404(Cliente, pk=id, user=request.user)
     cliente.delete()
 
+    # Verifica se o usuário não tem mais nenhum cliente cadastrado
     if not Cliente.objects.filter(user=request.user).exists():
-        messages.success(request, "Cadastro da gestante excluído com sucesso. Por favor, atualize suas informações.")
+        # Exibe uma mensagem de sucesso após a exclusão
+        messages.success(request, "Cadastro da gestante excluído com sucesso.")
         return redirect("site")
 
+    # Caso o cliente ainda tenha algum cadastro
     messages.success(request, "Cadastro da gestante excluído com sucesso.")
     return redirect("read_cliente")
-
-
 
 @login_required
 def update_profile(request):
@@ -681,6 +695,12 @@ def curtir_conteudo(request, tipo, id_conteudo):
         return redirect('detalhes_topico', topico_id=conteudo.topico.id)  # Comentário redireciona para o tópico que pertence
     else:
         return redirect('detalhes_topico', topico_id=conteudo.id)  # Tópico redireciona para o próprio tópico
+    
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import Topico, Comentario, Relatorio
 
 @login_required
 def reportar_conteudo(request, tipo, id_conteudo):
@@ -688,15 +708,36 @@ def reportar_conteudo(request, tipo, id_conteudo):
         conteudo = get_object_or_404(Topico, id=id_conteudo)
     elif tipo == 'comentario':
         conteudo = get_object_or_404(Comentario, id=id_conteudo)
-
-    if request.method == 'POST':
-        motivo = request.POST.get('motivo')
-        relatorio = Relatorio(cliente=request.user, **{tipo: conteudo}, motivo=motivo)
-        relatorio.save()
-        return redirect('detalhes_topico', topico_id=conteudo.topico.id)
+        # Atribui o tópico do comentário ao relatorio
+        relatorio = Relatorio(cliente=request.user, comentario=conteudo, motivo=request.POST.get('motivo'), topico=conteudo.topico)
+    else:
+        relatorio = Relatorio(cliente=request.user, motivo=request.POST.get('motivo'))
     
-    return render(request, 'forum/reportar_conteudo.html', {'conteudo': conteudo})
+    # Salva o relatório
+    relatorio.save()
 
+    messages.success(request, "Relatório enviado com sucesso!")
+    
+    if tipo == 'topico':
+        return redirect('detalhes_topico', topico_id=conteudo.id)
+    elif tipo == 'comentario':
+        return redirect('detalhes_topico', topico_id=conteudo.topico.id)  # Aqui passamos o id do tópico corretamente.
+
+
+@login_required
+def excluir_relatorio(request, relatorio_id):
+    # Obtém o relatório a ser excluído
+    relatorio = get_object_or_404(Relatorio, id=relatorio_id)
+
+    # Verifica se o usuário tem permissão para excluir
+    if request.user.is_superuser:
+        relatorio.delete()
+        messages.success(request, "Relatório excluído com sucesso.")
+    else:
+        messages.error(request, "Você não tem permissão para excluir este relatório.")
+
+    # Redireciona de volta para a página de relatórios
+    return redirect('ver_relatorios')
 
 @login_required
 def comentar_topico(request, topico_id):

@@ -23,3 +23,9 @@ inputs.forEach(input => {
 
 // Chama a função inicialmente para definir o estado do botão
 validateForm();
+
+// Função para aceitar os termos e concluir o cadastro
+function acceptTerms() {
+    // Submete o formulário
+    document.getElementById('registroForm').submit();
+}
