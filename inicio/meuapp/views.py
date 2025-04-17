@@ -94,7 +94,7 @@ def login_view(request):
             messages.error(request, 'Usuário não encontrado!')
             logger.warning(f"Falha ao fazer login - Usuário não encontrado: {username}")
     
-    return render(request, 'registration/login.html')
+    return render(request, 'registration/login1.html')
 
 @login_required
 def site(request):
@@ -182,7 +182,7 @@ class MyPasswordResetComplete(PasswordResetCompleteView):
     template_name = 'registration/password_reset_complete.html'
 
 
-# Contact and feedback views
+@login_required
 def contact_me(request):
     if request.method == 'POST':
         form = ContactMeForm(request.POST)
@@ -194,7 +194,7 @@ def contact_me(request):
         form = ContactMeForm()
     return render(request, 'site/subChat.html', {'form': form})
 
-
+@login_required
 def sendmail_contact(data):
     message_body = get_template('registration/send.html').render(data)
     sendmail = EmailMessage(data['subject'], message_body, settings.DEFAULT_FROM_EMAIL, to=['jornadamaternal@gmail.com'])
@@ -218,23 +218,23 @@ def register(request):
 def agendamento(request):
     return render(request, 'agendamento/exames.html')
 
-
+@login_required
 def mais(request):
     return render(request, 'site/abaMais.html')
 
-
+@login_required
 def amamentacao(request):
     return render(request, 'site/subAmamentacao.html')
 
-
+@login_required
 def noticias(request):
     return render(request, 'site/subNoticias.html')
 
-
+@login_required
 def informacoes(request):
     return render(request, 'site/adicionarinformacoes.html')
 
-
+@login_required
 def menu(request):
     return render(request, 'informaçãogestante/cliente_read.html')
 
@@ -242,7 +242,7 @@ def menu(request):
 def cep(request):
     return render(request, 'site/cep.html')
 
-
+@login_required
 def search_results(request):
     query = request.GET.get('q')
     results = google_custom_search(query) if query else []
@@ -317,9 +317,6 @@ def delete_cliente(request, id):
     # Caso o cliente ainda tenha algum cadastro
     messages.success(request, "Cadastro da gestante excluído com sucesso.")
     return redirect("read_cliente")
-
-
-
 
 
 @login_required
@@ -437,10 +434,10 @@ def delete_vacina(request, id):
 
 
 
-
+@login_required
 def calcular_imc(peso, altura=1.60):  # altura padrão, ou pode puxar do perfil do usuário
     return round(peso / (altura ** 2), 2)
-
+@login_required
 def classificar_imc(imc):
     if imc < 18.5:
         return "Baixo peso (Você começou a gestação com peso abaixo do ideal. O ganho de peso deve ser mais acompanhado para garantir o bom desenvolvimento do bebê.)"
@@ -569,7 +566,7 @@ from django.http import JsonResponse
 from .models import PostoSaude
 import math
 from .utils import calcular_distancia
-
+@login_required
 def mapa_view(request):
     context = {
         'GOOGLE_MAPS_API_KEY': settings.GOOGLE_MAPS_API_KEY  # Passando a chave para o template
@@ -578,7 +575,7 @@ def mapa_view(request):
 
 
 
-    # Busca todos os postos de saúde
+@login_required   # Busca todos os postos de saúde
 def buscar_postos_saude(request):
     lat = float(request.GET.get("lat"))
     lng = float(request.GET.get("lng"))
@@ -800,7 +797,7 @@ def ver_relatorios(request):
 
     return render(request, 'forum/ver_relatorios.html', {'relatorios': relatorios})
 
-
+@login_required
 def formacaobebe(request):
     # Se necessário, você pode adicionar lógica para processar dados aqui (por exemplo, fazer cálculos com base na semana de gestação)
     

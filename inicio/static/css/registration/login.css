@@ -1,115 +1,99 @@
-/* Styling for the Login Page */
+/* Body styles: Use the background image and ensure the container fills the screen */
 body {
-  background-color: #f0f8ff;
-  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: url('/static/images/Login.jpeg') no-repeat center center fixed;
+  background-size: cover;
 }
 
-.container {
+/* Flex container to center the form */
+.container-area {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
 
-.card {
+/* Form Box Styles */
+.form-box {
+  background-color: rgba(255, 255, 255, 0.95); /* Light semi-transparent background */
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 20px #00000060;
   width: 100%;
-  max-width: 400px;
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  max-width: 500px;
 }
 
-.card-body {
-  padding: 20px;
-}
-
-h2 {
-  font-size: 24px;
+/* Header Styling */
+.form-box h1 {
   text-align: center;
-  color: #006699;
+  color: #027789;
+  margin-bottom: 25px;
 }
 
-.campo-flo {
-  position: relative;
-  margin-bottom: 20px;
+/* Form Group styling for input fields */
+.form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
 }
 
-.campo-flo i {
-  position: absolute;
-  top: 12px;
-  left: 10px;
-  color: #006699;
-}
-
-.campo-flo input {
-  width: 100%;
-  padding-left: 35px;
-  padding-right: 15px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.centrobotao {
-  position: relative;
-  width: 100%;
-  text-align: center;
-}
-
-#submit-btn {
-  width: 100%;
-  padding: 12px;
-  background-color: #006699;
+/* Input field styles */
+.form-group input {
   border: none;
-  color: #fff;
+  border-bottom: 2px solid #027789;
+  padding: 10px 5px;
+  background-color: transparent;
   font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-  position: relative;
-  z-index: 1;
+  outline: none;
 }
 
-#submit-btn:disabled {
-  background-color: #ddd;
+/* Styling for input fields when there is an error */
+.input-error {
+  border-bottom: 2px solid #dc3545;
 }
 
-/* Center the spinner */
-.spinner-grow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  display: none; /* Hidden by default */
-}
-
-/* Adjustments for the link texts */
-.a .p {
-  text-align: center;
+/* Error message styling */
+.error-msg {
+  color: #dc3545;
   font-size: 14px;
+  margin-top: 5px;
 }
 
-.a a {
-  color: #006699;
-  text-decoration: none;
+/* Terms and Submit button container */
+.termos, .submit-btn {
+  margin-top: 20px;
+  text-align: center;
 }
 
-.a a:hover {
-  text-decoration: underline;
+/* Button styling */
+.btn-termos, .btn-cadastrar {
+  background-color: #027789;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.social-icons {
+/* Button hover effect */
+.btn-termos:hover,
+.btn-cadastrar:hover {
+  background-color: #025b68;
+}
+
+/* Social media buttons */
+.social-btn {
   display: flex;
   justify-content: center;
   gap: 15px;
+  margin-top: 15px;
 }
 
-.social-btn {
+/* Social button styles */
+.social-btn a {
   width: 40px;
   height: 40px;
   background-color: #ddd;
@@ -121,10 +105,30 @@ h2 {
   color: #fff;
 }
 
-.social-btn.google-btn {
-  background-color: #db4437;
+.social-btn .google-btn {
+  background-color: #db4437; /* Google Red */
 }
 
-.social-btn.facebook-btn {
-  background-color: #3b5998;
+.social-btn .facebook-btn {
+  background-color: #3b5998; /* Facebook Blue */
+}
+
+/* Link for password recovery */
+.login-link {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.login-link a {
+  color: #027789;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* Modal styling */
+.termos-modal {
+  border-radius: 10px;
 }

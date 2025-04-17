@@ -1,3 +1,4 @@
+/* Body styles: Use the background image and ensure the container fills the screen */
 body {
   margin: 0;
   padding: 0;
@@ -6,6 +7,7 @@ body {
   background-size: cover;
 }
 
+/* Flex container to center the form */
 .container-area {
   display: flex;
   justify-content: center;
@@ -13,8 +15,9 @@ body {
   height: 100vh;
 }
 
+/* Form Box Styles */
 .form-box {
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.95); /* Light semi-transparent background */
   padding: 30px 40px;
   border-radius: 15px;
   box-shadow: 0px 0px 20px #00000060;
@@ -22,18 +25,21 @@ body {
   max-width: 500px;
 }
 
+/* Header Styling */
 .form-box h1 {
   text-align: center;
   color: #027789;
   margin-bottom: 25px;
 }
 
+/* Form Group styling for input fields */
 .form-group {
   margin-bottom: 18px;
   display: flex;
   flex-direction: column;
 }
 
+/* Input field styles */
 .form-group input {
   border: none;
   border-bottom: 2px solid #027789;
@@ -43,21 +49,25 @@ body {
   outline: none;
 }
 
+/* Styling for input fields when there is an error */
 .input-error {
   border-bottom: 2px solid #dc3545;
 }
 
+/* Error message styling */
 .error-msg {
   color: #dc3545;
   font-size: 14px;
   margin-top: 5px;
 }
 
+/* Terms and Submit button container */
 .termos, .submit-btn {
   margin-top: 20px;
   text-align: center;
 }
 
+/* Button styling */
 .btn-termos, .btn-cadastrar {
   background-color: #027789;
   color: white;
@@ -68,11 +78,42 @@ body {
   transition: background-color 0.3s;
 }
 
+/* Button hover effect */
 .btn-termos:hover,
 .btn-cadastrar:hover {
   background-color: #025b68;
 }
 
+/* Social media buttons */
+.social-btn {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+/* Social button styles */
+.social-btn a {
+  width: 40px;
+  height: 40px;
+  background-color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 18px;
+  color: #fff;
+}
+
+.social-btn .google-btn {
+  background-color: #db4437; /* Google Red */
+}
+
+.social-btn .facebook-btn {
+  background-color: #3b5998; /* Facebook Blue */
+}
+
+/* Link for password recovery */
 .login-link {
   margin-top: 20px;
   text-align: center;
@@ -87,6 +128,7 @@ body {
   text-decoration: underline;
 }
 
+/* Modal styling */
 .termos-modal {
   border-radius: 10px;
 }

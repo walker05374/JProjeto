@@ -198,6 +198,11 @@ UTHENTICATION_BACKENDS = [
 
 GOOGLE_MAPS_API_KEY = 'AIzaSyDVljhMbXIqux_EmMx-h_SOTH5kC1WRDDo'
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
 
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
