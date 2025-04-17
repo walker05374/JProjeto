@@ -7,7 +7,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login</title>
-  <link rel="stylesheet" href="{% static 'css/registration/login.css' %}">
+  <link rel="stylesheet" href="{% static 'css/registration/login1.css' %}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
 </head>
@@ -27,7 +27,7 @@
         </ul>
         {% endif %}
 
-        <h2 class="text-center mb-4">Bem-vindo de volta</h2>
+        <h2 class="text-center mb-4" style="color: #027789;">Bem-vindo de volta</h2>
 
         <div class="campo-flo">
           <i class="fas fa-envelope"></i>
@@ -55,6 +55,7 @@
           </button>
         </div>
         {% endif %}
+        
         <br>
         <div class="a ,p">
           <a href="{% url 'password_reset' %}">Esqueceu a senha?</a>
@@ -64,12 +65,12 @@
         </div>
 
         <div class="a ,p social-icons">
-          <a href="{% provider_login_url 'google' %}?next=/" class="social-btn google-btn">
-            <i class="fab fa-google"></i>
-          </a>
-          <a href="{% provider_login_url 'facebook' %}?next=/" class="social-btn facebook-btn">
-            <i class="fab fa-facebook"></i>
-          </a>
+            <a href="{% provider_login_url 'google' %}?next=/" class="social-btn google-btn">
+              <i class="fab fa-google"></i>
+            </a>
+            <a href="{% provider_login_url 'facebook' %}?next=/" class="social-btn facebook-btn">
+              <i class="fab fa-facebook"></i>
+            </a>
         </div>
       </div>
     </div>
