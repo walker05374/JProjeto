@@ -241,3 +241,61 @@ footer {
         padding: 3rem 2rem;
     }
 }
+
+
+
+
+$carousel-transition-duration: 0.6s;
+$carousel-transition: transform $carousel-transition-duration ease-in-out; // Transição para o movimento dos slides
+
+/* Carrossel de imagens */
+.carousel-inner {
+    /* Aplicar a transição ao movimento do carrossel */
+    transition: $carousel-transition;
+}
+
+/* Ajusta o carrossel para ter um tamanho adequado e responsivo */
+.carousel-inner img {
+    height: auto; /* Mantém a altura automática */
+    max-height: 250px; /* Limita a altura máxima das imagens */
+    object-fit: cover; /* Faz com que a imagem ocupe toda a área sem distorcer */
+    transition: opacity 1s ease-in-out; /* Adiciona transição suave entre as imagens */
+}
+
+/* Ajuste de cor para as setas do carrossel - cor preta */
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: black; /* Setas pretas */
+}
+
+/* Personaliza as setas do carrossel */
+.custom-carousel-control {
+    color: black; /* Cor preta para as setas */
+}
+
+/* Centraliza o vídeo abaixo do carrossel */
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Ajuste da largura do vídeo */
+.video-container video {
+    width: 100%;
+    height: auto;
+}
+
+/* Ajuste das imagens do carrossel */
+.carousel-image {
+    width: 100%;
+    height: auto;
+}
+
+/* Responsividade para garantir que o vídeo e o carrossel fiquem proporcionais */
+@media (max-width: 768px) {
+    .carousel-inner img {
+        max-height: 200px; /* Ajuste da altura para telas menores */
+    }
+}
+
+

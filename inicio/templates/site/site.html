@@ -13,23 +13,23 @@
             <p>Estamos aqui para apoiá-la durante toda a jornada da maternidade. Sinta-se à vontade para navegar em nosso site e aproveitar todos os recursos disponíveis. Não hesite em entrar em contato caso tenha alguma dúvida ou precise de orientação. Desejamos a você uma gestação saudável e feliz!</p>
 <br>
             <!-- Carrossel de Imagens -->
-            <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel" data-bs-interval="1000">
+            <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
                 <div class="carousel-inner">
                     <!-- Primeira imagem ativa -->
                     <div class="carousel-item active">
-                        <img src="{% static 'images/login4.jpg' %}" class="d-block w-100 carousel-image" alt="Gestação 1">
+                        <img src="{% static 'images/4.jpg' %}" class="d-block w-100 carousel-image" alt="Gestação 1">
                     </div>
                     <!-- Segunda imagem -->
                     <div class="carousel-item">
-                        <img src="{% static 'images/login1.jpg' %}" class="d-block w-100 carousel-image" alt="Gestação 2">
+                        <img src="{% static 'images/2.jpg' %}" class="d-block w-100 carousel-image" alt="Gestação 2">
                     </div>
                     <!-- Terceira imagem -->
                     <div class="carousel-item">
-                        <img src="{% static 'images/login2.jpg' %}" class="d-block w-100 carousel-image" alt="Gestação 3">
+                        <img src="{% static 'images/3.jpg' %}" class="d-block w-100 carousel-image" alt="Gestação 3">
                     </div>
                     <!-- Quarta imagem -->
                     <div class="carousel-item">
-                        <img src="{% static 'images/login3.jpg' %}" class="d-block w-100 carousel-image" alt="Gestação 4">
+                        <img src="{% static 'images/4.jpg' %}" class="d-block w-100 carousel-image" alt="Gestação 4">
                     </div>
                 </div>
                 <!-- Setas de navegação com cor preta -->
@@ -56,61 +56,3 @@
     </div>
 </div>
 {% endblock %}
-
-<!-- Custom CSS -->
-<style>
-// Definir as variáveis de transição
-$carousel-transition-duration: 0.6s;
-$carousel-transition: transform $carousel-transition-duration ease-in-out; // Transição para o movimento dos slides
-
-/* Carrossel de imagens */
-.carousel-inner {
-    /* Aplicar a transição ao movimento do carrossel */
-    transition: $carousel-transition;
-}
-
-/* Ajusta o carrossel para ter um tamanho adequado e responsivo */
-.carousel-inner img {
-    height: auto; /* Mantém a altura automática */
-    max-height: 250px; /* Limita a altura máxima das imagens */
-    object-fit: cover; /* Faz com que a imagem ocupe toda a área sem distorcer */
-    transition: opacity 1s ease-in-out; /* Adiciona transição suave entre as imagens */
-}
-
-/* Ajuste de cor para as setas do carrossel - cor preta */
-.carousel-control-prev-icon, .carousel-control-next-icon {
-    background-color: black; /* Setas pretas */
-}
-
-/* Personaliza as setas do carrossel */
-.custom-carousel-control {
-    color: black; /* Cor preta para as setas */
-}
-
-/* Centraliza o vídeo abaixo do carrossel */
-.video-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Ajuste da largura do vídeo */
-.video-container video {
-    width: 100%;
-    height: auto;
-}
-
-/* Ajuste das imagens do carrossel */
-.carousel-image {
-    width: 100%;
-    height: auto;
-}
-
-/* Responsividade para garantir que o vídeo e o carrossel fiquem proporcionais */
-@media (max-width: 768px) {
-    .carousel-inner img {
-        max-height: 200px; /* Ajuste da altura para telas menores */
-    }
-}
-
-</style>
