@@ -69,10 +69,8 @@
         </div>
     {% endif %}
     
-    <!-- CONTEÚDO PRINCIPAL -->
     <div class="container pag">
         <div class="row justify-content-center">
-            <!-- Centralizar a foto -->
             <div class="col-md-4 text-center">
                 <label for="foto-upload" class="m-0" style="cursor: pointer;">
                     {% if cliente and cliente.foto %}
@@ -138,7 +136,6 @@
                 </button>
             </div>
 
-
             <!-- Modal -->
             <div class="modal fade" id="modalSalvar" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -164,61 +161,62 @@
             </div>
         </form>
     </div>
-<!-- Rodapé -->
-<footer>
-    <div id="footer_content">
-        <div id="footer_contacts">
-            <img src="{% static 'images/back.png' %}" alt="Logo" width="230" height="80">
-            <h6>SIGA NOS:</h6>
-            <div id="footer_social_media">
-                <a href="https://www.instagram.com" class="footer-link" id="instagram">
-                    <i class="fa-brands fa-instagram"></i>
-                </a>
-                <a href="https://www.facebook.com/" class="footer-link" id="facebook">
-                    <i class="fa-brands fa-facebook-f"></i>
-                </a>
-                <a href="https://www.whatsapp.com/?lang=pt_BR" class="footer-link" id="whatsapp">
-                    <i class="fa-brands fa-whatsapp"></i>
-                </a>
-                <a href="https://twitter.com" class="footer-link" id="twitter">
-                    <i class="fa-brands fa-twitter"></i>
-                </a>
-                <a href="https://www.youtube.com" class="footer-link" id="youtube">
-                    <i class="fa-brands fa-youtube"></i>
-                </a>
+
+    <footer>
+        <div id="footer_content">
+            <div id="footer_contacts">
+                <img src="{% static 'images/back.png' %}" alt="Logo" width="230" height="80">
+                <h6>SIGA NOS:</h6>
+
+                <div id="footer_social_media">
+                    <a href="https://www.instagram.com" class="footer-link" id="instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/" class="footer-link" id="facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.whatsapp.com/?lang=pt_BR" class="footer-link" id="whatsapp">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                    <a href="https://twitter.com" class="footer-link" id="twitter">
+                        <i class="fa-brands fa-twitter"></i>
+                    </a>
+                    <a href="https://www.youtube.com" class="footer-link" id="youtube">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                </div>
             </div>
-        </div>
-        <!-- Produtos e Links -->
-        <ul class="footer-list">
-            <li>
-                <h3>Produtos</h3>
-            </li>
-            <li><a href="#" class="footer-link">App</a></li>
-            <li><a href="#" class="footer-link">ChatBot</a></li>
-            <li><a href="#" class="footer-link">Mapa</a></li>
-        </ul>
 
-        <ul class="footer-list">
-            <li><h3>Sobre nós</h3></li>
-            <li><a href="#" class="footer-link">Endereço</a></li>
-            <li><a href="#" class="footer-link">Quem Somos</a></li>
-            <li><a href="{% url 'contact' %}" class="footer-link">Envie seu Feedback</a></li>
-        </ul>
+            <!-- Subscrição e outros links -->
+            <ul class="footer-list">
+                <li><h3>Produtos</h3></li>
+                <li><a href="#" class="footer-link">App</a></li>
+                <li><a href="#" class="footer-link">ChatBot</a></li>
+                <li><a href="#" class="footer-link">Mapa</a></li>
+            </ul>
 
-        <div id="footer_subscribe">
-            <h3>Escreva-se</h3>
-            <p>Para receber novidades.</p>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control text-center" placeholder="Escreva-se" aria-label="Escrever">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" id="email">
-                        <i class="far fa-envelope"></i>
-                    </button>
+            <ul class="footer-list">
+                <li><h3>Sobre nós</h3></li>
+                <li><a href="#" class="footer-link">Endereço</a></li>
+                <li><a href="#" class="footer-link">Quem Somos</a></li>
+                <li><a href="{% url 'contact' %}" class="footer-link">Envie seu Feedback</a></li>
+            </ul>
+
+            <div id="footer_subscribe">
+                <h3>Escreva-se</h3>
+                <p>Para receber novidades.</p>
+
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control text-center" placeholder="Escreva-se" aria-label="Escrever">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="email">
+                            <i class="far fa-envelope"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
     <script src="https://kit.fontawesome.com/3d88e1abe7.js" crossorigin="anonymous"></script>
     <script type="application/javascript" src="{% static 'js/alert.js' %}"></script>

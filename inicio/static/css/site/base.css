@@ -9,6 +9,17 @@ body {
   background-size: cover;
   background-attachment: fixed;
 }
+
+
+.botpress-container {
+    position: fixed;       /* Garante que o widget fique fixo na tela */
+    left: 0;               /* Posiciona o widget à esquerda */
+    bottom: 20px;          /* Ajuste a posição para o lado inferior da tela */
+    z-index: 9999;         /* Garante que o widget fique por cima de outros elementos */
+    margin: 10px;          /* Dá um pequeno espaço das bordas da tela */
+}
+
+
 /* Adicionar esta parte ao seu arquivo CSS */
 html, body {
   height: 100%;  /* A altura total da página será 100% */
@@ -23,14 +34,14 @@ main {
 footer {
   width: 100%; /* Garante que o footer ocupe toda a largura da tela */
   background-color: #f8f9fa; /* Cor de fundo do footer */
-  padding: 20px 0; /* Espaçamento superior e inferior */
-  position: relative; 
+  padding: 15px 0; /* Espaçamento superior e inferior */
+  position:absolute; 
   bottom: 0;
 }
 
 #footer_content {
   width: 100%; /* Garante que o conteúdo do footer ocupe a largura total */
-  padding: 20px;
+  padding: 15px;
 }
 
 #footer_contacts, #footer_social_media, .footer-list {
