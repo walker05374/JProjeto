@@ -1,84 +1,85 @@
 {% load static %}
 {% load socialaccount %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Login</title>
-    <link rel="stylesheet" href="{% static 'css/registration/login.css' %}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="{% static 'css/registration/login.css' %}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
 </head>
 <body>
 
 <div class="container">
-    <form method="post" id="login-form">
-        {% csrf_token %}
-        <div class="card">
-            <div class="card-body">
+  <form method="post" id="login-form">
+    {% csrf_token %}
+    <div class="card">
+      <div class="card-body">
 
-                {% if messages %}
-                <ul class="list-unstyled">
-                    {% for message in messages %}
-                        <li class="alert alert-{{ message.tags }}">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
+        {% if messages %}
+        <ul class="list-unstyled">
+          {% for message in messages %}
+            <li class="alert alert-{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
 
-                <h2 class="text-center mb-4">Bem-vindo de volta</h2>
+        <h2 class="text-center mb-4">Bem-vindo de volta</h2>
 
-                <div class="campo-flo">
-                    <i class="fas fa-envelope"></i>
-                    <input type="text" id="username" name="username" required placeholder="Usuário">
-                </div>
-
-                <div class="campo-flo">
-                    <i class="fas fa-key"></i>
-                    <input type="password" id="password" name="password" required placeholder="Senha">
-                </div>
-
-                {% if form.non_field_errors %}
-                <div class="alert alert-danger alert-dismissible fade show small px-3 py-2 rounded" role="alert">
-                    {{ form.non_field_errors.0 }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                {% endif %}
-
-                <!-- Container para o botão "Entrar" e o spinner -->
-                <div class="centrobotao">
-                    <button type="submit" class="btn btn-outline-dark" id="submit-btn">Entrar</button>
-
-                    <!-- Spinner de Carregamento (inicialmente oculto) -->
-                    <div class="spinner-grow" role="status" id="loading-spinner">
-                        <span class="visually-hidden"></span>
-                    </div>
-                </div>
-
-                <div class="a ,p mt-3">
-                    <a href="{% url 'password_reset' %}">Esqueceu a senha?</a>
-                    <p>Não tem uma conta? <a href="{% url 'registro' %}">Crie a sua agora</a></p>
-                </div>
-
-                <div class="a ,p social-icons mt-3">
-                    <a href="{% provider_login_url 'google' %}?next=/" class="social-btn google-btn">
-                        <i class="fab fa-google"></i>
-                    </a>
-                    <a href="{% provider_login_url 'facebook' %}?next=/" class="social-btn facebook-btn">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                </div>
-
-            </div>
+        <div class="campo-flo">
+          <i class="fas fa-envelope"></i>
+          <input type="text" id="username" name="username" required placeholder="Usuário">
         </div>
-    </form>
+
+        <div class="campo-flo">
+          <i class="fas fa-key"></i>
+          <input type="password" id="password" name="password" required placeholder="Senha">
+        </div>
+
+        <div class="centrobotao">
+          <button type="submit" class="btn btn-outline-dark" id="submit-btn">Entrar</button>
+          <!-- Spinner de Carregamento (inicialmente oculto) -->
+          <div class="spinner-grow" role="status" id="loading-spinner" style="display: none;">
+            <span class="visually-hidden"></span>
+          </div>
+        </div>
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger alert-dismissible fade show small px-3 py-2 rounded" role="alert" style="font-size: 14px; margin-top: 10px;">
+          {{ form.non_field_errors.0 }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Fechar" style="line-height: 0.8;">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endif %}
+        <br>
+        <div class="a ,p">
+          <a href="{% url 'password_reset' %}">Esqueceu a senha?</a>
+          <p>Não tem uma Conta? 
+            <a href="{% url 'registro' %}">Crie o seu agora.</a>
+          </p>
+        </div>
+
+        <div class="a ,p social-icons">
+          <a href="{% provider_login_url 'google' %}?next=/" class="social-btn google-btn">
+            <i class="fab fa-google"></i>
+          </a>
+          <a href="{% provider_login_url 'facebook' %}?next=/" class="social-btn facebook-btn">
+            <i class="fab fa-facebook"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
 
 <script src="https://kit.fontawesome.com/3d88e1abe7.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <script src="{% static 'js/login.js' %}"></script>
 
 </body>

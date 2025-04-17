@@ -1,24 +1,22 @@
-$(document).ready(function () {
-    // Hide spinner initially
+$(document).ready(function() {
+    // Inicialmente o spinner estará oculto
     $('#loading-spinner').hide();
-
-    // Handle form submission
-    $('#login-form').on('submit', function (e) {
-        // Show spinner when button is clicked
-        $('#loading-spinner').show();
-
-        // Hide the submit button to avoid multiple clicks
-        $('#submit-btn').hide();
-
-        // Simulate form submission (you can replace this with actual submission logic)
-        setTimeout(function () {
-            // Simulate a successful submission and hide the spinner
-            $('#loading-spinner').hide();
-            // Submit the form after the delay (simulating)
-            $('#login-form')[0].submit();
-        }, 2000); // Simulating a 2-second delay (you can remove this in production)
-        
-        // Prevent default form submission while the spinner is showing
-        e.preventDefault();
+  
+    // Quando o formulário for submetido
+    $('#login-form').on('submit', function(e) {
+      // Exibe o ícone de carregamento
+      $('#loading-spinner').show();
+      // Oculta o botão de enviar para evitar múltiplos cliques
+      $('#submit-btn').hide();
+  
+      // Impede o envio do formulário para realizar o processo assíncrono (ajax)
+      e.preventDefault();
+  
+      // Simula um delay para fins de demonstração (substitua pela sua lógica de envio)
+      setTimeout(function() {
+        // Após a simulação de envio, envie o formulário normalmente
+        $('#login-form')[0].submit(); // Submete o formulário de maneira tradicional
+      }, 1000);  // 1 segundo para fins de simulação (você pode remover isso na produção)
     });
-});
+  });
+  

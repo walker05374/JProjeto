@@ -1,134 +1,101 @@
-/* Body styles: Use the background image and ensure the container fills the screen */
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: url('/static/images/Login.jpeg') no-repeat center center fixed;
+  font-family: 'Roboto', sans-serif;
+  background-image: url('/static/images/Login.jpeg');
   background-size: cover;
-}
-
-/* Flex container to center the form */
-.container-area {
+  background-position: center;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
-/* Form Box Styles */
-.form-box {
-  background-color: rgba(255, 255, 255, 0.95); /* Light semi-transparent background */
-  padding: 30px 40px;
-  border-radius: 15px;
-  box-shadow: 0px 0px 20px #00000060;
+.container {
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
 }
 
-/* Header Styling */
-.form-box h1 {
-  text-align: center;
-  color: #027789;
-  margin-bottom: 25px;
+.card {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Form Group styling for input fields */
-.form-group {
-  margin-bottom: 18px;
-  display: flex;
-  flex-direction: column;
+.campo-flo {
+  margin-bottom: 15px;
+  position: relative;
 }
 
-/* Input field styles */
-.form-group input {
+.campo-flo input {
+  width: 100%;
+  padding: 10px;
   border: none;
   border-bottom: 2px solid #027789;
-  padding: 10px 5px;
   background-color: transparent;
   font-size: 16px;
-  outline: none;
 }
 
-/* Styling for input fields when there is an error */
-.input-error {
-  border-bottom: 2px solid #dc3545;
+.campo-flo i {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #027789;
 }
 
-/* Error message styling */
-.error-msg {
-  color: #dc3545;
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-/* Terms and Submit button container */
-.termos, .submit-btn {
-  margin-top: 20px;
+.centrobotao {
+  position: relative;
   text-align: center;
 }
 
-/* Button styling */
-.btn-termos, .btn-cadastrar {
+#submit-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
   background-color: #027789;
   color: white;
   border: none;
-  padding: 10px 25px;
-  border-radius: 20px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-/* Button hover effect */
-.btn-termos:hover,
-.btn-cadastrar:hover {
-  background-color: #025b68;
+#loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-/* Social media buttons */
-.social-btn {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 15px;
-}
-
-/* Social button styles */
-.social-btn a {
-  width: 40px;
-  height: 40px;
-  background-color: #ddd;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  font-size: 18px;
-  color: #fff;
-}
-
-.social-btn .google-btn {
-  background-color: #db4437; /* Google Red */
-}
-
-.social-btn .facebook-btn {
-  background-color: #3b5998; /* Facebook Blue */
-}
-
-/* Link for password recovery */
-.login-link {
-  margin-top: 20px;
+.a, .p {
   text-align: center;
 }
 
-.login-link a {
-  color: #027789;
-  text-decoration: none;
+.social-icons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
-.login-link a:hover {
-  text-decoration: underline;
+.social-btn {
+  margin: 0 10px;
+  font-size: 24px;
+  color: #fff;
+  padding: 10px;
+  border-radius: 50%;
+  transition: background-color 0.3s;
 }
 
-/* Modal styling */
-.termos-modal {
-  border-radius: 10px;
+.social-btn:hover {
+  background-color: #027789;
 }
+
+.google-btn {
+  background-color: #DB4437;
+}
+
+.facebook-btn {
+  background-color: #4267B2;
+}
+
