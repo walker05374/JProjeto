@@ -34,22 +34,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* Estilos do contêiner de imagens */
-.imagem-container {
-    width: 100%;
-    height: 300px;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-/* Estilos das imagens dentro do contêiner de imagens */
-.imagem-container img {
-    width: auto;
-    height: 100%;
-    object-fit: cover;
-    display: inline-block;
-    animation: scroll 10s linear infinite;
-}
 
 /* Define animação "scroll" */
 @keyframes scroll {
