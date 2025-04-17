@@ -1,4 +1,4 @@
-/* Body styles: Use the background image and ensure the container fills the screen */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
 body {
   margin: 0;
   padding: 0;
@@ -131,4 +131,11 @@ body {
 /* Modal styling */
 .termos-modal {
   border-radius: 10px;
+}
+h1 {
+  color: #027789;
+}
+
+h1 i {
+  color: #027789;
 }
