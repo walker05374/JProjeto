@@ -20,23 +20,30 @@ html, body {
 main {
   flex: 1; /* Faz com que o conteúdo principal ocupe o máximo de espaço disponível */
 }
-
 footer {
-  margin-top: auto; /* Garante que o rodapé seja empurrado para baixo */
-  width: 100%;
-  background-color: #f8f9fa;
-  text-align: center;
-  padding: 1rem 0;
-  position: relative; /* Certifique-se de que o rodapé não se sobreponha ao conteúdo */
+  width: 100%; /* Garante que o footer ocupe toda a largura da tela */
+  background-color: #f8f9fa; /* Cor de fundo do footer */
+  padding: 20px 0; /* Espaçamento superior e inferior */
+  position: relative; 
+  bottom: 0;
 }
 
-/* Outros estilos do rodapé */
 #footer_content {
-  background-color: #f8f9fa;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  padding: 3rem 3.5rem;
-  text-align: center;
+  width: 100%; /* Garante que o conteúdo do footer ocupe a largura total */
+  padding: 20px;
+}
+
+#footer_contacts, #footer_social_media, .footer-list {
+  width: 100%; /* Garante que todos os elementos dentro do footer ocupem a largura total */
+}
+
+.footer-list {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-list li {
+  margin-bottom: 10px;
 }
 
 

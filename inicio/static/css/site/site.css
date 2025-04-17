@@ -2,14 +2,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&display=swap');
 
-/* Estilos do body */
+
 body {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px; /* Tamanho base de fonte para o corpo do texto */
+    line-height: 1.6; /* Define o espaçamento entre as linhas de texto */
     background-image: url(/static/images/Login.jpeg);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
     background-attachment: fixed;
-}
+    height: 100%;  /* A altura total da página será 100% */
+    margin: 0;
+    display: flex;
+    flex-direction: column;  /
+  }
+
 
 /* Estilos da barra de navegação */
 .navbar {
@@ -85,17 +93,40 @@ html {
     height: 100%;
 }
 
-/* Define estilos para o elemento main */
 main {
-    min-height: 100vh;
-}
+    flex: 1; /* Faz com que o conteúdo principal ocupe o máximo de espaço disponível */
+  }
 
-/* Define estilos para o elemento footer */
-footer {
-    width: 100%;
-    min-height: 100%;
-    color: var(--color-neutral-40);
-}
+
+
+  footer {
+    width: 100%; /* Garante que o footer ocupe toda a largura da tela */
+    background-color: #f8f9fa; /* Cor de fundo do footer */
+    padding: 20px 0; /* Espaçamento superior e inferior */
+    position: relative; 
+    bottom: 0;
+  }
+  
+  #footer_content {
+    width: 100%; /* Garante que o conteúdo do footer ocupe a largura total */
+    padding: 20px;
+  }
+  
+  #footer_contacts, #footer_social_media, .footer-list {
+    width: 100%; /* Garante que todos os elementos dentro do footer ocupem a largura total */
+  }
+  
+  .footer-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-list li {
+    margin-bottom: 10px;
+  }
+  
+  
+
 
 /* Estilos dos links no rodapé */
 .footer-link {
@@ -241,7 +272,6 @@ footer {
         padding: 3rem 2rem;
     }
 }
-
 
 
 

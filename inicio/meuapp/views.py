@@ -279,7 +279,7 @@ def create_cliente(request):
         'cliente': cliente
     })
 
-
+@login_required
 def read_cliente(request):
     clientes = Cliente.objects.filter(user=request.user)
     return render(request, 'informacaogestante/cliente_read.html', {'clientes': clientes})
