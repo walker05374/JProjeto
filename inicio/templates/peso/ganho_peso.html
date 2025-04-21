@@ -12,7 +12,17 @@
 <body>  
   <!-- Navegação -->
 
-      
+      <!-- ALERTA FORA DO CARD -->
+      {% if messages %}
+      <div class="alert alert-success alert-dismissible fade show mt-4 mx-auto" role="alert" style="max-width: 1100px; border-radius: 12px; font-weight: 500;">
+          {% for message in messages %}
+              {{ message }}
+          {% endfor %}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Fechar">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+  {% endif %}    
 
       <div class="row justify-content-center align-items-start g-5">
 

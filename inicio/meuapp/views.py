@@ -343,7 +343,6 @@ def excluir_conta(request):
         return redirect('login')
     return redirect('site')
 
-
 @login_required
 def vacina_create(request):
     form = VacinaForm(request.POST or None, request.FILES or None)
@@ -351,7 +350,8 @@ def vacina_create(request):
         vacina = form.save(commit=False)
         vacina.usuario = request.user
         vacina.save()
-        return redirect('vacina_create')  # volta para a mesma página com a lista atualizada
+        messages.success(request, "Vacina cadastrada com sucesso!")
+        return redirect('vacina_create')  # Volta para a mesma página com a lista atualizada
 
     vacinas = Vacina.objects.filter(usuario=request.user)
 
@@ -384,6 +384,7 @@ def vacina_create(request):
         'editar': False
     })
 
+
 @login_required
 def update_vacina(request, id):
     vacina = get_object_or_404(Vacina, pk=id, usuario=request.user)
@@ -391,6 +392,7 @@ def update_vacina(request, id):
 
     if form.is_valid():
         form.save()
+        messages.success(request, "Vacina atualizada com sucesso!")
         return redirect('vacina_create')
 
     vacinas = Vacina.objects.filter(usuario=request.user)
@@ -424,12 +426,13 @@ def update_vacina(request, id):
         'editar': True
     })
 
+
 @login_required
 def delete_vacina(request, id):
     vacina = get_object_or_404(Vacina, id=id, usuario=request.user)
     vacina.delete()
+    messages.success(request, "Vacina excluída com sucesso!")
     return redirect("vacina_create")
-
 
 
 
@@ -524,7 +527,6 @@ def excluir_ganho(request, pk):
     messages.success(request, "Registro de ganho de peso excluído com sucesso!")
     return redirect('ganho_peso')
 
-
 @login_required
 def enviar_email_ganho(request, pk):
     if request.method == 'POST':
@@ -559,6 +561,7 @@ Equipe de acompanhamento gestacional.
             messages.error(request, f"Erro ao enviar o e-mail: {e}")
 
         return redirect('ganho_peso')
+
 
 
 from django.shortcuts import render

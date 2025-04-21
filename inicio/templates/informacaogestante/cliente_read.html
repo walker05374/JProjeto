@@ -13,12 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <script>
-        // Para fechar o alerta automaticamente após o clique
-        setTimeout(function() {
-            $('.alert').alert('close');
-        }, 5000); // Fecha o alerta após 5 segundos
-    </script>
+
 </head>
 <body>
 
@@ -45,17 +40,18 @@
             </div>
         </div>
     </nav>
-
+    
     {% if messages %}
-        <div class="alert alert-success alert-dismissible fade show mt-4 mx-auto" role="alert" style="max-width: 1100px; border-radius: 12px; font-weight: 500;">
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Fechar">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    {% endif %}
+    <div class="alert alert-success alert-dismissible fade show mt-4 mx-auto" role="alert" style="max-width: 1100px; border-radius: 12px; font-weight: 500;">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+        <button type="button" class="close" id="closeButton" data-dismiss="alert" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endif %}
+
 <!-- CONTEÚDO PRINCIPAL -->
 <div class="container pag">
     <div class="row justify-content-center">
@@ -205,7 +201,10 @@
     </footer>
 
     <script src="https://kit.fontawesome.com/3d88e1abe7.js" crossorigin="anonymous"></script>
-    <script type="application/javascript" src="{% static 'js/alert.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/alert.js' %}"></script>
+
 </body>
 </html>
