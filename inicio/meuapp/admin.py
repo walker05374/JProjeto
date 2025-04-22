@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Cliente, ContactMe, CustomUser, Vacina, Topico  
+from .models import Cliente, ContactMe, CustomUser, Vacina, Topico
 
 # Registrando CustomUserAdmin para CustomUser
 class CustomUserAdmin(UserAdmin):

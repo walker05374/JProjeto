@@ -2,7 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 import math
-
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
 class CustomUser(AbstractUser):
     username = models.CharField(max_length=150, unique=True)
@@ -169,4 +170,34 @@ class Relatorio(models.Model):
     comentario = models.ForeignKey(Comentario, null=True, blank=True, on_delete=models.CASCADE)
     data_relatorio = models.DateTimeField(auto_now_add=True)
 
+class CalculadoraDPP(models.Model):
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    tipo_calculo = models.CharField(max_length=50, choices=[('DUM', 'Data da Última Menstruação'), ('Parto', 'Data Provável do Parto')], default='DUM')
+    data_input = models.DateField()
+    data_provavel_parto = models.DateField(null=True, blank=True)
+    semanas_gestacao = models.IntegerField(null=True, blank=True)
+    dias_gestacao = models.IntegerField(null=True, blank=True)
+    data_concepcao = models.DateField(null=True, blank=True)
 
+    def calcular_dpp(self):
+        """Calcula a DPP de acordo com o tipo de cálculo."""
+        if self.tipo_calculo == 'DUM':
+            # Regra de Naegele para calcular a DPP
+            data_calculada = self.data_input + timedelta(days=7)  # Soma 7 dias
+            data_calculada = data_calculada + relativedelta(months=9)  # Soma 9 meses
+            self.data_provavel_parto = data_calculada
+            # Data de Concepção (14 dias após a DUM)
+            self.data_concepcao = self.data_input + timedelta(days=14)
+        elif self.tipo_calculo == 'Parto':
+            # Se tipo de cálculo for 'Parto', vamos calcular a DUM
+            if self.data_provavel_parto:
+                self.data_input = self.data_provavel_parto - relativedelta(months=9)
+                self.data_concepcao = self.data_provavel_parto - timedelta(days=280)
+
+        # Calculando a Idade Gestacional
+        hoje = datetime.today().date()
+        idade_gestacional = (hoje - self.data_input).days // 7
+        self.semanas_gestacao = idade_gestacional
+        self.dias_gestacao = (hoje - self.data_input).days % 7
+
+        self.save()

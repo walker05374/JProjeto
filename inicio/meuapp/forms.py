@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from .models import Cliente, ContactMe,CustomUser,Vacina,GanhoPeso
+from .models import Cliente, ContactMe,CustomUser,Vacina,GanhoPeso,CalculadoraDPP
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import password_validation
@@ -174,3 +174,8 @@ class TopicoForm(forms.ModelForm):
         model = Topico
         fields = ['titulo', 'descricao']
 
+
+class CalculadoraDPPForm(forms.ModelForm):
+    class Meta:
+        model = CalculadoraDPP
+        fields = ['data_input'] 

@@ -1,0 +1,134 @@
+/* General Page Styles */
+body {
+    background-color: #f0f4f8;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Card Styles */
+.card {
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: white;
+}
+
+/* Card Heading */
+.card h5 {
+    font-weight: 500;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    text-align: center; /* Center align the title */
+}
+
+/* Table Styles */
+table th {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 12px;
+}
+
+table td {
+    vertical-align: middle;
+    text-align: justify;  /* Justify text inside the table */
+    padding: 12px;
+}
+
+.table-striped tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.table {
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 1rem;
+}
+
+/* Icon Styles */
+i {
+    margin-right: 8px;
+}
+
+/* Button in Card */
+.card .btn-block {
+    margin-top: 10px;
+}
+
+/* Paragraph in Cards */
+.card p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: justify;  /* Justify text in paragraphs as well */
+}
+
+/* Input Styles for Date */
+input[type="date"] {
+    width: 150px;  /* Reduces input field width */
+    padding: 10px;  /* Adjusts internal space for better appearance */
+    font-size: 14px;  /* Defines font size */
+    border-radius: 8px;  /* Rounded corners for smooth design */
+    border: 1px solid #ccc;  /* Light border for the input field */
+    transition: border-color 0.3s ease;  /* Smooth transition for border focus */
+}
+
+/* Focused State for Date Input */
+input[type="date"]:focus {
+    border-color: #007bff;  /* Blue border when focused */
+    outline: none;  /* Removes outline */
+}
+
+/* Small Button Styles */
+button[type="submit"] {
+    font-size: 1.1rem;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;  /* Darker blue on hover */
+}
+
+/* Responsiveness for Small Screens */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    input[type="date"] {
+        width: 100%;  /* Make date input full width on small screens */
+    }
+
+    /* Reduce the size of the form card on mobile */
+    .card {
+        max-width: 400px;  /* Smaller card size */
+        margin: 0 auto;  /* Center card on small screens */
+    }
+
+    /* Specifically for the 'Inserir Dados' form card */
+    .card .btn-block {
+        width: 100%;  /* Make button full width */
+    }
+
+    /* Add some space between cards on mobile */
+    .card + .card {
+        margin-top: 20px;
+    }
+}

@@ -29,3 +29,25 @@ document.addEventListener("DOMContentLoaded", function() {
       });
   }
 });
+
+
+document.getElementById("foto-upload").addEventListener("change", function(event) {
+    var reader = new FileReader();
+
+    reader.onload = function() {
+        // Atualiza a imagem com a nova foto selecionada
+        document.getElementById("profile-img").src = reader.result;
+    };
+
+    // Lê o arquivo selecionado
+    reader.readAsDataURL(event.target.files[0]);
+});
+
+
+function previewImage(event) {
+    const reader = new FileReader();
+    reader.onload = function () {
+        document.getElementById('preview-img').src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}

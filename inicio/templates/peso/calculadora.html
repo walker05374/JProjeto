@@ -1,0 +1,148 @@
+{% extends 'site/base.html' %}
+{% load static %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/peso/calculadora.css' %}">
+<div class="container">
+
+  {% if messages %}
+  <div class="alert alert-success alert-dismissible fade show mt-4 mx-auto" role="alert" style="max-width: 1100px; border-radius: 12px; font-weight: 500;">
+      {% for message in messages %}
+          {{ message }}
+      {% endfor %}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  {% endif %}
+
+  <!-- Exibir as informações principais -->
+  {% if calculo %}
+  <div class="card p-4 shadow rounded-4">
+      <h5 class="text-center text-primary mb-3">
+          <i class="fas fa-info-circle"></i> Resultado do Cálculo
+      </h5>
+      
+      <table class="table table-bordered">
+          <thead class="thead-dark">
+              <tr>
+                  <th>Data Estimada da Última Menstruação</th>
+                  <th>Data Estimada da Concepção</th>
+                  <th>Data Provável do Parto</th>
+                  <th>Idade Gestacional Hoje</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>{{ calculo.data_input|date:"d/m/Y" }}</td>
+                  <td>{{ calculo.data_concepcao|date:"d/m/Y" }}</td>
+                  <td>{{ calculo.data_provavel_parto|date:"d/m/Y" }}</td>
+                  <td>{{ calculo.semanas_gestacao }} semanas e {{ calculo.dias_gestacao }} dias</td>
+              </tr>
+          </tbody>
+      </table>
+
+      <div class="text-center mt-3">
+          <a href="{% url 'calculadora_dpp' %}" class="btn btn-outline-primary btn-lg">Refazer o Cálculo</a>
+      </div>
+  </div>
+
+  <!-- Cronograma de Ações -->
+  <div class="card p-4 mt-4 shadow rounded-4">
+      <h5 class="text-center text-primary mb-3">
+          <i class="fas fa-calendar-check"></i> Cronograma de Ações
+      </h5>
+
+      <div style="max-height: 400px; overflow-y: auto;">
+          <table class="table table-striped">
+              <thead>
+                  <tr>
+                      <th>Data</th>
+                      <th>Idade Gestacional</th>
+                      <th>Evento</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for item in cronograma %}
+                  <tr>
+                      <td>{{ item.data|date:"d/m/Y" }}</td>
+                      <td>{{ item.idade }}</td>
+                      <td>
+                          {% if item.evento == "Data da última menstruação" %}
+                              <i class="fas fa-calendar-day"></i> {{ item.evento }}
+                          {% elif item.evento == "Data provável da concepção" %}
+                              <i class="fas fa-baby"></i> {{ item.evento }}
+                          {% elif item.evento == "O saco gestacional fica visível no ultrassom" %}
+                              <i class="fas fa-heartbeat"></i> {{ item.evento }}
+                          {% elif item.evento == "Agende sua Ultrassonografia Transvaginal" %}
+                              <i class="fas fa-clipboard-list"></i> {{ item.evento }}
+                          {% elif item.evento == "Período ideal para fazer a Ultrassonografia Morfológica" %}
+                              <i class="fas fa-stethoscope"></i> {{ item.evento }}
+                          {% elif item.evento == "Se não foi possível ver o sexo do bebê" %}
+                              <i class="fas fa-genderless"></i> {{ item.evento }}
+                          {% elif item.evento == "Geralmente nesta fase a mamãe começa a perceber os movimentos do bebê" %}
+                              <i class="fas fa-baby-carriage"></i> {{ item.evento }}
+                          {% elif item.evento == "Agende sua Ultrassonografia Morfológica de segundo trimestre" %}
+                              <i class="fas fa-calendar-check"></i> {{ item.evento }}
+                          {% elif item.evento == "Período ideal para fazer Ultrassom 3D/4D" %}
+                              <i class="fas fa-images"></i> {{ item.evento }}
+                          {% elif item.evento == "Ecocardiografia fetal para avaliar morfologia e função cardíaca" %}
+                              <i class="fas fa-heart"></i> {{ item.evento }}
+                          {% elif item.evento == "Avaliação da vitalidade fetal e crescimento com Doppler" %}
+                              <i class="fas fa-lungs"></i> {{ item.evento }}
+                          {% elif item.evento == "Caso ocorra um parto prematuro" %}
+                              <i class="fas fa-bolt"></i> {{ item.evento }}
+                          {% elif item.evento == "Seu bebê já não é mais prematuro" %}
+                              <i class="fas fa-child"></i> {{ item.evento }}
+                          {% elif item.evento == "Essa é a data provável do parto" %}
+                              <i class="fas fa-birthday-cake"></i> {{ item.evento }}
+                          {% else %}
+                              <i class="fas fa-calendar-day"></i> {{ item.evento }}
+                          {% endif %}
+                      </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+      </div>
+  </div>
+
+  <!-- Enviar por E-mail -->
+  <div class="card p-4 mt-4 shadow rounded-4">
+      <h5 class="text-center text-primary mb-3">
+          <i class="fas fa-paper-plane"></i> Enviar por E-mail
+      </h5>
+
+      <form method="post" action="{% url 'enviar_email_dpp' calculo.id %}">
+          {% csrf_token %}
+          <div class="form-group">
+              <label for="email">Seu E-mail:</label>
+              <input type="email" name="email" id="email" class="form-control input-sm" placeholder="Digite seu e-mail" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Enviar por E-mail</button>
+      </form>
+  </div>
+  {% else %}
+  <!-- Exibir formulário se não houver dados calculados -->
+  <div class="card p-4 shadow rounded-4" style="max-width: 600px; margin: 0 auto;">
+    <h5 class="text-center text-primary mb-3"><i class="fas fa-info-circle"></i> Inserir Dados</h5>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group text-center">
+            <label for="data_input">Data da Última Menstruação</label>
+            <input type="date" name="data_input" id="data_input" class="form-control form-control-sm mx-auto" style="width: 200px;" required>
+        </div>
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-check-circle"></i> Calcular
+            </button>
+        </div>
+    </form>
+</div>
+
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

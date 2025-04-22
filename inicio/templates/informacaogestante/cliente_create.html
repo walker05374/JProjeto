@@ -13,18 +13,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        function previewImage(event) {
-            const reader = new FileReader();
-            reader.onload = function () {
-                document.getElementById('preview-img').src = reader.result;
-            }
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'js/apicep.js' %}"></script>
+
+
 </head>
 <body>
 
@@ -74,14 +64,19 @@
         <div class="row justify-content-center">
             <div class="col-md-4 text-center">
                 <label for="foto-upload" class="m-0" style="cursor: pointer;">
-                    {% if clientes and clientes.0.foto %}
-                        <img src="{{ clientes.0.foto.url }}?{{ clientes.0.atualizado_em.timestamp }}" alt="Foto do Cliente" class="profile-picture">
+                    {% if cliente and cliente.foto %}
+                        <!-- Se o cliente já tiver uma foto, exibe a imagem -->
+                        <img id="profile-img" src="{{ cliente.foto.url }}?{{ cliente.atualizado_em.timestamp }}" alt="Foto do Cliente" class="profile-picture">
                     {% else %}
-                        <img src="{% static 'images/default-avatar.png' %}" alt="Foto do Cliente" class="profile-picture">
+                        <!-- Se não tiver foto, exibe a imagem padrão -->
+                        <img id="profile-img" src="{% static 'images/default-avatar.png' %}" alt="Foto do Cliente" class="profile-picture">
                     {% endif %}
                 </label>
+                <!-- Input de upload de imagem, oculto até que o usuário clique na imagem -->
+                <input type="file" id="foto-upload" name="foto" accept="image/*" class="d-none">
             </div>
         </div>
+    
         
         <h2 class="text-center">Informações da Gestante</h2>
         <br>
@@ -227,6 +222,9 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/alert.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/apicep.js' %}"></script>
 
 </body>
 </html>

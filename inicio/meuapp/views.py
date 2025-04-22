@@ -13,9 +13,9 @@ from inicio.meuapp.choices import NOME_EXAMES
 import math
 import requests
 from urllib.parse import urlencode
-
-
-
+from datetime import timedelta
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
 # Django auth
 from django.contrib.auth import login, logout
@@ -41,7 +41,7 @@ import matplotlib.pyplot as plt
 matplotlib.use('Agg')  # Solução para evitar erros com Tkinter em servidores
 
 # Models
-from .models import Cliente, CustomUser, GanhoPeso, Vacina,PostoSaude, Topico, Comentario, Curtida, Relatorio
+from .models import Cliente, CustomUser, GanhoPeso, Vacina,PostoSaude, Topico, Comentario, Curtida, Relatorio,CalculadoraDPP
 
 # Forms
 from .forms import (
@@ -51,7 +51,8 @@ from .forms import (
     CustomUserCreationForm,
     CustomUserChangeForm,
     VacinaForm,
-    GanhoPesoForm
+    GanhoPesoForm,
+    CalculadoraDPPForm,
     
 )
 
@@ -569,6 +570,8 @@ from django.http import JsonResponse
 from .models import PostoSaude
 import math
 from .utils import calcular_distancia
+
+
 @login_required
 def mapa_view(request):
     context = {
@@ -807,4 +810,90 @@ def formacaobebe(request):
     return render(request, 'formacaobebe/formacaobebe.html')
 
 
+@login_required
+def calcular_dpp(request):
+    calculo = None
+    cronograma = []
 
+    if request.method == 'POST':
+        form = CalculadoraDPPForm(request.POST)
+        if form.is_valid():
+            calculo = form.save(commit=False)
+            calculo.usuario = request.user
+            calculo.calcular_dpp()  # Calcular DPP
+
+            if calculo.tipo_calculo == 'DUM':
+                # Calcular Data Provável do Parto e outros campos
+                data_calculada = calculo.data_input + timedelta(days=7)  # Soma 7 dias
+                data_calculada = data_calculada + relativedelta(months=9)  # Soma 9 meses
+                calculo.data_provavel_parto = data_calculada
+                calculo.data_concepcao = calculo.data_input + timedelta(days=14)
+
+            elif calculo.tipo_calculo == 'Parto':
+                # Calcular Data da Última Menstruação (DUM) a partir do parto
+                if calculo.data_provavel_parto:
+                    calculo.data_input = calculo.data_provavel_parto - relativedelta(months=9)
+                    calculo.data_concepcao = calculo.data_provavel_parto - timedelta(days=280)
+
+            # Calculando a Idade Gestacional
+            hoje = datetime.today().date()
+            idade_gestacional = (hoje - calculo.data_input).days // 7
+            calculo.semanas_gestacao = idade_gestacional
+            calculo.dias_gestacao = (hoje - calculo.data_input).days % 7
+
+            # Gerando o cronograma de eventos
+            start_date = calculo.data_input
+            cronograma = [
+                {'data': start_date, 'idade': '0 semanas', 'evento': 'Data da última menstruação'},
+                {'data': start_date + timedelta(days=14), 'idade': '2 semanas', 'evento': 'Data provável da concepção'},
+                {'data': start_date + timedelta(weeks=5), 'idade': '5 semanas', 'evento': 'O saco gestacional fica visível no ultrassom'},
+                {'data': start_date + timedelta(weeks=7), 'idade': '7 semanas', 'evento': 'Agende sua Ultrassonografia Transvaginal, embrião visível'},
+                {'data': start_date + timedelta(weeks=12), 'idade': '12-13 semanas', 'evento': 'Período ideal para fazer a Ultrassonografia Morfológica de primeiro trimestre'},
+                {'data': start_date + timedelta(weeks=16), 'idade': '16 semanas', 'evento': 'Se não foi possível ver o sexo do bebê com 13 semanas, agora já é bastante seguro'},
+                {'data': start_date + timedelta(weeks=20), 'idade': '20 semanas', 'evento': 'Geralmente nesta fase a mamãe começa a perceber os movimentos do bebê'},
+                {'data': start_date + timedelta(weeks=22), 'idade': '22 semanas', 'evento': 'Agende sua Ultrassonografia Morfológica de segundo trimestre'},
+                {'data': start_date + timedelta(weeks=26), 'idade': '26 semanas', 'evento': 'Período ideal para fazer Ultrassom 3D/4D'},
+                {'data': start_date + timedelta(weeks=28), 'idade': '28 semanas', 'evento': 'Ecocardiografia fetal para avaliar morfologia e função cardíaca'},
+                {'data': start_date + timedelta(weeks=32), 'idade': '32 semanas', 'evento': 'Avaliação da vitalidade fetal e crescimento com Doppler'},
+                {'data': start_date + timedelta(weeks=34), 'idade': '34 semanas', 'evento': 'Caso ocorra um parto prematuro, as chances de sobrevida são boas'},
+                {'data': start_date + timedelta(weeks=37), 'idade': '37 semanas', 'evento': 'Seu bebê já não é mais prematuro, uma ótima notícia caso ele queira nascer'},
+                {'data': start_date + timedelta(weeks=40), 'idade': '40 semanas', 'evento': 'Essa é a data provável do parto'},
+            ]
+
+            messages.success(request, "Cálculo realizado com sucesso!")
+            return render(request, 'peso/calculadora.html', {'calculo': calculo, 'cronograma': cronograma})
+
+    else:
+        form = CalculadoraDPPForm()
+
+    return render(request, 'peso/calculadora.html', {'form': form, 'calculo': calculo})
+
+
+
+@login_required
+def enviar_email_dpp(request, pk):
+    calculo = get_object_or_404(CalculadoraDPP, pk=pk, usuario=request.user)
+    
+    if request.method == 'POST':
+        email_destino = request.POST.get('email')
+        
+        subject = 'Resultado do Cálculo da DPP'
+        message = f'''
+        Olá!
+
+        Aqui está o seu cálculo da DPP:
+
+        - Data da Última Menstruação: {calculo.data_input}
+        - Tipo de Cálculo: {calculo.tipo_calculo}
+        - Data Provável do Parto: {calculo.data_provavel_parto}
+        - Idade Gestacional: {calculo.semanas_gestacao} semanas e {calculo.dias_gestacao} dias
+
+        Atenciosamente,
+        Equipe de Acompanhamento Gestacional.
+        '''
+        
+        # Envia o e-mail
+        send_mail(subject, message, settings.EMAIL_HOST_USER, [email_destino])
+        messages.success(request, "E-mail enviado com sucesso!")
+
+    return redirect('calculadora_dpp')  # Redireciona para a página do cálculo
