@@ -68,32 +68,42 @@
                         <i class="fas fa-heartbeat"></i> Acompanhamento
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{% url 'mapa' %}">
-                            <i class="fas fa-hospital"></i> Postos de Saúde
-                        </a>
-                        <a class="dropdown-item" href="{% url 'ganho_peso' %}">
-                            <i class="fas fa-chart-line"></i> Monitoramento do GPG
-                        </a>
-                        <a class="dropdown-item" href="{% url 'calculadora_dpp' %}">
-                            <i class="fas fa-baby"></i> Calculadora de Idade Gestacional
-                        </a>
+                        <!-- Formação do bebê e amamentação devem estar mais perto do bebê -->
                         <a class="dropdown-item" href="{% url 'formacaobebe' %}">
                             <i class="fas fa-baby"></i> Formação do Bebê
                         </a>
+                        <a class="dropdown-item" href="{% url 'amamentacao' %}">
+                            <i class="fas fa-baby-carriage"></i> Amamentação
+                        </a>
+                
+                        <!-- Monitoramento e informações gerais sobre a gestação -->
+                        <a class="dropdown-item" href="{% url 'ganho_peso' %}">
+                            <i class="fas fa-chart-line"></i> Monitoramento do GPG
+                        </a>
+                        
+                        <!-- Acesso a postos de saúde -->
+                        <a class="dropdown-item" href="{% url 'mapa' %}">
+                            <i class="fas fa-hospital"></i> Postos de Saúde
+                        </a>
+                
+                        <!-- Cadastrar vacinas, notícias e pré-natal -->
                         <a class="dropdown-item" href="{% url 'vacina_create' %}">
                             <i class="fas fa-syringe"></i> Cadastrar Vacinas
                         </a>
                         <a class="dropdown-item" href="{% url 'noticias' %}">
                             <i class="fas fa-newspaper"></i> Notícias
                         </a>
-                        <a class="dropdown-item" href="{% url 'amamentacao' %}">
-                            <i class="fas fa-baby"></i> Amamentação
-                        </a>
                         <a class="dropdown-item" href="">
                             <i class="fas fa-calendar-check"></i> Pré Natal
                         </a>
+                
+                        <!-- Calculadora de idade gestacional -->
+                        <a class="dropdown-item" href="{% url 'calculadora_dpp' %}">
+                            <i class="fas fa-calculator"></i> Calculadora de Idade Gestacional
+                        </a>
                     </div>
                 </li>
+                
                 {% endif %}
                 
                 {% if request.user.is_authenticated %}
