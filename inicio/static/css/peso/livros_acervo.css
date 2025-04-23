@@ -1,0 +1,249 @@
+/* Estilo para o card */
+.card {
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 450px;  /* Altura fixa para todos os cards */
+  overflow: hidden;  /* Impede que o conteúdo ultrapasse os limites do card */
+}
+
+/* Imagem do card */
+.card-img-top {
+  width: 100%;
+  height: 200px;  /* Altura fixa para a imagem */
+  object-fit: cover;  /* Garante que a imagem ocupe todo o espaço do card sem deformar */
+  transition: transform 0.3s ease;
+}
+
+/* "Sem Capa Disponível" */
+.no-cover-img {
+  width: 100%;
+  height: 200px;  /* Altura igual à da imagem */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
+  color: #555;
+  font-size: 14px;
+  text-align: center;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+/* Animação da imagem e "Sem Capa Disponível" */
+.card-img-top:hover,
+.no-cover-img:hover {
+  transform: scale(1.05);  /* Aumenta o elemento ao passar o mouse */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  /* Efeito de sombra no hover */
+}
+
+/* Corpo do card */
+.card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;  /* Permite que o corpo ocupe o restante do card */
+  height: 100%;
+  overflow: hidden;
+  flex-grow: 1; /* Permite que o corpo ocupe o restante do card */
+}
+
+/* Título do card */
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  height: 2.4em; /* Garante que o título tenha um máximo de 2 linhas */
+  line-height: 1.2;  /* Ajusta o espaçamento entre as linhas */
+  overflow: hidden;  /* Esconde qualquer texto que ultrapassar a altura */
+  text-overflow: ellipsis;  /* Exibe "..." se o texto for muito longo */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;  /* Limita o título a 2 linhas */
+  -webkit-box-orient: vertical; /* Necessário para o line-clamp funcionar */
+}
+
+/* Texto do card */
+.card-text {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 10px;
+  line-height: 1.4;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+/* Botões do card */
+.btn-outline-primary {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+}
+
+.card:hover {
+  transform: scale(1.05);  /* Aumenta o card quando passar o mouse */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Inputs padronizados */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  transform: scale(1.03);  /* Leve aumento ao passar o mouse */
+  border-color: #007bff;
+}
+
+/* Botões padrão */
+button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);  /* Aumento do botão */
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+/* Botões grandes e iguais */
+.btn-acao {
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+}
+
+/* Campo e-mail */
+.campo-email {
+  min-width: 200px;
+  width: 100%;
+}
+
+/* Gráfico responsivo */
+.grafico-img {
+  height: 420px;
+  width: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease-in-out;
+}
+
+.grafico-img:hover {
+  transform: scale(1.05);  /* Aumenta o gráfico ao passar o mouse */
+}
+
+/* Responsivo em telas maiores */
+@media (min-width: 992px) {
+  .card {
+    max-width: 650px;
+    margin: 0 auto;
+  }
+}
+
+/* Centralização do formulário */
+.formulario-centralizado {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+form .campo-email {
+  height: 50px;
+  margin-top: 10px; /* Abaixa levemente o campo */
+}
+
+/* Garante que o botão fique na mesma altura */
+form .btn-enviar-email {
+  height: 50px;
+  font-size: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* Paginação - Estilo Moderno e Compacto */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 8px;  /* Ajusta o espaço entre os botões para evitar sobreposição */
+}
+
+.pagination a,
+.pagination button {
+  padding: 8px 12px;  /* Botões compactos */
+  margin: 0;  /* Remover margem extra entre os botões */
+  font-size: 14px;  /* Menor tamanho de fonte */
+  background-color: #f8f9fa;
+  border: 1px solid #007bff;
+  border-radius: 50%;  /* Tornando os botões circulares */
+  color: #007bff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;  /* Botões de tamanho fixo */
+  height: 30px; /* Botões de tamanho fixo */
+  text-align: center;
+}
+
+/* Efeito de hover nos botões */
+.pagination a:hover,
+.pagination button:hover {
+  background-color: #007bff;
+  color: #fff;
+  transform: scale(1.1);  /* Aumenta o botão quando passar o mouse */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);  /* Sombra suave */
+}
+
+/* Estilo para a página ativa */
+.pagination .active {
+  background-color: #007bff;
+  color: #fff;
+  transform: scale(1.1);  /* Aumenta o botão da página ativa */
+}
+
+/* Estilo para a página desativada */
+.pagination .disabled {
+  color: #ccc;
+  pointer-events: none;
+}
+
+.pagination i {
+  margin-right: 5px;  /* Espaço entre o ícone e o texto */
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .pagination a,
+  .pagination button {
+    font-size: 12px;  /* Ajuste para um tamanho de fonte ainda menor em dispositivos móveis */
+    width: 25px;  /* Botões menores em telas pequenas */
+    height: 25px; /* Botões menores em telas pequenas */
+  }
+}

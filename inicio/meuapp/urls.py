@@ -5,7 +5,7 @@ from rest_framework import routers
 from .viewsets import ClienteViewSet
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import verify_email
+
 from inicio.meuapp import views as v
 from django.conf import settings
 from django.conf.urls.static import static
@@ -13,10 +13,9 @@ from django.conf.urls.static import static
 
 
 
+from .views import excluir_conta,verify_email,MyPasswordReset
 
-from .views import excluir_conta
 
-from .views import MyPasswordReset
 
 router = routers.DefaultRouter()
 
@@ -104,7 +103,11 @@ urlpatterns = [
 
     path('calculadora/', views.calcular_dpp, name='calculadora_dpp'),
 
-     path('enviar_email_dpp/<int:pk>/', views.enviar_email_dpp, name='enviar_email_dpp'),
+    path('enviar_email_dpp/<int:pk>/', views.enviar_email_dpp, name='enviar_email_dpp'),
+
+    path('buscar-livros/', views.buscar_livros, name='buscar_livros'),
+    
+
 
 ]
     

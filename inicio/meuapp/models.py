@@ -5,6 +5,7 @@ import math
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
+
 class CustomUser(AbstractUser):
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
@@ -201,3 +202,4 @@ class CalculadoraDPP(models.Model):
         self.dias_gestacao = (hoje - self.data_input).days % 7
 
         self.save()
+

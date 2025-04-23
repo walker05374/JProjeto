@@ -12,9 +12,7 @@
  
 </head>
 <body>
-
-
-    <!-- Barra de navegação -->
+ <!-- Barra de navegação -->
     <nav class="navbar navbar-expand-lg navbar-light bg-transparent centered-navbar">
         <a class="navbar-brand" href="{% url 'site' %}">
             <img src="{% static 'images/back.png' %}" width="250" alt="Logo" class="img-fluid">
@@ -69,6 +67,10 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <!-- Formação do bebê e amamentação devem estar mais perto do bebê -->
+                        <a class="dropdown-item" href="{% url 'buscar_livros' %}">
+                            <i class="fas fa-book"></i> Livros
+                        </a>
+
                         <a class="dropdown-item" href="{% url 'formacaobebe' %}">
                             <i class="fas fa-baby"></i> Formação do Bebê
                         </a>
@@ -153,6 +155,8 @@
         {% endblock %}
     </div>
 
+
+    
  <!-- Rodapé -->
  <footer class="mt-auto">
     <div id="footer_content">
@@ -194,20 +198,23 @@
             <li><a href="{% url 'contact' %}" class="footer-link">Envie seu Feedback</a></li>
         </ul>
 
-        <div id="footer_subscribe">
+        <div id="footer_subscribe" class="text-center">
             <h3>Escreva-se</h3>
             <p>Para receber novidades.</p>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control text-center" placeholder="Escreva-se" aria-label="Escrever">
+            <div class="input-group mb-3 justify-content-center" style="max-width: 500px; margin: 0 auto;">
+                <input type="text" class="form-control text-center" placeholder="Escreva-se" aria-label="Escrever" style="max-width: 80%;">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button" id="email">
                         <i class="far fa-envelope"></i>
                     </button>
                 </div>
             </div>
+            
+            <!-- Player do SoundCloud abaixo do botão -->
+            <iframe width="100%" height="60" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2083879188&color=%2300a9e0&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
         </div>
-    </div>
-</footer>
+        
+
 
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

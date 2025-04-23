@@ -16,6 +16,8 @@ from urllib.parse import urlencode
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+import feedparser
+from django.core.paginator import Paginator, Page
 
 # Django auth
 from django.contrib.auth import login, logout
@@ -66,6 +68,40 @@ logger = logging.getLogger('django.request')
 
 # Views
 @ratelimit(key='user_or_ip', rate='10/m')
+
+def buscar_livros(request):
+    livros = []
+
+    # Obtém o termo de pesquisa da URL
+    query = request.GET.get('query', '')  # Caso o campo de pesquisa esteja vazio
+
+    # Verifica se há um termo de pesquisa
+    if query:
+        google_books_url = f'https://www.googleapis.com/books/v1/volumes?q={query}+lang:pt'
+    else:
+        google_books_url = 'https://www.googleapis.com/books/v1/volumes?q=gestação+OR+gravidez+OR+parto+OR+saúde+materna&lang=pt'
+
+    google_books_response = requests.get(google_books_url)
+
+    if google_books_response.status_code == 200:
+        google_books = google_books_response.json().get('items', [])
+        for item in google_books:
+            livro = {
+                'title': item['volumeInfo'].get('title', 'Sem título'),
+                'author_name': item['volumeInfo'].get('authors', ['Autor desconhecido']),
+                'first_publish_year': item['volumeInfo'].get('publishedDate', 'Desconhecido'),
+                'url': item['id'],
+                'cover_i': item['volumeInfo'].get('imageLinks', {}).get('thumbnail', ''),
+            }
+            livros.append(livro)
+
+    # Paginação - limitando os resultados por página
+    paginator = Paginator(livros, 8)  # 5 livros por página
+    page_number = request.GET.get('page')  # Obtém o número da página
+    page_obj = paginator.get_page(page_number)  # Obtém os livros da página solicitada
+
+    # Passa os livros da página atual para o template
+    return render(request, 'site/livros_acervo.html', {'page_obj': page_obj, 'query': query})
 
 
 def login_view(request):
