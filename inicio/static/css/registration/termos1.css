@@ -1,0 +1,140 @@
+/* Estilos globais */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: url('/static/images/Login.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Container centralizado */
+.container-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 15px;
+  width: 100%;
+}
+
+/* Caixa do conteúdo dos termos (Card horizontal) */
+.form-box {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 20px #00000060;
+  width: 100%;
+  max-width: 900px;  /* Max-width para garantir que o card não fique tão largo */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+}
+
+/* Títulos principais */
+.form-box h1 {
+  text-align: center;
+  color: #027789;
+  margin-bottom: 25px;
+  font-size: 28px;
+  width: 100%; /* Garante que o título ocupe a largura total */
+  word-wrap: break-word; /* Permite que o título quebre em várias linhas se necessário */
+  white-space: normal; /* Permite que o texto quebre e ocupe mais espaço */
+}
+
+/* Estilos dos tópicos dos termos */
+.termos-conteudo h3 {
+  color: #027789;
+  font-size: 20px;
+  margin-top: 5px;
+}
+
+.termos-conteudo p {
+  font-size: 18px;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 5px;
+}
+
+/* Responsividade: Ajuste para telas menores */
+@media screen and (max-width: 768px) {
+  .form-box {
+    flex-direction: column; /* Empilha os elementos verticalmente em telas pequenas */
+    align-items: center; /* Centraliza os itens */
+    padding: 20px; /* Ajusta o padding para telas menores */
+  }
+
+  .termos-conteudo h3 {
+    font-size: 18px;
+  }
+
+  .termos-conteudo p {
+    font-size: 16px; /* Ajusta o tamanho do texto */
+    width: 100%;
+  }
+
+  .form-box h1 {
+    font-size: 24px; /* Ajusta o tamanho do título */
+    margin-bottom: 20px;
+  }
+}
+
+/* Responsividade para telas muito pequenas, como 507px */
+@media screen and (max-width: 507px) {
+  .form-box {
+    max-width: 90%; /* Reduz o tamanho do card para caber bem em telas pequenas */
+    padding: 15px;
+  }
+
+  .termos-conteudo h3 {
+    font-size: 16px; /* Ajusta o tamanho do título */
+  }
+
+  .termos-conteudo p {
+    font-size: 14px; /* Ajusta o tamanho do texto */
+  }
+
+  .form-box h1 {
+    font-size: 22px; /* Ajusta o título para telas muito pequenas */
+  }
+
+  .btn-primary {
+    width: 100%; /* Garante que o botão ocupe a largura total em telas pequenas */
+  }
+}
+
+/* Estilo do botão de voltar */
+.termos-footer {
+  margin-top: 30px;
+  text-align: center;
+  width: 100%;
+}
+
+.btn-primary {
+  background-color: #027789;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.btn-primary:hover {
+  background-color: #025b68;
+}
+
+/* Estilo do link de voltar */
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  text-decoration: underline;
+}

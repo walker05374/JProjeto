@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 
 
 class CustomUser(AbstractUser):
+    email_verified = models.BooleanField(default=False)
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
 
@@ -36,10 +37,9 @@ class Cliente(models.Model):
 
     aviso_mostrado = models.BooleanField(default=False, verbose_name="Aviso mostrado ao usuário")
 
-
-
     atualizado_em = models.DateTimeField(auto_now=True)  # Atualiza a cada alteração
     foto = models.ImageField(upload_to='', null=True, blank=True)
+    print 
 
 
     def __str__(self):

@@ -6,7 +6,6 @@ from allauth.socialaccount import providers
 from django.shortcuts import redirect
 from allauth.account.views import LoginView, LogoutView, SignupView 
 from django.conf import settings
-from django.urls import path, include
 
 from django.http import HttpResponse
 

@@ -157,11 +157,6 @@ def site(request):
     return render(request, 'site/site.html', {'clientes_cadastrados': bool(cliente)})
 
 
-
-
-
-
-
 def registro(request):
     form = CustomUserCreationForm(request.POST or None)
     if request.method == 'POST':
@@ -176,7 +171,7 @@ def registro(request):
     return render(request, 'registration/register.html', {'form': form})
 
 def termos(request):
-    return render(request, 'registration/termos.html')
+    return render(request, 'registration/termos2.html')
 
 
 class MyPasswordReset(PasswordResetView):
@@ -933,3 +928,47 @@ def enviar_email_dpp(request, pk):
         messages.success(request, "E-mail enviado com sucesso!")
 
     return redirect('calculadora_dpp')  # Redireciona para a página do cálculo
+
+
+from django.http import HttpResponseBadRequest
+import json
+import requests
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+csrf_exempt  # Desativa a verificação CSRF para requisições AJAX (ajuste conforme necessário)
+def obter_informacoes_nutricionais(request):
+    if request.method == 'POST':
+        try:
+            # Tenta carregar os dados JSON do corpo da requisição
+            data = json.loads(request.body)
+            ingredientes = data.get('ingredientes', [])
+
+            if not ingredientes:
+                return HttpResponseBadRequest("Ingredientes não fornecidos.")
+
+            app_id = "f1eed613"
+            app_key = "1109e32107035a82ff991e784c271902"
+            user_id = "higorwalker"  # Substitua com o seu userID
+            url = "https://api.edamam.com/api/nutrition-details"
+            
+            headers = {
+                "Content-Type": "application/json",
+                "Edamam-Account-User": user_id  # Adiciona o cabeçalho com o userID
+            }
+            
+            dados = {
+                "ingredients": [{"quantity": 1, "food": ingrediente} for ingrediente in ingredientes]
+            }
+
+            # Envia a requisição para a API Edamam
+            resposta = requests.post(url, json=dados, headers=headers, params={"app_id": app_id, "app_key": app_key})
+            dados_nutricionais = resposta.json()
+
+            # Retorna os dados nutricionais como resposta JSON
+            return JsonResponse(dados_nutricionais)
+        
+        except json.JSONDecodeError:
+            return HttpResponseBadRequest("Erro ao processar os dados JSON.")
+
+    # Se o método não for POST, retorna um erro 400 (Bad Request)
+    return HttpResponseBadRequest("Método não permitido. Use POST para enviar dados.")

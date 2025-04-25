@@ -1,3 +1,5 @@
+
+
 document.addEventListener("DOMContentLoaded", function() {
   const popup = document.getElementById("popup");
   const closeButton = document.getElementById("closeButton");
@@ -51,3 +53,9 @@ function previewImage(event) {
     }
     reader.readAsDataURL(event.target.files[0]);
 }
+
+
+
+// Abre o modal programaticamente
+var myModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+myModal.show();

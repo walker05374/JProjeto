@@ -70,6 +70,7 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', v.MyPasswordResetConfirm.as_view(), name='password_reset_confirm'),  # noqa E501
     path('reset/done/', v.MyPasswordResetComplete.as_view(), name='password_reset_complete'),  # noqa E501
     path('excluir-conta/', excluir_conta, name='excluir-conta'),
+
     
 
 
@@ -107,6 +108,7 @@ urlpatterns = [
 
     path('buscar-livros/', views.buscar_livros, name='buscar_livros'),
     
+    path('informacoes-nutricionais/', views.obter_informacoes_nutricionais, name='informacoes_nutricionais'),
 
 
 ]
