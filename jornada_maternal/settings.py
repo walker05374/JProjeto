@@ -79,9 +79,9 @@ MIDDLEWARE = [
 
     
 
-    
 
 ]
+
 
 # URLs e templates
 ROOT_URLCONF = 'jornada_maternal.urls'

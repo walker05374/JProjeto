@@ -9,7 +9,7 @@ from django.http import HttpResponse, JsonResponse
 from django.utils.http import urlsafe_base64_encode
 from django.core.serializers.json import DjangoJSONEncoder
 import json
-from inicio.meuapp.choices import NOME_EXAMES
+
 import math
 import requests
 from urllib.parse import urlencode

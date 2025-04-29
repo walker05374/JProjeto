@@ -59,3 +59,8 @@ function previewImage(event) {
 // Abre o modal programaticamente
 var myModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
 myModal.show();
+
+
+setTimeout(function(){
+    location.reload();
+}, 5000); 
