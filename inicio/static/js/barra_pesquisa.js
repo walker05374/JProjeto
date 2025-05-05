@@ -10,10 +10,3 @@
             }
         });
     });
-
-
-setTimeout(function(){
-        location.reload();
-    }, 5000);  // 5000 milissegundos (5 segundos) - você pode ajustar o tempo
- 
-    

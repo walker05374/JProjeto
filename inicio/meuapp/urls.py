@@ -107,9 +107,6 @@ urlpatterns = [
     path('enviar_email_dpp/<int:pk>/', views.enviar_email_dpp, name='enviar_email_dpp'),
 
     path('buscar-livros/', views.buscar_livros, name='buscar_livros'),
-    
-    path('informacoes-nutricionais/', views.obter_informacoes_nutricionais, name='informacoes_nutricionais'),
-
 
 ]
     
