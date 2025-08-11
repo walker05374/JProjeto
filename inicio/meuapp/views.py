@@ -8,16 +8,13 @@ from django.core.files.base import ContentFile
 from django.http import HttpResponse, JsonResponse
 from django.utils.http import urlsafe_base64_encode
 from django.core.serializers.json import DjangoJSONEncoder
-import json
 
-import math
 import requests
 from urllib.parse import urlencode
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
-import feedparser
-from django.core.paginator import Paginator, Page
+from django.core.paginator import Paginator
 
 # Django auth
 from django.contrib.auth import login, logout
@@ -34,13 +31,11 @@ from django.contrib.auth.views import (
 from django_ratelimit.decorators import ratelimit
 from notifications.signals import notify
 
-# Bibliotecas padrão / externas
-import os
 import logging
 from io import BytesIO
 import matplotlib
 import matplotlib.pyplot as plt
-matplotlib.use('Agg')  # Solução para evitar erros com Tkinter em servidores
+matplotlib.use('Agg')  
 
 # Models
 from .models import Cliente, CustomUser, GanhoPeso, Vacina,PostoSaude, Topico, Comentario, Curtida, Relatorio,CalculadoraDPP
@@ -920,13 +915,13 @@ def enviar_email_dpp(request, pk):
         - Idade Gestacional: {calculo.semanas_gestacao} semanas e {calculo.dias_gestacao} dias
 
         Atenciosamente,
-        Equipe de Acompanhamento Gestacional.
+        Equipe Jornada Maternal.
         '''
         
-        # Envia o e-mail
+       
         send_mail(subject, message, settings.EMAIL_HOST_USER, [email_destino])
         messages.success(request, "E-mail enviado com sucesso!")
 
-    return redirect('calculadora_dpp')  # Redireciona para a página do cálculo
+    return redirect('calculadora_dpp')  
 
 

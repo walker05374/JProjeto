@@ -96,7 +96,7 @@ form .campo-email {
 /* Garante que o botão fique na mesma altura */
 form .btn-enviar-email {
   height: 50px;
-  font-size: 16px;
+  font-size: 14px;
   padding-top: 10px;
   padding-bottom: 10px;
 }

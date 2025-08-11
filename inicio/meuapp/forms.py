@@ -9,13 +9,6 @@ from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import password_validation
 
 
-
-
-
-
-
-
-
 class CustomUserLoginForm(AuthenticationForm):
     username = forms.CharField(
         label='Usuário',

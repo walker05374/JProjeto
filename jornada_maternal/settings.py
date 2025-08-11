@@ -1,14 +1,16 @@
 import os
 from pathlib import Path
 from django.contrib.messages import constants as messages
+import dj_database_url
+from dotenv import load_dotenv
+
+from pathlib import Path
 
 AUTH_USER_MODEL = 'meuapp.CustomUser'
 
 # Para formulários e exibição no admin
 DATE_INPUT_FORMATS = ['%Y-%m-%d']  # ou outros formatos como '%d/%m/%Y' se quiser
 DATE_FORMAT = 'Y-m-d'  # Afeta templates com {{ date_var|date }}
-
-
 
 
 # Localização (opcional, mas ajuda)
@@ -30,7 +32,7 @@ SITE_ID = 1
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Altere isso para 'mandatory' para forçar verificação
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory' 
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
@@ -110,13 +112,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'jornada_maternal.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+#\c dbjornada
+#GRANT ALL PRIVILEGES ON SCHEMA public TO dbjornada_user;
+#ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO dbjornada_user;
 
+load_dotenv() # Carrega as variáveis do arquivo .env
+
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default='sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3'),
+        conn_max_age=600
+    )}
 
 
 AUTH_PASSWORD_VALIDATORS = [
