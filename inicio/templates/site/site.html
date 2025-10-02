@@ -20,8 +20,8 @@
         </div>
     {% endif %}
     
-        <!-- Coluna para texto e carrossel (Lado esquerdo) -->
-        <div class="col-md-8">
+        <!-- Coluna para texto e carrossel (Lado esquerdo) com borda à direita -->
+        <div class="col-md-8 border-end pe-4">
             <h1>Página Inicial</h1>
             <p>Bem-vindo ao nosso site! Aqui você encontrará informações e recursos úteis sobre maternidade, gestação, cuidados pré-natais e muito mais. Nossa missão é fornecer conteúdo de qualidade para ajudar e informar todas as futuras mamães e suas famílias.</p>
             <p>Explore as diferentes seções do nosso site para encontrar artigos, dicas, vídeos e informações relevantes para cada fase da gestação. Também oferecemos informações sobre vacinas recomendadas durante a gravidez, além de dicas de cuidados e bem-estar para mamãe e bebê.</p>
@@ -59,15 +59,19 @@
             </div>
         </div>
 
-        <!-- Coluna para o vídeo (Lado direito) -->
-        <div class="col-md-4">
-            <div class="video-container">
-                <video width="100%" height="auto" controls>
-                    <source src="{% static 'video/vivi.mp4' %}" type="video/mp4">
-                    Seu navegador não suporta o elemento de vídeo.
-                </video>
-            </div>
+    <!-- Coluna do vídeo com espaçamento à esquerda -->
+    <div class="col-md-4 ps-4">
+        <div class="video-container">
+            <iframe 
+                src="https://www.youtube.com/embed/oNMAAfz1drE" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+            </iframe>
         </div>
+    </div>
     </div>
 </div>
 {% endblock %}
+

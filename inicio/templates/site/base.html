@@ -71,9 +71,6 @@
                             <i class="fas fa-book"></i> Livros
                         </a>
 
-                        <a class="dropdown-item" href="{% url 'formacaobebe' %}">
-                            <i class="fas fa-baby"></i> Formação do Bebê
-                        </a>
                         <a class="dropdown-item" href="{% url 'amamentacao' %}">
                             <i class="fas fa-baby-carriage"></i> Amamentação
                         </a>
@@ -156,9 +153,7 @@
     </div>
 
 
-    
- <!-- Rodapé -->
- <footer class="mt-auto">
+<footer class="mt-auto">
     <div id="footer_content">
         <div id="footer_contacts">
             <img src="{% static 'images/back.png' %}" alt="Logo" width="230" height="80">
@@ -180,8 +175,10 @@
                     <i class="fa-brands fa-youtube"></i>
                 </a>
             </div>
+
+            <iframe style="margin-top: 15px;" width="100%" height="60" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2083879188&color=%2300a9e0&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
         </div>
-        <!-- Produtos e Links -->
+
         <ul class="footer-list">
             <li>
                 <h3>Produtos</h3>
@@ -209,27 +206,20 @@
                     </button>
                 </div>
             </div>
-
-
-      
-  
-            <!-- Player do SoundCloud abaixo do botão -->
-            <iframe width="100%" height="60" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2083879188&color=%2300a9e0&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
-        </div>
+            </div>
         
         <div vw class="enabled">
             <div vw-access-button class="active"></div>
             <div vw-plugin-wrapper>
               <div class="vw-plugin-top-wrapper"></div>
             </div>
-          </div>
-          <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-          <script>
-            new window.VLibras.Widget('https://vlibras.gov.br/app');
-          </script>
-
-<!-- Scripts -->
-
+        </div>
+        <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+        <script>
+          new window.VLibras.Widget('https://vlibras.gov.br/app');
+        </script>
+    </div>
+</footer>
 
 
 <!-- Modal para confirmação de exclusão de conta -->
