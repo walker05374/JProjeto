@@ -1,0 +1,46 @@
+
+ #video-player-card {
+        /* Define a proporção de 16:9 para o vídeo */
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%; /* 9 / 16 * 100 */
+        background-size: cover;
+        background-position: center;
+        /* cursor: pointer; */ /* Removido para o link assumir o cursor */
+        border-radius: 8px; /* Opcional: bordas arredondadas */
+        overflow: hidden; /* Garante que tudo fique dentro das bordas */
+        display: block; /* Para o link preencher o espaço */
+        text-decoration: none; /* Remover sublinhado do link, se houver */
+        color: inherit; /* Manter a cor do texto padrão do link */
+    }
+
+    /* Estilo do botão de play falso */
+    #video-player-card .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 80px;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+        transition: all 0.2s ease-in-out;
+    }
+
+    /* Desenha o triângulo (ícone de play) */
+    #video-player-card .play-button::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 55%;
+        transform: translate(-50%, -50%);
+        border-style: solid;
+        border-width: 15px 0 15px 26px; /* Ajuste o tamanho aqui */
+        border-color: transparent transparent transparent white;
+    }
+    
+    /* Efeito ao passar o mouse */
+    #video-player-card:hover .play-button {
+        transform: translate(-50%, -50%) scale(1.1);
+        background-color: rgba(255, 0, 0, 0.8);
+    }
