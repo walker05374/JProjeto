@@ -9,6 +9,7 @@ from django.http import HttpResponse, JsonResponse
 from django.utils.http import urlsafe_base64_encode
 from django.core.serializers.json import DjangoJSONEncoder
 
+import threading
 import requests
 from urllib.parse import urlencode
 from datetime import timedelta
@@ -553,7 +554,6 @@ def excluir_ganho(request, pk):
     ganho.delete()
     messages.success(request, "Registro de ganho de peso excluído com sucesso!")
     return redirect('ganho_peso')
-
 @login_required
 def enviar_email_ganho(request, pk):
     if request.method == 'POST':
@@ -578,17 +578,20 @@ Equipe de acompanhamento gestacional.
         """
 
         email = EmailMessage(assunto, corpo, settings.EMAIL_HOST_USER, [email_destino])
+        
         if ganho.grafico:
+            # Anexa o arquivo usando o caminho físico dele
             email.attach_file(ganho.grafico.path)
 
-        try:
-            email.send()
-            messages.success(request, "E-mail enviado com sucesso!")
-        except Exception as e:
-            messages.error(request, f"Erro ao enviar o e-mail: {e}")
+        # --- CORREÇÃO AQUI ---
+        # Envia o e-mail em uma thread separada (segundo plano) para não travar o site
+        email_thread = threading.Thread(target=email.send)
+        email_thread.start()
+        
+        # Como o envio é em segundo plano, assumimos sucesso imediato para o usuário não esperar
+        messages.success(request, "O processo de envio do e-mail foi iniciado!")
 
         return redirect('ganho_peso')
-
 
 
 from django.shortcuts import render
@@ -918,10 +921,14 @@ def enviar_email_dpp(request, pk):
         Equipe Jornada Maternal.
         '''
         
-       
-        send_mail(subject, message, settings.EMAIL_HOST_USER, [email_destino])
+        # Envia em segundo plano usando threading
+        email_thread = threading.Thread(
+            target=send_mail, 
+            args=(subject, message, settings.EMAIL_HOST_USER, [email_destino])
+        )
+        email_thread.start()
+
         messages.success(request, "E-mail enviado com sucesso!")
 
-    return redirect('calculadora_dpp')  
-
+    return redirect('calculadora_dpp')
 
