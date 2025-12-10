@@ -182,15 +182,16 @@ SOCIALACCOUNT_PROVIDERS = {
         # Garante que pegamos os dados verificados
         'VERIFIED_EMAIL': True,
     },
-    'facebook': {
+'facebook': {
         'APP': {  
             'client_id': '1785747999495004',
             'secret': '96173f14621a252995676638eee737db',
         },
-        'SCOPE': ['profile', 'email'],
-      
+        # CORREÇÃO AQUI: Mudamos de 'profile' para 'public_profile'
+        'SCOPE': ['public_profile', 'email'],
         'METHOD': 'oauth2', 
     },
+ 
 }
 
 # Configuração de Envio de E-mail (Gmail)
