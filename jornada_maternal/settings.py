@@ -244,3 +244,27 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 DEBUG = True
+# --- Configurações para Login Automático e por Email ---
+
+# Diz ao allauth para usar o email como método principal
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+
+# Fundamental: Não obrigar o usuário a criar um 'username' manualmente
+ACCOUNT_USERNAME_REQUIRED = False
+
+# Tenta logar direto após o retorno do Google, sem pedir senha
+SOCIALACCOUNT_AUTO_SIGNUP = True
+
+# Mapeia os dados do Google para o seu usuário (opcional, mas recomendado)
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}

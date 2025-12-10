@@ -5,14 +5,22 @@ import math
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-
 class CustomUser(AbstractUser):
     email_verified = models.BooleanField(default=False)
-    username = models.CharField(max_length=150, unique=True)
+    
+    # Garante que o email seja único (essencial para login social)
     email = models.EmailField(unique=True)
+    
+    # O username continua existindo para compatibilidade, mas o usuário não precisará digitá-lo
+    username = models.CharField(max_length=150, unique=True)
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
+    # APENAS email deve ser obrigatório aqui. 
+    # Removemos 'first_name' e 'last_name' para evitar o redirecionamento.
+    REQUIRED_FIELDS = ['email'] 
+
+    def __str__(self):
+        return self.email
 
 class Cliente(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
