@@ -184,8 +184,8 @@ SOCIALACCOUNT_PROVIDERS = {
     },
     'facebook': {
         'APP': {  
-            'client_id': '897035592479067',
-            'secret': '4a0ca8dcb8e694469a4597f6a00b5c2e',
+            'client_id': '1818080662324015',
+            'secret': 'd5b2ac89e42f52884fc36639197a18bb',
         },
         'SCOPE': ['profile', 'email'],
         'AUTH_PARAMS': {'access_type': 'online'},
@@ -214,3 +214,11 @@ else:
 GOOGLE_MAPS_API_KEY = 'AIzaSyCyvcrx33ToDSWfGyv5QHs6H6F1PmGs850'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SOCIALACCOUNT_ADAPTER = 'inicio.meuapp.adapter.MySocialAccountAdapter'
+
+# Garante que essas continuam como True/False conforme ajustamos antes
+SOCIALACCOUNT_AUTO_SIGNUP = True
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_USERNAME_REQUIRED = False
