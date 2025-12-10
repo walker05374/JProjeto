@@ -1,64 +1,56 @@
 {% extends 'site/base.html' %}
-
-{% block title %}Página Inicial{% endblock %}
 {% load static %}
+
+{% block title %}Postos de Saúde{% endblock %}
+
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/agendamentos/mapa1.css' %}">
 
-  <title>Buscador de Hospitais</title>
-  <link rel="stylesheet" href="{% static 'css/agendamentos/mapa1.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-  <div class="background py-5">
-    <div class="container">
-      <!-- Navegação -->
-
-
-      <div class="row">
-        <!-- Mapa -->
-        <div class="col-12 col-md-8">
-          <div class="card p-4 shadow rounded-4">
-            <h5 class="text-center text-primary mb-3">
-              <i class="fas fa-map-marker-alt"></i> Buscar Hospitais Próximos
-            </h5>
-            <div id="map" style="width: 100%; height: 500px;"></div>
-            <button id="current-location-btn" class="btn btn-primary mt-3">
-              <i class="fas fa-location-arrow"></i> Localizar Agora
-            </button>
-          </div>
+<div class="background py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-8">
+        <div class="card p-4 shadow rounded-4">
+          <h5 class="text-center text-primary mb-3">
+            <i class="fas fa-map-marker-alt"></i> Buscar Hospitais Próximos
+          </h5>
+          <div id="map" style="width: 100%; height: 500px;"></div>
+          
+          <button id="current-location-btn" class="btn btn-primary mt-3">
+            <i class="fas fa-location-arrow"></i> Localizar Agora
+          </button>
         </div>
+      </div>
 
-        <!-- Tabela de Postos de Saúde Próximos (lado direito) -->
-        <div class="col-12 col-md-4 mt-4 mt-md-0">
-          <div class="card p-4 shadow rounded-4">
-            <h5 class="text-center text-primary mb-3">
-              <i class="fas fa-hospital-alt"></i> Postos de Saúde
-            </h5>
-            <div class="table-container">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Endereço</th>
-                    <th scope="col">Distância</th>
-                    <th scope="col">Ação</th>
-                  </tr>
-                </thead>
-                <tbody id="postos-list">
-                  <!-- Tabela preenchida dinamicamente -->
+      <div class="col-12 col-md-4 mt-4 mt-md-0">
+        <div class="card p-4 shadow rounded-4">
+          <h5 class="text-center text-primary mb-3">
+            <i class="fas fa-hospital-alt"></i> Postos de Saúde
+          </h5>
+          <div class="table-container">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Endereço</th>
+                  <th scope="col">Dist.</th>
+                </tr>
+              </thead>
+              <tbody id="postos-list">
                 </tbody>
-              </table>
-            </div>
+            </table>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Incluir o script JS separado -->
-  <script src="{% static 'js/mapa.js' %}"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initMap" async defer></script>
+<script src="{% static 'js/mapa.js' %}"></script>
 
-</body>
-</html>    {% endblock %}
+<script 
+  src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&loading=async&callback=initMap" 
+  async defer>
+</script>
+
+{% endblock %}

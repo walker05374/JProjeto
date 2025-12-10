@@ -10,8 +10,6 @@
   <link rel="stylesheet" href="{% static 'css/registration/login1.css' %}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-
-
 </head>
 <body>
 
@@ -24,13 +22,12 @@
         {% if messages %}
         <ul class="list-unstyled">
           {% for message in messages %}
-            <li class="alert alert-{{ message.tags }}">{{ message }}</li>
+            <li class="alert {{ message.tags }}">{{ message }}</li>
           {% endfor %}
         </ul>
         {% endif %}
 
         <h1 class="welcome-title"><i class="fas fa-sign-in-alt"></i> Bem-vindo de volta</h1>
-
 
         <div class="campo-flo">
           <i class="fas fa-envelope"></i>
@@ -44,7 +41,6 @@
 
         <div class="centrobotao">
           <button type="submit" class="btn btn-outline-dark" id="submit-btn">Entrar</button>
-          <!-- Spinner de Carregamento (inicialmente oculto) -->
           <div class="spinner-grow" role="status" id="loading-spinner" style="display: none;">
             <span class="visually-hidden"></span>
           </div>
