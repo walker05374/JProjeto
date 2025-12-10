@@ -244,27 +244,14 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 DEBUG = True
-# --- Configurações para Login Automático e por Email ---
+# settings.py
 
-# Diz ao allauth para usar o email como método principal
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_REQUIRED = True
+# Redirecionamento após o login com sucesso (ex: ir para a home ou dashboard)
+LOGIN_REDIRECT_URL = '/' 
 
-# Fundamental: Não obrigar o usuário a criar um 'username' manualmente
-ACCOUNT_USERNAME_REQUIRED = False
+# Redirecionamento após o logout (ex: ir para a página de login)
+LOGOUT_REDIRECT_URL = '/accounts/login/'
 
-# Tenta logar direto após o retorno do Google, sem pedir senha
-SOCIALACCOUNT_AUTO_SIGNUP = True
-
-# Mapeia os dados do Google para o seu usuário (opcional, mas recomendado)
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    }
-}
+# (Opcional) Mantém o email como método de verificação, mas deixa o allauth
+# lidar com o username automaticamente nos bastidores.
+ACCOUNT_EMAIL_VERIFICATION = "none" # ou "optional" se quiser enviar emails
