@@ -1,4 +1,5 @@
 # accounts/services.py
+import threading  # Importação necessária para o envio assíncrono
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
@@ -18,5 +19,8 @@ def send_mail_to_user(request, user):
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': account_activation_token.make_token(user),
     })
-    user.email_user(subject, message)
-
+    
+    # Cria uma thread para enviar o e-mail sem bloquear a resposta do servidor
+    # Isso evita o erro de TIMEOUT no Gunicorn/Render
+    email_thread = threading.Thread(target=user.email_user, args=(subject, message))
+    email_thread.start()

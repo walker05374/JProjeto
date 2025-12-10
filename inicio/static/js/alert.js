@@ -1,5 +1,3 @@
-
-
 document.addEventListener("DOMContentLoaded", function() {
   const popup = document.getElementById("popup");
   const closeButton = document.getElementById("closeButton");
@@ -32,30 +30,41 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
+// CORREÇÃO: Verifica se o elemento "foto-upload" existe antes de adicionar o evento
+const fotoUpload = document.getElementById("foto-upload");
+if (fotoUpload) {
+    fotoUpload.addEventListener("change", function(event) {
+        var reader = new FileReader();
 
-document.getElementById("foto-upload").addEventListener("change", function(event) {
-    var reader = new FileReader();
+        reader.onload = function() {
+            // Atualiza a imagem com a nova foto selecionada
+            const profileImg = document.getElementById("profile-img");
+            if (profileImg) {
+                profileImg.src = reader.result;
+            }
+        };
 
-    reader.onload = function() {
-        // Atualiza a imagem com a nova foto selecionada
-        document.getElementById("profile-img").src = reader.result;
-    };
-
-    // Lê o arquivo selecionado
-    reader.readAsDataURL(event.target.files[0]);
-});
-
+        // Lê o arquivo selecionado
+        reader.readAsDataURL(event.target.files[0]);
+    });
+}
 
 function previewImage(event) {
     const reader = new FileReader();
     reader.onload = function () {
-        document.getElementById('preview-img').src = reader.result;
+        const previewImg = document.getElementById('preview-img');
+        if (previewImg) {
+            previewImg.src = reader.result;
+        }
     }
     reader.readAsDataURL(event.target.files[0]);
 }
 
-
-
-// Abre o modal programaticamente
-var myModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
-myModal.show();
+// CORREÇÃO: Verifica se o modal existe antes de tentar abri-lo
+const deleteModalElement = document.getElementById('confirmDeleteModal');
+if (deleteModalElement) {
+    var myModal = new bootstrap.Modal(deleteModalElement);
+    // Atenção: Esta linha abaixo faz o modal abrir automaticamente assim que a página carrega.
+    // Se essa não for a intenção, remova ou comente a linha 'myModal.show()'.
+    myModal.show();
+}
