@@ -184,11 +184,11 @@ SOCIALACCOUNT_PROVIDERS = {
     },
     'facebook': {
         'APP': {  
-            'client_id': '1818080662324015',
-            'secret': 'd5b2ac89e42f52884fc36639197a18bb',
+            'client_id': '1785747999495004',
+            'secret': '96173f14621a252995676638eee737db',
         },
         'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {'access_type': 'online'},
+      
         'METHOD': 'oauth2', 
     },
 }
