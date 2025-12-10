@@ -1,13 +1,18 @@
+
 # Django core
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import get_template, render_to_string
 from django.conf import settings
 from django.contrib import messages
+
 from django.core.mail import EmailMessage, send_mail
 from django.core.files.base import ContentFile
 from django.http import HttpResponse, JsonResponse
 from django.utils.http import urlsafe_base64_encode
 from django.core.serializers.json import DjangoJSONEncoder
+
+
+
 
 import threading
 import requests
@@ -898,7 +903,6 @@ def calcular_dpp(request):
     return render(request, 'peso/calculadora.html', {'form': form, 'calculo': calculo})
 
 
-
 @login_required
 def enviar_email_dpp(request, pk):
     calculo = get_object_or_404(CalculadoraDPP, pk=pk, usuario=request.user)
@@ -921,14 +925,14 @@ def enviar_email_dpp(request, pk):
         Equipe Jornada Maternal.
         '''
         
-        # Envia em segundo plano usando threading
+        # --- CORREÇÃO AQUI: Uso de Threading para evitar erro 500 ---
         email_thread = threading.Thread(
             target=send_mail, 
             args=(subject, message, settings.EMAIL_HOST_USER, [email_destino])
         )
         email_thread.start()
 
-        messages.success(request, "E-mail enviado com sucesso!")
+        # Feedback imediato para o usuário
+        messages.success(request, "O processo de envio do e-mail foi iniciado com sucesso!")
 
     return redirect('calculadora_dpp')
-

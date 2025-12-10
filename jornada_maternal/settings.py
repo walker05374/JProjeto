@@ -214,8 +214,8 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': '143390340743-r8b8rs4tcp4igfjvbf8eplr8r45chind.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': '34871990688-nhvf5m7lt9v7kgrgckof019efvp82ocm.apps.googleusercontent.com',
+            'secret': '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',
             'key': ''
         },
         'SCOPE': ['profile', 'email'],
@@ -225,8 +225,8 @@ SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
         'APP': {  
         
-            'client_id': '1818080662324015',
-            'secret': 'd5b2ac89e42f52884fc36639197a18bb',
+            'client_id': '897035592479067',
+            'secret': '4a0ca8dcb8e694469a4597f6a00b5c2e',
             'SCOPE': ['profile', 'email'],
             'AUTH_PARAMS': {'access_type': 'online'},
         },
