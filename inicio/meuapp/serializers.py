@@ -1,4 +1,4 @@
-from .models import Cliente #Gestante
+from .models import Cliente 
 from rest_framework import serializers
 
 
@@ -10,8 +10,3 @@ class ClienteSerializer(serializers.ModelSerializer):
         
 
         
-        
-#class GestanteSerializer(serializers.ModelSerializer): 
-    #class Meta:
-      #  model = Gestante
-      #  filds = ['usuario', 'datavacina', 'nome_vacina', 'status']  

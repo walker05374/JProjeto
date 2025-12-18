@@ -159,36 +159,70 @@ def site(request):
     return render(request, 'site/site.html', {'clientes_cadastrados': bool(cliente)})
 
 # --- DEMAIS VIEWS ---
-
 @ratelimit(key='user_or_ip', rate='10/m')
 def buscar_livros(request):
     livros = []
-    query = request.GET.get('query', '')
+    query = request.GET.get('query', '').strip()
+    
+    # --- CONFIGURAÇÃO DO FILTRO DE CONTEXTO ---
+    # Aqui definimos as palavras que GARANTEM que o livro é sobre o tema do site.
+    # O operador OR diz que o livro deve ter pelo menos um desses termos.
+    termos_chave = "gestação OR gravidez OR parto OR puerpério OR amamentação OR recém-nascido OR pré-natal OR cuidados com bebê OR saúde materna"
+
+    # --- CONSTRUÇÃO DA PESQUISA ---
     if query:
-        google_books_url = f'https://www.googleapis.com/books/v1/volumes?q={query}+lang:pt'
+        # Se o usuário digitou algo (ex: "alimentação"), a busca será:
+        # "alimentação (gestação OR gravidez OR ...)"
+        # Isso força o Google a trazer alimentação APENAS dentro desse universo.
+        search_expression = f"{query} ({termos_chave})"
     else:
-        google_books_url = 'https://www.googleapis.com/books/v1/volumes?q=gestação+OR+gravidez+OR+parto+OR+saúde+materna&lang=pt'
+        # Se não digitou nada, traz os destaques gerais do tema
+        search_expression = termos_chave
+
+    # Parâmetros para a requisição ao Google Books
+    params = {
+        'q': search_expression,
+        'langRestrict': 'pt',   # Apenas em português
+        'printType': 'books',   # Apenas livros
+        'maxResults': 40,       # Traz mais resultados para preencher a paginação
+        'orderBy': 'relevance'  # Ordenar por relevância
+    }
 
     try:
-        google_books_response = requests.get(google_books_url)
+        # Faz a requisição passando os parâmetros organizados
+        google_books_response = requests.get('https://www.googleapis.com/books/v1/volumes', params=params)
+        
         if google_books_response.status_code == 200:
             google_books = google_books_response.json().get('items', [])
+            
             for item in google_books:
-                livros.append({
-                    'title': item['volumeInfo'].get('title', 'Sem título'),
-                    'author_name': item['volumeInfo'].get('authors', ['Autor desconhecido']),
-                    'first_publish_year': item['volumeInfo'].get('publishedDate', 'Desconhecido'),
-                    'url': item['id'],
-                    'cover_i': item['volumeInfo'].get('imageLinks', {}).get('thumbnail', ''),
-                })
+                info = item.get('volumeInfo', {})
+                
+                # Tratamento seguro das imagens
+                image_links = info.get('imageLinks', {})
+                capa = image_links.get('thumbnail') or image_links.get('smallThumbnail') or ''
+
+                # Adiciona à lista apenas se tiver título
+                if info.get('title'):
+                    livros.append({
+                        'title': info.get('title'),
+                        'author_name': info.get('authors', ['Autor desconhecido']),
+                        'first_publish_year': info.get('publishedDate', 'Data não informada')[:4], # Pega só o ano
+                        'url': item.get('id'), # ID para o link do Google Books
+                        'cover_i': capa,
+                    })
     except Exception as e:
         logger.error(f"Erro ao buscar livros: {e}")
 
+    # Paginação (mantida a lógica de 8 por página)
     paginator = Paginator(livros, 8)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'site/livros_acervo.html', {'page_obj': page_obj, 'query': query})
+    return render(request, 'site/livros_acervo.html', {
+        'page_obj': page_obj, 
+        'query': query # Retorna a query original para o template (input)
+    })
 
 def termos(request):
     return render(request, 'registration/termos2.html')
