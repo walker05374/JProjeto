@@ -5,7 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial</title>
-    <link rel="manifest" href="{% static 'manifest.json' %}">
+
+    <link rel="manifest" href="{% url 'manifest.json' %}">
+    
+    <meta name="theme-color" content="#0d6efd"> 
+    
+    <link rel="apple-touch-icon" href="{% static 'images/inicio.png' %}">
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          // Registra o sw.js que está na raiz
+          navigator.serviceWorker.register("{% url 'sw.js' %}")
+            .then(function(registration) {
+              console.log('ServiceWorker registrado com sucesso: ', registration.scope);
+            }, function(err) {
+              console.log('Falha ao registrar ServiceWorker: ', err);
+            });
+        });
+      }
+    </script>
     <link rel="stylesheet" href="{% static 'css/site/site.css' %}">
     <link rel="stylesheet" href="{% static 'css/site/card.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -13,8 +32,7 @@
  
 </head>
 <body> 
- <!-- Barra de navegação -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-transparent centered-navbar">
+ <nav class="navbar navbar-expand-lg navbar-light bg-transparent centered-navbar">
         <a class="navbar-brand" href="{% url 'site' %}">
             <img src="{% static 'images/back.png' %}" width="250" alt="Logo" class="img-fluid">
         </a>
@@ -25,7 +43,6 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
 
-                <!-- Aba Usuário -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="login" id="maisDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user"></i> Usuário
@@ -67,7 +84,6 @@
                         <i class="fas fa-heartbeat"></i> Acompanhamento
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <!-- Formação do bebê e amamentação devem estar mais perto do bebê -->
                         <a class="dropdown-item" href="{% url 'buscar_livros' %}">
                             <i class="fas fa-book"></i> Livros
                         </a>
@@ -76,17 +92,14 @@
                             <i class="fas fa-baby-carriage"></i> Amamentação
                         </a>
                 
-                        <!-- Monitoramento e informações gerais sobre a gestação -->
                         <a class="dropdown-item" href="{% url 'ganho_peso' %}">
                             <i class="fas fa-chart-line"></i> Monitoramento do GPG
                         </a>
                         
-                        <!-- Acesso a postos de saúde -->
                         <a class="dropdown-item" href="{% url 'mapa' %}">
                             <i class="fas fa-hospital"></i> Postos de Saúde
                         </a>
                 
-                        <!-- Cadastrar vacinas, notícias e pré-natal -->
                         <a class="dropdown-item" href="{% url 'vacina_create' %}">
                             <i class="fas fa-syringe"></i> Cadastrar Vacinas
                         </a>
@@ -97,7 +110,6 @@
                             <i class="fas fa-calendar-check"></i> Pré Natal
                         </a>
                 
-                        <!-- Calculadora de idade gestacional -->
                         <a class="dropdown-item" href="{% url 'calculadora_dpp' %}">
                             <i class="fas fa-calculator"></i> Calculadora de Idade Gestacional
                         </a>
@@ -113,12 +125,10 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% if not clientes_cadastrados %}
-                            <!-- Se o cliente não foi cadastrado, mostra a opção de cadastrar -->
                             <a class="dropdown-item" href="{% url 'create_cliente' %}">
                                 <i class="fas fa-user-plus"></i> Cadastrar
                             </a>
                         {% else %}
-                            <!-- Se o cliente foi cadastrado, mostra a opção de visualizar -->
                             <a class="dropdown-item" href="{% url 'read_cliente' %}">
                                 <i class="fas fa-eye"></i> Visualizar Perfil
                             </a>
@@ -135,7 +145,6 @@
                 </li>
                 {% endif %}
 
-                <!-- Pesquisa -->
                 <form class="form-inline" id="search-form">
                     <div class="input-group mb-3">
                         <input type="search" class="form-control" placeholder="Pesquise sobre sua gestação" aria-label="Pesquise sobre sua gestação" id="search-input" aria-describedby="search-button">
@@ -146,10 +155,8 @@
         </div>
     </nav>
 
-    <!-- Conteúdo específico de cada página -->
     <div class="container pag">
         {% block content %}
-        <!-- O conteúdo específico de cada página será inserido aqui -->
         {% endblock %}
     </div>
 
@@ -223,7 +230,6 @@
 </footer>
 
 
-<!-- Modal para confirmação de exclusão de conta -->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
