@@ -1,0 +1,20 @@
+# Arquivos do git
+.git/
+.gitignore
+
+# Ambientes virtuais e dependências
+venv/
+env/
+.env
+__pycache__/
+*.pyc
+
+# Banco de dados local (Se não quiser que ele suba no container)
+db.sqlite3
+
+# Arquivos do IDE
+.vscode/
+.idea/
+
+# Pastas de coleta estática passadas
+staticfiles/

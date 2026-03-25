@@ -25,24 +25,26 @@
           <i class="fas fa-info-circle"></i> Resultado do Cálculo
       </h5>
       
-      <table class="table table-bordered">
-          <thead class="thead-dark">
-              <tr>
-                  <th>Data Estimada da Última Menstruação</th>
-                  <th>Data Estimada da Concepção</th>
-                  <th>Data Provável do Parto</th>
-                  <th>Idade Gestacional Hoje</th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr>
-                  <td>{{ calculo.data_input|date:"d/m/Y" }}</td>
-                  <td>{{ calculo.data_concepcao|date:"d/m/Y" }}</td>
-                  <td>{{ calculo.data_provavel_parto|date:"d/m/Y" }}</td>
-                  <td>{{ calculo.semanas_gestacao }} semanas e {{ calculo.dias_gestacao }} dias</td>
-              </tr>
-          </tbody>
-      </table>
+      <div class="table-responsive">
+          <table class="table table-bordered">
+              <thead class="thead-dark">
+                  <tr>
+                      <th>Data Estimada da Última Menstruação</th>
+                      <th>Data Estimada da Concepção</th>
+                      <th>Data Provável do Parto</th>
+                      <th>Idade Gestacional Hoje</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>{{ calculo.data_input|date:"d/m/Y" }}</td>
+                      <td>{{ calculo.data_concepcao|date:"d/m/Y" }}</td>
+                      <td>{{ calculo.data_provavel_parto|date:"d/m/Y" }}</td>
+                      <td>{{ calculo.semanas_gestacao }} semanas e {{ calculo.dias_gestacao }} dias</td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
 
       <div class="text-center mt-3">
           <a href="{% url 'calculadora_dpp' %}" class="btn btn-outline-primary btn-lg">Refazer o Cálculo</a>
@@ -55,7 +57,7 @@
           <i class="fas fa-calendar-check"></i> Cronograma de Ações
       </h5>
 
-      <div style="max-height: 400px; overflow-y: auto;">
+      <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
           <table class="table table-striped">
               <thead>
                   <tr>

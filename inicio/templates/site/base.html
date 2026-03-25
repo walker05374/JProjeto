@@ -164,7 +164,7 @@
 <footer class="mt-auto">
     <div id="footer_content">
         <div id="footer_contacts">
-            <img src="{% static 'images/back.png' %}" alt="Logo" width="230" height="80">
+            <img src="{% static 'images/back.png' %}" alt="Logo" width="230" height="80" class="img-fluid">
             <h6>SIGA NOS:</h6>
             <div id="footer_social_media">
                 <a href="https://www.instagram.com" class="footer-link" id="instagram">
@@ -184,7 +184,9 @@
                 </a>
             </div>
 
-            <iframe style="margin-top: 15px;" width="100%" height="60" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2083879188&color=%2300a9e0&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
+            <div class="ratio ratio-21x9 mt-3">
+                <iframe scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2083879188&color=%2300a9e0&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
+            </div>
         </div>
 
         <ul class="footer-list">
